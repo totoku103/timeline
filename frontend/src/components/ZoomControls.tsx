@@ -21,8 +21,10 @@ const PRESET_RANGES: Array<{ label: string; fromYear: number; toYear: number }> 
   { label: '현대', fromYear: 1800, toYear: 2030 },
 ];
 
+const INITIAL_VIEWPORT = PRESET_RANGES[0]; // 우주 (전체 범위)
+
 export default function ZoomControls() {
-  const { viewport, setViewport } = useTimelineStore();
+  const { viewport, setViewport, setFilters, setSearchQuery } = useTimelineStore();
   const { fromYear, toYear, centerYear } = viewport;
   const range = toYear - fromYear;
   const zoomConfig = getZoomLevelForRange(range);
@@ -86,6 +88,18 @@ export default function ZoomControls() {
         </button>
         <button className="zoom-controls__btn" onClick={handleZoomOut} aria-label="축소">
           −
+        </button>
+        <button
+          className="zoom-controls__btn zoom-controls__btn--reset"
+          onClick={() => {
+            handlePreset(INITIAL_VIEWPORT);
+            setFilters({});
+            setSearchQuery('');
+          }}
+          aria-label="초기화"
+          title="뷰포트, 필터, 검색 초기화"
+        >
+          ↺
         </button>
       </div>
     </div>

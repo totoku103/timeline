@@ -76,26 +76,21 @@ export class ViewportManager {
     let newFromLog = fromLog + logDelta;
     let newToLog = toLog + logDelta;
 
-    let newFrom = symlogInverse(newFromLog);
-    let newTo = symlogInverse(newToLog);
+    // log 공간에서 범위를 보존하며 경계 클램핑
+    const minLog = symlog(MIN_YEAR);
+    const maxLog = symlog(MAX_YEAR);
 
-    // Clamp to absolute bounds
-    if (newFrom < MIN_YEAR) {
-      const shift = MIN_YEAR - newFrom;
-      newFrom = MIN_YEAR;
-      newTo += shift;
+    if (newFromLog < minLog) {
+      newFromLog = minLog;
+      newToLog = minLog + logRange;
     }
-    if (newTo > MAX_YEAR) {
-      const shift = newTo - MAX_YEAR;
-      newTo = MAX_YEAR;
-      newFrom -= shift;
+    if (newToLog > maxLog) {
+      newToLog = maxLog;
+      newFromLog = maxLog - logRange;
     }
 
-    newFrom = Math.max(MIN_YEAR, newFrom);
-    newTo = Math.min(MAX_YEAR, newTo);
-
-    this.viewport.fromYear = newFrom;
-    this.viewport.toYear = newTo;
+    this.viewport.fromYear = symlogInverse(newFromLog);
+    this.viewport.toYear = symlogInverse(newToLog);
     this.recalculate();
     this.notifyChange();
   }

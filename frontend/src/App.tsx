@@ -43,6 +43,7 @@ function TimelineApp() {
       <div className="app__header">
         <SearchBar />
         <CategoryFilter />
+        <ZoomControls />
         <ViewModeToggle />
       </div>
       <div className="app__canvas">
@@ -82,7 +83,6 @@ function TimelineApp() {
             전환 중...
           </div>
         )}
-        <ZoomControls />
       </div>
       <EventDetailPanel />
     </div>

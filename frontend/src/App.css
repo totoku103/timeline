@@ -305,27 +305,17 @@
    Zoom Controls
    ===================== */
 .zoom-controls {
-  position: absolute;
-  bottom: 12px;
-  right: 12px;
-  z-index: 100;
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  align-items: center;
   gap: 6px;
-  background: var(--bg-panel);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 8px 12px;
-  backdrop-filter: blur(8px);
-  min-width: 140px;
+  margin-left: auto;
+  flex-shrink: 0;
 }
 
 .zoom-controls__info {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 2px;
+  align-items: center;
+  gap: 6px;
 }
 
 .zoom-controls__level-name {
@@ -342,8 +332,6 @@
 .zoom-controls__presets {
   display: flex;
   gap: 4px;
-  flex-wrap: wrap;
-  justify-content: flex-end;
 }
 
 .zoom-controls__preset-btn {

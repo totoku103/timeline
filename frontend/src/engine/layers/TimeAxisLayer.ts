@@ -1,6 +1,6 @@
 import { Container, Graphics, Text, TextStyle } from 'pixi.js';
 import type { Viewport } from '../../types/viewport';
-import { yearToScreen, symlog, symlogInverse } from '../scale/symlog';
+import { yearToScreen } from '../scale/symlog';
 import { getZoomLevelForRange } from '../scale/precisionMapping';
 
 const AXIS_COLOR = 0x444466;
@@ -87,51 +87,32 @@ export class TimeAxisLayer {
     const yearRange = viewport.toYear - viewport.fromYear;
     const config = getZoomLevelForRange(yearRange);
     const interval = this.getTickInterval(config.level, yearRange);
-    void (interval / 5); // minorInterval unused; minor steps computed per-gap below
 
     const ticks: Array<{ year: number; major: boolean; label: string | null }> = [];
 
-    // Generate ticks in log space for uniform visual distribution
-    const fromLog = symlog(viewport.fromYear);
-    const toLog = symlog(viewport.toYear);
-    const logRange = toLog - fromLog;
+    // interval 간격으로 major tick 생성 (symlog 위치는 yearToScreen이 처리)
+    const startYear = Math.ceil(viewport.fromYear / interval) * interval;
+    const endYear = viewport.toYear;
 
-    // Target ~15-25 major ticks across the screen
-    const targetMajorTicks = 20;
-    const logStep = logRange / targetMajorTicks;
-
-    if (logStep <= 0) return ticks;
-
-    // Generate major ticks
-    for (let i = 0; i <= targetMajorTicks + 1; i++) {
-      const logVal = fromLog + i * logStep;
-      const year = symlogInverse(logVal);
-      const snappedYear = this.snapYear(year, interval);
-
-      // Avoid duplicate snapped years
-      if (ticks.length > 0) {
-        const lastTick = ticks[ticks.length - 1];
-        if (Math.abs(lastTick.year - snappedYear) < interval * 0.1) continue;
-      }
-
+    for (let year = startYear; year <= endYear; year += interval) {
       ticks.push({
-        year: snappedYear,
+        year,
         major: true,
-        label: this.formatYear(snappedYear, config.level),
+        label: this.formatYear(year, config.level),
       });
+      // 너무 많은 tick 방지 (최대 50개)
+      if (ticks.length > 50) break;
     }
 
-    // Add minor ticks between major ticks
+    // 주요 tick 사이에 minor tick 5개 삽입
     const majorTicks = [...ticks];
     for (let i = 0; i < majorTicks.length - 1; i++) {
       const from = majorTicks[i].year;
       const to = majorTicks[i + 1].year;
-      const gap = to - from;
-      const minorStep = gap / 5;
+      const minorStep = (to - from) / 5;
 
       for (let j = 1; j < 5; j++) {
-        const minorYear = from + j * minorStep;
-        ticks.push({ year: minorYear, major: false, label: null });
+        ticks.push({ year: from + j * minorStep, major: false, label: null });
       }
     }
 
@@ -151,13 +132,6 @@ export class TimeAxisLayer {
     if (yearRange > 10) return 1;
     if (yearRange > 1) return 1 / 12;
     return 1 / 365;
-  }
-
-  private snapYear(year: number, interval: number): number {
-    if (interval >= 1) {
-      return Math.round(year / interval) * interval;
-    }
-    return Math.round(year * 1000) / 1000;
   }
 
   private formatYear(year: number, zoomLevel: number): string {

@@ -21,7 +21,7 @@ export function useViewportEvents() {
   const zoomConfig = getZoomLevelForRange(yearRange);
   const precisionLevel = zoomConfig.precisionLevel;
 
-  const categoryId = filters.categoryIds?.[0];
+  // 카테고리/국가 필터링은 클라이언트에서 수행 (서버에는 범위만 전달)
 
   // 마지막으로 fetch한 버퍼 범위를 추적
   const lastFetchRange = useRef({ from: fromYear, to: toYear, range: yearRange });
@@ -52,13 +52,12 @@ export function useViewportEvents() {
   }, [fromYear, toYear, yearRange]);
 
   return useQuery({
-    queryKey: ['timelines', fetchRange.from, fetchRange.to, precisionLevel, filters.categoryIds, searchQuery],
+    queryKey: ['timelines', fetchRange.from, fetchRange.to, precisionLevel, searchQuery],
     queryFn: () =>
       searchTimelines({
         fromYear: fetchRange.from,
         toYear: fetchRange.to,
         precisionLevel,
-        categoryId,
       }),
     staleTime: 60_000,
     placeholderData: keepPreviousData,

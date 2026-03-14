@@ -16,14 +16,7 @@ function formatYearShort(year: number): string {
   return `${Math.round(abs)}${suffix}`;
 }
 
-const PRESET_RANGES: Array<{ label: string; fromYear: number; toYear: number }> = [
-  { label: '우주', fromYear: -13_800_000_000, toYear: 2030 },
-  { label: '지질', fromYear: -541_000_000, toYear: 2030 },
-  { label: '고대', fromYear: -10_000, toYear: 2030 },
-  { label: '현대', fromYear: 1800, toYear: 2030 },
-];
-
-const INITIAL_VIEWPORT = PRESET_RANGES[3]; // 현대 (1800~2030)
+const INITIAL_VIEWPORT = { label: '현대', fromYear: 1800, toYear: 2030 };
 
 interface ZoomControlsProps {
   /** TimelineEngine의 ViewportManager를 직접 받아 YearJumper에 전달 */
@@ -77,20 +70,6 @@ export default function ZoomControls({ viewportManagerRef }: ZoomControlsProps) 
         viewportManagerRef={vmRef}
         onJump={(year, label) => announce(`${label}(으)로 이동했습니다`)}
       />
-
-      {/* 프리셋 버튼 */}
-      <div className="zoom-controls__presets" role="group" aria-label="시대 프리셋">
-        {PRESET_RANGES.map((p) => (
-          <button
-            key={p.label}
-            className="zoom-controls__preset-btn"
-            onClick={() => handlePreset(p)}
-            aria-label={`${p.label} 뷰: ${formatYearShort(p.fromYear)}부터 ${formatYearShort(p.toYear)}까지`}
-          >
-            {p.label}
-          </button>
-        ))}
-      </div>
 
       {/* 초기화 버튼 */}
       <button

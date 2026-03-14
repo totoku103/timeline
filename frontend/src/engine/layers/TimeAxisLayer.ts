@@ -51,8 +51,7 @@ export class TimeAxisLayer {
     // Calculate tick intervals
     const ticks = this.calculateTicks(viewport);
     let labelIdx = 0;
-    let lastLabelX = -Infinity;
-    const MIN_LABEL_GAP = 40; // 라벨 간 최소 픽셀 간격
+    let lastLabelRight = -Infinity; // 마지막 라벨의 오른쪽 끝 x좌표
 
     for (const tick of ticks) {
       const x = yearToScreen(tick.year, viewport);
@@ -65,15 +64,23 @@ export class TimeAxisLayer {
       this.ticksGraphics.lineTo(x, axisY - tickHeight);
       this.ticksGraphics.stroke({ width: tick.major ? 1.5 : 0.5, color: tickColor });
 
-      // 라벨이 이전 라벨과 너무 가까우면 숨김
-      if (tick.major && tick.label && (x - lastLabelX) >= MIN_LABEL_GAP) {
-        const text = this.getLabel(labelIdx++);
-        text.text = tick.label;
-        text.x = x;
-        text.y = axisY - MAJOR_TICK_HEIGHT - 4;
-        text.anchor.set(0.5, 1);
-        text.visible = true;
-        lastLabelX = x;
+      if (tick.major && tick.label) {
+        // 라벨 너비 추정: 글자당 약 7px (monospace 11px 기준)
+        const estimatedWidth = tick.label.length * 7;
+        const labelLeft = x - estimatedWidth / 2;
+        const labelRight = x + estimatedWidth / 2;
+        const GAP = 8; // 라벨 사이 최소 여백
+
+        // 이전 라벨과 겹치면 숨김
+        if (labelLeft >= lastLabelRight + GAP) {
+          const text = this.getLabel(labelIdx++);
+          text.text = tick.label;
+          text.x = x;
+          text.y = axisY - MAJOR_TICK_HEIGHT - 4;
+          text.anchor.set(0.5, 1);
+          text.visible = true;
+          lastLabelRight = labelRight;
+        }
       }
     }
   }

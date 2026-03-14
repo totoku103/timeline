@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import { searchTimelines } from '../api/timelineApi';
 import { getCategories } from '../api/categoryApi';
 import { useTimelineStore } from '../store/useTimelineStore';
@@ -23,6 +23,7 @@ export function useViewportEvents() {
         categoryId,
       }),
     staleTime: 30_000,
+    placeholderData: keepPreviousData,
   });
 }
 

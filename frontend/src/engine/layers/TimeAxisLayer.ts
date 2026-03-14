@@ -122,18 +122,32 @@ export class TimeAxisLayer {
     return ticks;
   }
 
+  /**
+   * 목표 15~25개 major tick이 되도록 "예쁜" 간격을 자동 선택.
+   * 1, 2, 5, 10, 20, 50, 100, ... 계열에서 선택.
+   */
   private getTickInterval(_level: number, yearRange: number): number {
-    if (yearRange > 10_000_000_000) return 1_000_000_000;
-    if (yearRange > 1_000_000_000) return 100_000_000;
-    if (yearRange > 100_000_000) return 10_000_000;
-    if (yearRange > 10_000_000) return 1_000_000;
-    if (yearRange > 1_000_000) return 100_000;
-    if (yearRange > 100_000) return 10_000;
-    if (yearRange > 10_000) return 1_000;
-    if (yearRange > 1_000) return 100;
-    if (yearRange > 100) return 10;
-    if (yearRange > 10) return 1;
-    if (yearRange > 1) return 1 / 12;
+    if (yearRange < 1) return 1 / 12;
+
+    const TARGET_TICKS = 20;
+    const rawInterval = yearRange / TARGET_TICKS;
+
+    // "예쁜" 간격 후보: 1, 2, 5 × 10^n
+    const magnitude = Math.pow(10, Math.floor(Math.log10(rawInterval)));
+    const candidates = [1, 2, 5, 10].map(m => m * magnitude);
+
+    // 목표 tick 수에 가장 가까운 후보 선택
+    let best = candidates[0];
+    let bestDiff = Infinity;
+    for (const c of candidates) {
+      const ticks = yearRange / c;
+      const diff = Math.abs(ticks - TARGET_TICKS);
+      if (diff < bestDiff) {
+        bestDiff = diff;
+        best = c;
+      }
+    }
+    return Math.max(best, 1 / 12);
     return 1 / 365;
   }
 

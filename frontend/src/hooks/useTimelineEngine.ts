@@ -5,7 +5,7 @@ import { useTimelineStore } from '../store/useTimelineStore';
 export function useTimelineEngine(containerRef: React.RefObject<HTMLDivElement | null>) {
   const engineRef = useRef<TimelineEngine | null>(null);
   const [ready, setReady] = useState(false);
-  const { setViewport, setSelectedEventId, setShowDetailPanel } = useTimelineStore();
+  const { viewport: storeViewport, setViewport, setSelectedEventId, setShowDetailPanel } = useTimelineStore();
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -15,6 +15,12 @@ export function useTimelineEngine(containerRef: React.RefObject<HTMLDivElement |
     setReady(false);
 
     engine.init(containerRef.current).then(() => {
+      // 스토어의 초기 뷰포트를 엔진에 동기화
+      const { fromYear, toYear } = useTimelineStore.getState().viewport;
+      if (fromYear !== -13_800_000_000 || toYear !== 2100) {
+        engine.setViewport({ fromYear, toYear } as any);
+      }
+
       engine.onViewportChange = (vp) => setViewport(vp);
       engine.onEventClick = (event) => {
         setSelectedEventId(event.id);

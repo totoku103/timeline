@@ -54,3 +54,6 @@ INSERT INTO timeline_categories (timeline_id, category_id)
 SELECT id, category_id FROM timelines
 WHERE category_id IS NOT NULL
 ON CONFLICT DO NOTHING;
+
+-- 기존 category_id 컬럼의 NOT NULL 제약 제거 (ManyToMany 전환 후 불필요)
+ALTER TABLE timelines ALTER COLUMN category_id DROP NOT NULL;

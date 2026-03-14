@@ -76,6 +76,6 @@ export interface Category {
 export interface SearchParams {
   fromYear?: number;
   toYear?: number;
-  categoryId?: number;
+  categoryIds?: number[];
   precisionLevel?: PrecisionLevel;
 }

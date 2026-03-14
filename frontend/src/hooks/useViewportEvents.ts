@@ -11,14 +11,16 @@ export function useViewportEvents() {
   const zoomConfig = getZoomLevelForRange(yearRange);
   const precisionLevel = zoomConfig.precisionLevel;
 
+  const categoryId = filters.categoryIds?.[0];
+
   return useQuery({
-    queryKey: ['timelines', fromYear, toYear, precisionLevel, filters.categoryId, searchQuery],
+    queryKey: ['timelines', fromYear, toYear, precisionLevel, filters.categoryIds, searchQuery],
     queryFn: () =>
       searchTimelines({
         fromYear,
         toYear,
         precisionLevel,
-        categoryId: filters.categoryId,
+        categoryId,
       }),
     staleTime: 30_000,
   });

@@ -522,3 +522,279 @@
   color: var(--text-secondary);
   word-break: break-all;
 }
+
+/* =====================
+   접근성 — 포커스 링
+   키보드 사용자에게만 표시 (마우스 클릭 시 숨김)
+   ===================== */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* 타임라인 캔버스 포커스 링 — 더 뚜렷하게 */
+.timeline-canvas:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: -3px;
+  box-shadow: 0 0 0 6px rgba(68, 136, 255, 0.15);
+}
+
+/* =====================
+   ZoomControls — 키보드 단축키 힌트
+   ===================== */
+.zoom-controls__kbd-hint {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 10px;
+  color: var(--text-secondary);
+  opacity: 0.7;
+  white-space: nowrap;
+  flex-shrink: 0;
+  /* 화면이 좁으면 숨김 */
+  @media (max-width: 900px) {
+    display: none;
+  }
+}
+
+.zoom-controls__kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1px 4px;
+  border: 1px solid rgba(68, 136, 255, 0.3);
+  border-radius: 3px;
+  background: rgba(68, 136, 255, 0.06);
+  font-size: 9px;
+  font-family: ui-monospace, 'SF Mono', monospace;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* =====================
+   YearJumper
+   ===================== */
+.year-jumper__trigger {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.year-jumper__trigger:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(68, 136, 255, 0.08);
+}
+
+.year-jumper__form {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  position: relative;
+  /* 작은 화면에서 드롭다운 형태로 변경 */
+  @media (max-width: 640px) {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+    gap: 8px;
+    flex-direction: column;
+    align-items: stretch;
+    z-index: 300;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    min-width: 220px;
+  }
+}
+
+.year-jumper__label {
+  font-size: 11px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.year-jumper__input {
+  width: 140px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-primary);
+  font-size: 12px;
+  font-family: ui-monospace, 'SF Mono', monospace;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  @media (max-width: 640px) {
+    width: 100%;
+  }
+}
+
+.year-jumper__input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(68, 136, 255, 0.15);
+}
+
+.year-jumper__input--error {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px rgba(255, 68, 102, 0.15);
+}
+
+.year-jumper__error {
+  font-size: 10px;
+  color: var(--danger);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.year-jumper__hint {
+  font-size: 10px;
+  color: var(--text-secondary);
+  opacity: 0.6;
+  white-space: nowrap;
+  flex-shrink: 0;
+
+  /* 좁은 화면에서 힌트 숨김 */
+  @media (max-width: 1100px) {
+    display: none;
+  }
+}
+
+.year-jumper__actions {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.year-jumper__go {
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--accent);
+  background: rgba(68, 136, 255, 0.15);
+  color: var(--accent);
+  font-size: 11px;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s, color 0.2s;
+}
+
+.year-jumper__go:hover {
+  background: rgba(68, 136, 255, 0.28);
+  color: #fff;
+}
+
+.year-jumper__cancel {
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.year-jumper__cancel:hover {
+  color: var(--text-primary);
+  border-color: var(--text-secondary);
+}
+
+/* =====================
+   모바일 터치 피드백
+   ===================== */
+@media (hover: none) and (pointer: coarse) {
+  /* 터치 장치: 탭 하이라이트 제거, active 상태로 피드백 */
+  button {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .zoom-controls__btn:active,
+  .zoom-controls__preset-btn:active {
+    background: rgba(68, 136, 255, 0.2);
+    border-color: var(--accent);
+    transform: scale(0.94);
+    transition: transform 0.08s ease;
+  }
+
+  .year-jumper__trigger:active {
+    background: rgba(68, 136, 255, 0.15);
+    transform: scale(0.96);
+  }
+
+  /* 모바일에서 YearJumper 폼은 항상 드롭다운 */
+  .year-jumper__form {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+    flex-direction: column;
+    align-items: stretch;
+    z-index: 300;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    min-width: 240px;
+  }
+
+  .year-jumper__input {
+    width: 100%;
+    /* 모바일 터치 최적화 — 최소 높이 44px (WCAG 2.5.5) */
+    min-height: 44px;
+    font-size: 16px; /* iOS 자동 줌 방지 */
+    padding: 10px 12px;
+  }
+
+  .year-jumper__go,
+  .year-jumper__cancel {
+    min-height: 44px;
+    font-size: 14px;
+    padding: 10px 16px;
+  }
+
+  /* 키보드 힌트는 모바일에서 숨김 */
+  .zoom-controls__kbd-hint {
+    display: none;
+  }
+}
+
+/* =====================
+   줌 컨트롤 버튼 — 모바일 최소 터치 영역 확보
+   ===================== */
+@media (hover: none) and (pointer: coarse) {
+  .zoom-controls__btn {
+    width: 44px;
+    height: 44px;
+    font-size: 20px;
+  }
+
+  .zoom-controls__preset-btn {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+}
+

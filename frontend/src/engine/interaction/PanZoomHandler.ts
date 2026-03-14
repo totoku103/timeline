@@ -1,9 +1,30 @@
 import type { ViewportManager } from '../scale/ViewportManager';
 
-const INERTIA_DECAY = 0.95;
-const INERTIA_MIN_VELOCITY = 0.5;
+const FRICTION = 0.006;
+const INERTIA_MIN_VELOCITY = 0.1;
+const VELOCITY_SMOOTHING = 0.25;
 const ZOOM_SPEED = 1;
 const FAST_ZOOM_MULTIPLIER = 3;
+
+/**
+ * 트랙패드 판별 휴리스틱
+ *
+ * trackpad 2핑거 스크롤: deltaMode=0, |deltaY| < 50, deltaX≠0 가능
+ * 마우스 휠:             deltaMode=0, |deltaY| 큰 값(일반적으로 ≥100 또는 120의 배수)
+ *                        또는 deltaMode=1 (line 단위)
+ *
+ * 트랙패드는 수평 스크롤도 발생한다. 마우스 휠은 수직만.
+ */
+function isTrackpadScroll(e: WheelEvent): boolean {
+  // ctrlKey=true 이면 핀치-줌 제스처 (OS가 변환)
+  if (e.ctrlKey) return false;
+  // 라인/페이지 단위이면 마우스 휠
+  if (e.deltaMode !== 0) return false;
+  // 수평 스크롤이 있으면 트랙패드
+  if (Math.abs(e.deltaX) > 1) return true;
+  // 수직만 있을 때: 작은 값이면 트랙패드, 큰 값이면 마우스 휠
+  return Math.abs(e.deltaY) < 50;
+}
 
 export class PanZoomHandler {
   private element: HTMLElement;
@@ -13,10 +34,17 @@ export class PanZoomHandler {
   private lastX = 0;
   private velocity = 0;
   private inertiaRaf: number | null = null;
+  private lastFrameTime = 0;
+  private velocityHistory: number[] = [];
 
   // Touch state
   private lastPinchDistance: number | null = null;
   private lastTouchX: number | null = null;
+
+  // 더블탭 감지
+  private lastTapTime = 0;
+  private lastTapX = 0;
+  private doubleTapThreshold = 300; // ms
 
   // Bound handlers for cleanup
   private handleWheel: (e: WheelEvent) => void;
@@ -67,10 +95,31 @@ export class PanZoomHandler {
 
     const rect = this.element.getBoundingClientRect();
     const cursorX = e.clientX - rect.left;
-    const speed = (e.ctrlKey || e.metaKey) ? FAST_ZOOM_MULTIPLIER : ZOOM_SPEED;
-    const delta = (e.deltaY > 0 ? -1 : 1) * speed;
 
-    this.viewportManager.zoom(delta, cursorX);
+    if (e.ctrlKey || e.metaKey) {
+      // OS가 핀치-줌을 ctrlKey+wheel로 변환한 경우 (트랙패드 핀치)
+      const speed = FAST_ZOOM_MULTIPLIER;
+      const delta = (e.deltaY > 0 ? -1 : 1) * speed;
+      this.viewportManager.zoom(delta, cursorX);
+      return;
+    }
+
+    // Shift+휠 → 좌우 팬 (마우스 사용자용)
+    if (e.shiftKey) {
+      this.viewportManager.pan(-e.deltaY);
+      return;
+    }
+
+    if (isTrackpadScroll(e)) {
+      // 트랙패드 2핑거 스크롤 → 팬
+      const panDelta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+      this.viewportManager.pan(-panDelta);
+    } else {
+      // 마우스 휠 → 줌
+      const speed = ZOOM_SPEED;
+      const delta = (e.deltaY > 0 ? -1 : 1) * speed;
+      this.viewportManager.zoom(delta, cursorX);
+    }
   }
 
   private onMouseDown(e: MouseEvent): void {
@@ -86,8 +135,14 @@ export class PanZoomHandler {
     if (!this.isDragging) return;
 
     const deltaX = e.clientX - this.lastX;
-    this.velocity = deltaX;
     this.lastX = e.clientX;
+
+    // EMA 스무딩으로 손 떨림 제거
+    this.velocity = this.velocity * (1 - VELOCITY_SMOOTHING) + deltaX * VELOCITY_SMOOTHING;
+
+    // 관성 시작 시 가중 평균용 히스토리
+    this.velocityHistory.push(deltaX);
+    if (this.velocityHistory.length > 5) this.velocityHistory.shift();
 
     this.viewportManager.pan(deltaX);
   }
@@ -97,9 +152,20 @@ export class PanZoomHandler {
     this.isDragging = false;
     this.element.style.cursor = 'grab';
 
-    // Start inertia
+    // 마지막 N프레임의 가중 평균으로 초기 관성 속도 계산
+    if (this.velocityHistory.length > 0) {
+      const weights = this.velocityHistory.map((_, i) => i + 1);
+      const totalWeight = weights.reduce((a, b) => a + b, 0);
+      this.velocity = this.velocityHistory.reduce(
+        (sum, v, i) => sum + v * weights[i], 0
+      ) / totalWeight;
+    }
+
     if (Math.abs(this.velocity) > INERTIA_MIN_VELOCITY) {
+      this.lastFrameTime = performance.now();
       this.startInertia();
+    } else {
+      this.velocityHistory = [];
     }
   }
 
@@ -110,6 +176,23 @@ export class PanZoomHandler {
     if (e.touches.length === 1) {
       this.lastTouchX = e.touches[0].clientX;
       this.lastPinchDistance = null;
+
+      // 더블탭 감지
+      const now = Date.now();
+      const tapX = e.touches[0].clientX;
+      if (
+        now - this.lastTapTime < this.doubleTapThreshold &&
+        Math.abs(tapX - this.lastTapX) < 40
+      ) {
+        // 더블탭 → 줌인 (탭 위치 중심)
+        const rect = this.element.getBoundingClientRect();
+        const centerX = tapX - rect.left;
+        this.viewportManager.zoom(FAST_ZOOM_MULTIPLIER, centerX);
+        this.lastTapTime = 0; // 리셋
+      } else {
+        this.lastTapTime = now;
+        this.lastTapX = tapX;
+      }
     } else if (e.touches.length === 2) {
       this.lastPinchDistance = this.getPinchDistance(e.touches);
       this.lastTouchX = null;
@@ -158,12 +241,18 @@ export class PanZoomHandler {
   }
 
   private startInertia(): void {
-    const tick = () => {
-      this.velocity *= INERTIA_DECAY;
+    const tick = (now: number) => {
+      const dt = Math.min(now - this.lastFrameTime, 32); // 프레임 드롭 보정
+      this.lastFrameTime = now;
+
+      // 프레임 시간 독립적 friction decay
+      const decayFactor = Math.pow(1 - FRICTION, dt / 16.67);
+      this.velocity *= decayFactor;
 
       if (Math.abs(this.velocity) < INERTIA_MIN_VELOCITY) {
         this.velocity = 0;
         this.inertiaRaf = null;
+        this.velocityHistory = [];
         return;
       }
 

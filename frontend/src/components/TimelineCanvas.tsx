@@ -1,23 +1,91 @@
-import { useRef, useEffect, useMemo } from 'react';
+import { useRef, useEffect, useMemo, useCallback } from 'react';
 import { useTimelineEngine } from '../hooks/useTimelineEngine';
 import { useViewportEvents, useCategories } from '../hooks/useViewportEvents';
 import { useTimelineStore } from '../store/useTimelineStore';
+import { useKeyboardNavigation } from '../hooks/useKeyboardNavigation';
+import { useAriaLiveRegion } from '../hooks/useAriaLiveRegion';
+import { getZoomLevelForRange } from '../engine/scale/precisionMapping';
+import type { ViewportManager } from '../engine/scale/ViewportManager';
 
-export default function TimelineCanvas() {
+function formatYearShort(year: number): string {
+  if (year < 0) {
+    const abs = Math.abs(year);
+    if (abs >= 1_000_000_000) return `${(abs / 1_000_000_000).toFixed(1)}B BCE`;
+    if (abs >= 1_000_000) return `${(abs / 1_000_000).toFixed(1)}M BCE`;
+    if (abs >= 1_000) return `${Math.round(abs / 1_000)}K BCE`;
+    return `${abs} BCE`;
+  }
+  if (year >= 1_000_000_000) return `${(year / 1_000_000_000).toFixed(1)}B`;
+  if (year >= 1_000_000) return `${(year / 1_000_000).toFixed(1)}M`;
+  return `${year}`;
+}
+
+interface TimelineCanvasProps {
+  /** App 레벨에서 공유하는 ViewportManager ref — YearJumper 등 외부 컴포넌트가 직접 접근 */
+  viewportManagerRef?: React.RefObject<ViewportManager | null>;
+}
+
+export default function TimelineCanvas({ viewportManagerRef }: TimelineCanvasProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const { engineRef, ready } = useTimelineEngine(containerRef);
   const { data: events } = useViewportEvents();
   const { data: categories } = useCategories();
   const selectedCategoryIds = useTimelineStore((s) => s.filters.categoryIds);
+  const viewport = useTimelineStore((s) => s.viewport);
 
-  // 선택된 카테고리만 표시 (없으면 전체)
+  const { announce } = useAriaLiveRegion();
+
+  // 내부 키보드 훅용 ref
+  const localVmRef = useRef<ViewportManager | null>(null);
+
+  // 엔진이 준비되면 두 ref 모두 채운다
+  useEffect(() => {
+    if (ready && engineRef.current) {
+      const vm = engineRef.current.getViewportManager();
+      localVmRef.current = vm;
+      // App 레벨 공유 ref도 갱신 (YearJumper 등이 사용)
+      if (viewportManagerRef) {
+        (viewportManagerRef as React.MutableRefObject<ViewportManager | null>).current = vm;
+      }
+    } else {
+      localVmRef.current = null;
+      if (viewportManagerRef) {
+        (viewportManagerRef as React.MutableRefObject<ViewportManager | null>).current = null;
+      }
+    }
+  }, [ready, engineRef, viewportManagerRef]);
+
+  // 키보드 탐색 — 캔버스 컨테이너에 포커스 시 동작
+  useKeyboardNavigation({
+    targetRef: containerRef,
+    viewportManagerRef: localVmRef,
+    enabled: ready,
+  });
+
+  // 뷰포트 변경 시 스크린 리더 알림 (300ms 디바운스)
+  const announceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => {
+    if (announceTimerRef.current) clearTimeout(announceTimerRef.current);
+    announceTimerRef.current = setTimeout(() => {
+      const range = viewport.toYear - viewport.fromYear;
+      const zoomConfig = getZoomLevelForRange(range);
+      announce(
+        `타임라인 위치: ${formatYearShort(viewport.fromYear)}부터 ` +
+        `${formatYearShort(viewport.toYear)}까지, ${zoomConfig.nameKo} 단위 보기`
+      );
+    }, 300);
+    return () => {
+      if (announceTimerRef.current) clearTimeout(announceTimerRef.current);
+    };
+  }, [viewport.fromYear, viewport.toYear, announce]);
+
+  // 카테고리 필터링
   const visibleCategories = useMemo(() => {
     if (!categories) return [];
     if (!selectedCategoryIds || selectedCategoryIds.length === 0) return categories;
     return categories.filter((c) => selectedCategoryIds.includes(c.id));
   }, [categories, selectedCategoryIds]);
 
-  // 선택된 카테고리의 이벤트만 필터링 (없으면 전체)
   const filteredEvents = useMemo(() => {
     if (!events) return [];
     if (!selectedCategoryIds || selectedCategoryIds.length === 0) return events;
@@ -38,11 +106,33 @@ export default function TimelineCanvas() {
     }
   }, [filteredEvents, ready, engineRef]);
 
+  // 포커스 시 키보드 힌트 안내
+  const handleFocus = useCallback(() => {
+    announce(
+      '타임라인 캔버스에 포커스되었습니다. ' +
+      '좌우 방향키로 이동, 위아래 방향키로 줌 조절, ' +
+      'Home 키로 우주 초기로, End 키로 현재로 이동할 수 있습니다.',
+      'polite'
+    );
+  }, [announce]);
+
+  const range = viewport.toYear - viewport.fromYear;
+  const zoomConfig = getZoomLevelForRange(range);
+  const ariaLabel =
+    `인터랙티브 타임라인. 현재 ${formatYearShort(viewport.fromYear)}부터 ` +
+    `${formatYearShort(viewport.toYear)}까지 표시 중, ${zoomConfig.nameKo} 단위. ` +
+    `방향키로 탐색 가능.`;
+
   return (
     <div
       ref={containerRef}
       className="timeline-canvas"
       style={{ width: '100%', height: '100%', background: '#0a0a1a' }}
+      role="application"
+      aria-label={ariaLabel}
+      aria-roledescription="인터랙티브 타임라인"
+      tabIndex={0}
+      onFocus={handleFocus}
     />
   );
 }

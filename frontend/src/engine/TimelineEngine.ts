@@ -118,6 +118,11 @@ export class TimelineEngine {
     this.viewportManager.setRange(viewport.fromYear, viewport.toYear);
   }
 
+  /** 키보드 탐색 훅 등 외부에서 ViewportManager에 직접 접근할 때 사용 */
+  getViewportManager(): ViewportManager {
+    return this.viewportManager;
+  }
+
   resize(width: number, height: number): void {
     if (!this.initialized) return;
     this.app.renderer.resize(width, height);

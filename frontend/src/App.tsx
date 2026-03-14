@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState, useEffect } from 'react';
+import { lazy, Suspense, useState, useEffect, useRef } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import TimelineCanvas from './components/TimelineCanvas';
 import EventDetailPanel from './components/EventDetailPanel';
@@ -7,6 +7,7 @@ import SearchBar from './components/SearchBar';
 import CategoryFilter from './components/CategoryFilter';
 import ViewModeToggle from './components/ViewModeToggle';
 import { useTimelineStore } from './store/useTimelineStore';
+import type { ViewportManager } from './engine/scale/ViewportManager';
 import './App.css';
 
 const ThreeTimeline = lazy(() => import('./samples/ThreeTimeline'));
@@ -25,6 +26,11 @@ function TimelineApp() {
     viewMode === 'pixi' ? 'pixi' : 'three'
   );
 
+  // ZoomControls의 YearJumper가 ViewportManager에 직접 접근할 수 있도록
+  // TimelineCanvas → useTimelineEngine → engineRef.getViewportManager() 연결
+  // App 레벨에서 공유 ref 를 내려준다
+  const viewportManagerRef = useRef<ViewportManager | null>(null);
+
   useEffect(() => {
     if (viewMode === 'pixi' && rendered !== 'pixi') {
       setRendered('transitioning');
@@ -40,14 +46,16 @@ function TimelineApp() {
 
   return (
     <div className="app">
-      <div className="app__header">
+      <div className="app__header" role="banner">
         <SearchBar />
         <CategoryFilter />
-        <ZoomControls />
+        <ZoomControls viewportManagerRef={viewportManagerRef} />
         <ViewModeToggle />
       </div>
-      <div className="app__canvas">
-        {rendered === 'pixi' && <TimelineCanvas />}
+      <main className="app__canvas" aria-label="타임라인 캔버스 영역">
+        {rendered === 'pixi' && (
+          <TimelineCanvas viewportManagerRef={viewportManagerRef} />
+        )}
         {rendered === 'three' && (
           <Suspense
             fallback={
@@ -83,7 +91,7 @@ function TimelineApp() {
             전환 중...
           </div>
         )}
-      </div>
+      </main>
       <EventDetailPanel />
     </div>
   );

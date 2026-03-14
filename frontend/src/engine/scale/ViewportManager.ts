@@ -107,6 +107,24 @@ export class ViewportManager {
     this.notifyChange();
   }
 
+  /**
+   * 특정 연도를 중앙에 놓고 현재 범위를 유지한다.
+   * 연도 직접 입력 이동에 사용한다.
+   */
+  jumpToYear(year: number): void {
+    const halfRange = (this.viewport.toYear - this.viewport.fromYear) / 2;
+    const clampedYear = Math.max(MIN_YEAR, Math.min(MAX_YEAR, year));
+    let newFrom = clampedYear - halfRange;
+    let newTo = clampedYear + halfRange;
+    // 경계 초과 보정
+    if (newFrom < MIN_YEAR) { newTo += (MIN_YEAR - newFrom); newFrom = MIN_YEAR; }
+    if (newTo > MAX_YEAR)   { newFrom -= (newTo - MAX_YEAR); newTo = MAX_YEAR; }
+    this.viewport.fromYear = Math.max(MIN_YEAR, newFrom);
+    this.viewport.toYear   = Math.min(MAX_YEAR, newTo);
+    this.recalculate();
+    this.notifyChange();
+  }
+
   resize(width: number, height: number): void {
     this.viewport.width = width;
     this.viewport.height = height;

@@ -41,28 +41,6 @@ export default function ZoomControls({ viewportManagerRef }: ZoomControlsProps) 
   const internalVmRef = useRef<ViewportManager | null>(null);
   const vmRef = viewportManagerRef ?? internalVmRef;
 
-  const handleZoomIn = () => {
-    const newRange = range / 2;
-    const half = newRange / 2;
-    setViewport({
-      fromYear: centerYear - half,
-      toYear: centerYear + half,
-      centerYear,
-    });
-    announce(`확대: ${zoomConfig.nameKo} 단위 보기`);
-  };
-
-  const handleZoomOut = () => {
-    const newRange = range * 2;
-    const half = newRange / 2;
-    setViewport({
-      fromYear: centerYear - half,
-      toYear: centerYear + half,
-      centerYear,
-    });
-    announce(`축소: ${getZoomLevelForRange(newRange).nameKo} 단위 보기`);
-  };
-
   const handlePreset = (preset: (typeof PRESET_RANGES)[number]) => {
     const center = (preset.fromYear + preset.toYear) / 2;
     const presetRange = preset.toYear - preset.fromYear;
@@ -117,38 +95,20 @@ export default function ZoomControls({ viewportManagerRef }: ZoomControlsProps) 
         ))}
       </div>
 
-      {/* 줌 버튼 */}
-      <div className="zoom-controls__buttons" role="group" aria-label="확대/축소">
-        <button
-          className="zoom-controls__btn"
-          onClick={handleZoomIn}
-          aria-label="확대 (단축키: + 또는 위 방향키)"
-          title="확대 (+, ↑)"
-        >
-          +
-        </button>
-        <button
-          className="zoom-controls__btn"
-          onClick={handleZoomOut}
-          aria-label="축소 (단축키: - 또는 아래 방향키)"
-          title="축소 (-, ↓)"
-        >
-          −
-        </button>
-        <button
-          className="zoom-controls__btn zoom-controls__btn--reset"
-          onClick={() => {
-            handlePreset(INITIAL_VIEWPORT);
-            setFilters({});
-            setSearchQuery('');
-            announce('타임라인이 초기화되었습니다. 현대 뷰로 돌아갑니다.');
-          }}
-          aria-label="초기화: 현대 뷰로 리셋"
-          title="뷰포트, 필터, 검색 초기화"
-        >
-          ↺
-        </button>
-      </div>
+      {/* 초기화 버튼 */}
+      <button
+        className="zoom-controls__btn zoom-controls__btn--reset"
+        onClick={() => {
+          handlePreset(INITIAL_VIEWPORT);
+          setFilters({});
+          setSearchQuery('');
+          announce('타임라인이 초기화되었습니다. 현대 뷰로 돌아갑니다.');
+        }}
+        aria-label="초기화: 현대 뷰로 리셋"
+        title="뷰포트, 필터, 검색 초기화"
+      >
+        ↺
+      </button>
 
       {/* 키보드 단축키 힌트 (시각 사용자용) */}
       <div className="zoom-controls__kbd-hint" aria-hidden="true">

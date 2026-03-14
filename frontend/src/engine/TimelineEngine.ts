@@ -32,6 +32,8 @@ export class TimelineEngine {
   private hoveredNodeId: number | null = null;
   private selectedNodeId: number | null = null;
   private initialized = false;
+  private scrollY = 0;
+  private maxScrollY = 0;
 
   // Public callbacks
   onEventClick: ((event: TimelineEvent) => void) | null = null;
@@ -82,8 +84,12 @@ export class TimelineEngine {
       this.onViewportChange?.(vp);
     });
 
-    // Create pan/zoom handler
+    // Create pan handler
     this.panZoomHandler = new PanZoomHandler(this.app.canvas as HTMLElement, this.viewportManager);
+    this.panZoomHandler.onVerticalScroll = (deltaY: number) => {
+      this.scrollY = Math.max(0, Math.min(this.maxScrollY, this.scrollY + deltaY));
+      this.applyScrollY();
+    };
     this.panZoomHandler.attach();
 
     // Set up interaction events
@@ -193,11 +199,25 @@ export class TimelineEngine {
 
     // 4. 이벤트 노드
     this.eventNodesLayer.update(this.visibleNodes);
+
+    // 5. 세로 스크롤 범위 계산 및 적용
+    const totalHeight = this.categoryLaneLayer.getTotalHeight();
+    this.maxScrollY = Math.max(0, totalHeight - vp.height);
+    this.scrollY = Math.min(this.scrollY, this.maxScrollY);
+    this.applyScrollY();
+  }
+
+  /** 세로 스크롤 오프셋 적용 — 시간축은 고정, 나머지 레이어만 이동 */
+  private applyScrollY(): void {
+    this.categoryLaneLayer.container.y = -this.scrollY;
+    this.eventNodesLayer.container.y = -this.scrollY;
+    this.selectionOverlay.container.y = -this.scrollY;
+    // timeAxisLayer는 y=0 고정 (상단 sticky)
   }
 
   private onPointerMove(e: FederatedPointerEvent): void {
     const pos = e.global;
-    const hitNode = this.findNodeAt(pos.x, pos.y);
+    const hitNode = this.findNodeAt(pos.x, pos.y + this.scrollY);
 
     if (hitNode) {
       if (this.hoveredNodeId !== hitNode.id) {
@@ -226,7 +246,7 @@ export class TimelineEngine {
 
   private onPointerDown(e: FederatedPointerEvent): void {
     const pos = e.global;
-    const hitNode = this.findNodeAt(pos.x, pos.y);
+    const hitNode = this.findNodeAt(pos.x, pos.y + this.scrollY);
 
     if (hitNode) {
       this.selectedNodeId = hitNode.id;

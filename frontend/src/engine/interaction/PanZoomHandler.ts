@@ -12,6 +12,9 @@ export class PanZoomHandler {
   private element: HTMLElement;
   private viewportManager: ViewportManager;
 
+  /** 세로 스크롤 콜백 (deltaY 픽셀) */
+  onVerticalScroll: ((deltaY: number) => void) | null = null;
+
   private isDragging = false;
   private lastX = 0;
   private velocity = 0;
@@ -65,14 +68,22 @@ export class PanZoomHandler {
     this.stopInertia();
   }
 
-  /** 휠 = 좌우 슬라이드 (줌 없음) */
+  /** 휠: deltaX → 가로 팬(시간 이동), deltaY → 세로 스크롤(카테고리 스크롤) */
   private onWheel(e: WheelEvent): void {
     e.preventDefault();
     this.stopInertia();
 
-    // deltaX가 있으면 수평, 없으면 deltaY를 수평으로 사용
-    const panDelta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-    this.viewportManager.pan(-panDelta);
+    // 가로 스크롤 (deltaX 또는 Shift+deltaY)
+    if (Math.abs(e.deltaX) > 1) {
+      this.viewportManager.pan(-e.deltaX);
+    } else if (e.shiftKey) {
+      this.viewportManager.pan(-e.deltaY);
+    }
+
+    // 세로 스크롤 (deltaY, Shift 미포함)
+    if (!e.shiftKey && Math.abs(e.deltaY) > 0) {
+      this.onVerticalScroll?.(e.deltaY);
+    }
   }
 
   private onMouseDown(e: MouseEvent): void {

@@ -51,6 +51,8 @@ export class TimeAxisLayer {
     // Calculate tick intervals
     const ticks = this.calculateTicks(viewport);
     let labelIdx = 0;
+    let lastLabelX = -Infinity;
+    const MIN_LABEL_GAP = 60; // 라벨 간 최소 픽셀 간격
 
     for (const tick of ticks) {
       const x = yearToScreen(tick.year, viewport);
@@ -59,18 +61,19 @@ export class TimeAxisLayer {
       const tickHeight = tick.major ? MAJOR_TICK_HEIGHT : MINOR_TICK_HEIGHT;
       const tickColor = tick.major ? TICK_COLOR : MINOR_TICK_COLOR;
 
-      // Tick goes upward from axis line (toward top of canvas)
       this.ticksGraphics.moveTo(x, axisY);
       this.ticksGraphics.lineTo(x, axisY - tickHeight);
       this.ticksGraphics.stroke({ width: tick.major ? 1.5 : 0.5, color: tickColor });
 
-      if (tick.major && tick.label) {
+      // 라벨이 이전 라벨과 너무 가까우면 숨김
+      if (tick.major && tick.label && (x - lastLabelX) >= MIN_LABEL_GAP) {
         const text = this.getLabel(labelIdx++);
         text.text = tick.label;
         text.x = x;
         text.y = axisY - MAJOR_TICK_HEIGHT - 4;
         text.anchor.set(0.5, 1);
         text.visible = true;
+        lastLabelX = x;
       }
     }
   }

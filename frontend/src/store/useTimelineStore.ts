@@ -33,10 +33,10 @@ interface TimelineState {
 export const useTimelineStore = create<TimelineState>((set) => ({
   // Viewport
   viewport: {
-    fromYear: -13_800_000_000,
+    fromYear: 1800,
     toYear: 2030,
-    centerYear: 0,
-    zoomLevel: 0,
+    centerYear: 1915,
+    zoomLevel: 8,
     width: 0,
     height: 0,
   },

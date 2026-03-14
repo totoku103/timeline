@@ -21,7 +21,7 @@ const PRESET_RANGES: Array<{ label: string; fromYear: number; toYear: number }> 
   { label: '현대', fromYear: 1800, toYear: 2030 },
 ];
 
-const INITIAL_VIEWPORT = PRESET_RANGES[0]; // 우주 (전체 범위)
+const INITIAL_VIEWPORT = PRESET_RANGES[3]; // 현대 (1800~2030)
 
 export default function ZoomControls() {
   const { viewport, setViewport, setFilters, setSearchQuery } = useTimelineStore();

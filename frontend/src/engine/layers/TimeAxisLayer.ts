@@ -52,7 +52,7 @@ export class TimeAxisLayer {
     const ticks = this.calculateTicks(viewport);
     let labelIdx = 0;
     let lastLabelX = -Infinity;
-    const MIN_LABEL_GAP = 60; // 라벨 간 최소 픽셀 간격
+    const MIN_LABEL_GAP = 40; // 라벨 간 최소 픽셀 간격
 
     for (const tick of ticks) {
       const x = yearToScreen(tick.year, viewport);

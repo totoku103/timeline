@@ -1,17 +1,19 @@
 package com.timeline.api.dto;
 
+import com.timeline.core.domain.Category;
 import com.timeline.core.domain.EventType;
 import com.timeline.core.domain.PrecisionLevel;
 import com.timeline.core.domain.Timeline;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record TimelineResponse(
         Long id,
         String title,
         String description,
-        Long categoryId,
-        String categoryName,
+        List<Long> categoryIds,
+        List<String> categoryNames,
         long eventYear,
         PrecisionLevel precisionLevel,
         Integer eventMonth,
@@ -33,12 +35,18 @@ public record TimelineResponse(
         Integer endDay
 ) {
     public static TimelineResponse from(Timeline domain) {
+        List<Long> categoryIds = domain.categories().stream()
+                .map(Category::id)
+                .toList();
+        List<String> categoryNames = domain.categories().stream()
+                .map(Category::name)
+                .toList();
         return new TimelineResponse(
                 domain.id(),
                 domain.title(),
                 domain.description(),
-                domain.category().id(),
-                domain.category().name(),
+                categoryIds,
+                categoryNames,
                 domain.eventYear(),
                 domain.precisionLevel(),
                 domain.eventMonth(),

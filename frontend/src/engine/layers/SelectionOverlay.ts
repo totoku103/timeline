@@ -67,7 +67,7 @@ export class SelectionOverlay {
     this.titleText.text = event.title;
 
     const yearStr = this.formatYear(event.eventYear);
-    const meta = [yearStr, event.categoryName];
+    const meta = [yearStr, event.categoryNames.join(', ')];
     if (event.location) meta.push(event.location);
     this.metaText.text = meta.join(' · ');
 

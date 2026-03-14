@@ -48,3 +48,9 @@ ON CONFLICT (name) DO NOTHING;
 INSERT INTO categories (name, description, created_at, updated_at)
 VALUES ('의학', '의학적 발견, 전염병, 백신, 공중보건 등', NOW(), NOW())
 ON CONFLICT (name) DO NOTHING;
+
+-- 기존 단일 category_id 데이터를 timeline_categories 조인 테이블로 마이그레이션
+INSERT INTO timeline_categories (timeline_id, category_id)
+SELECT id, category_id FROM timelines
+WHERE category_id IS NOT NULL
+ON CONFLICT DO NOTHING;

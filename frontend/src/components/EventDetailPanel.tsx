@@ -82,7 +82,7 @@ export default function EventDetailPanel() {
             </div>
             <div className="event-detail-panel__meta-item">
               <span className="event-detail-panel__meta-label">카테고리</span>
-              <span className="event-detail-panel__meta-value">{event.categoryName}</span>
+              <span className="event-detail-panel__meta-value">{event.categoryNames.join(', ')}</span>
             </div>
             <div className="event-detail-panel__meta-item">
               <span className="event-detail-panel__meta-label">정밀도</span>

@@ -19,8 +19,8 @@ export interface TimelineEvent {
   id: number;
   title: string;
   description: string;
-  categoryId: number;
-  categoryName: string;
+  categoryIds: number[];
+  categoryNames: string[];
   eventYear: number;
   precisionLevel: PrecisionLevel;
   eventMonth: number | null;
@@ -45,7 +45,7 @@ export interface TimelineEvent {
 export interface TimelineRequest {
   title: string;
   description?: string;
-  categoryId: number;
+  categoryIds: number[];
   eventYear: number;
   precisionLevel: PrecisionLevel;
   eventMonth?: number;

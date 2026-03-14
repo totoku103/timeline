@@ -2,6 +2,8 @@ package com.timeline.core.domain;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class TimelineTest {
@@ -11,7 +13,7 @@ class TimelineTest {
                 1L,
                 "Test Title",
                 "Test description",
-                new Category(1L, "History", null, null, null, null, null),
+                List.of(new Category(1L, "History", null, null, null, null, null)),
                 2000L,
                 PrecisionLevel.YEAR,
                 null, null, 0,
@@ -33,7 +35,7 @@ class TimelineTest {
         assertThrows(IllegalArgumentException.class, () ->
                 new Timeline(
                         null, null, null,
-                        new Category(1L, "History", null, null, null, null, null),
+                        List.of(new Category(1L, "History", null, null, null, null, null)),
                         2000L, PrecisionLevel.YEAR,
                         null, null, 0,
                         null, null, null, null, null, null,
@@ -48,7 +50,7 @@ class TimelineTest {
         assertThrows(IllegalArgumentException.class, () ->
                 new Timeline(
                         null, "   ", null,
-                        new Category(1L, "History", null, null, null, null, null),
+                        List.of(new Category(1L, "History", null, null, null, null, null)),
                         2000L, PrecisionLevel.YEAR,
                         null, null, 0,
                         null, null, null, null, null, null,
@@ -63,7 +65,7 @@ class TimelineTest {
         assertThrows(IllegalArgumentException.class, () ->
                 new Timeline(
                         null, "", null,
-                        new Category(1L, "History", null, null, null, null, null),
+                        List.of(new Category(1L, "History", null, null, null, null, null)),
                         2000L, PrecisionLevel.YEAR,
                         null, null, 0,
                         null, null, null, null, null, null,
@@ -78,7 +80,7 @@ class TimelineTest {
         assertThrows(IllegalArgumentException.class, () ->
                 new Timeline(
                         null, "Valid Title", null,
-                        new Category(1L, "History", null, null, null, null, null),
+                        List.of(new Category(1L, "History", null, null, null, null, null)),
                         2000L, null,
                         null, null, 0,
                         null, null, null, null, null, null,

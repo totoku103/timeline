@@ -12,9 +12,9 @@ public interface TimelineService {
 
     Optional<Timeline> findById(Long id);
 
-    Timeline create(Timeline timeline, Long categoryId);
+    Timeline create(Timeline timeline, List<Long> categoryIds);
 
-    Timeline update(Long id, Timeline timeline, Long categoryId);
+    Timeline update(Long id, Timeline timeline, List<Long> categoryIds);
 
     void delete(Long id);
 

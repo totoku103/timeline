@@ -34,15 +34,17 @@ export function transformNodes(
     categoryRowMap.set(categories[i].id, i);
   }
 
-  // Group events by categoryId (skip events whose category is unknown)
+  // Group events by categoryId (one event can appear in multiple category rows)
   const eventsByCategory = new Map<number, TimelineEvent[]>();
   for (const event of events) {
-    if (!categoryRowMap.has(event.categoryId)) continue;
-    const group = eventsByCategory.get(event.categoryId);
-    if (group) {
-      group.push(event);
-    } else {
-      eventsByCategory.set(event.categoryId, [event]);
+    for (const catId of event.categoryIds) {
+      if (!categoryRowMap.has(catId)) continue;
+      const group = eventsByCategory.get(catId);
+      if (group) {
+        group.push(event);
+      } else {
+        eventsByCategory.set(catId, [event]);
+      }
     }
   }
 

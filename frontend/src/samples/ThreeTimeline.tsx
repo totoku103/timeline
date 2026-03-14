@@ -111,21 +111,21 @@ const stub = {
 } as const;
 
 const DEMO_EVENTS: TimelineEvent[] = [
-  { id: 1, title: 'Big Bang', description: 'The universe begins in an unimaginably hot, dense singularity', categoryId: 1, categoryName: 'Cosmology', eventYear: -13_800_000_000, precisionLevel: 'BILLION_YEARS', eventMonth: null, eventDay: null, sortOrder: 1, uncertaintyYears: 200_000_000, location: null, ...stub },
-  { id: 2, title: 'First Stars Ignite', description: 'Hydrogen clouds collapse and the first stars blaze to life', categoryId: 1, categoryName: 'Cosmology', eventYear: -13_200_000_000, precisionLevel: 'BILLION_YEARS', eventMonth: null, eventDay: null, sortOrder: 2, uncertaintyYears: 500_000_000, location: null, ...stub },
-  { id: 3, title: 'Solar System Forms', description: 'Our sun and planets coalesce from a swirling nebula', categoryId: 1, categoryName: 'Cosmology', eventYear: -4_600_000_000, precisionLevel: 'BILLION_YEARS', eventMonth: null, eventDay: null, sortOrder: 3, uncertaintyYears: 100_000_000, location: null, ...stub },
-  { id: 4, title: 'First Life on Earth', description: 'Single-celled organisms emerge in primordial oceans', categoryId: 2, categoryName: 'Biology', eventYear: -3_800_000_000, precisionLevel: 'BILLION_YEARS', eventMonth: null, eventDay: null, sortOrder: 4, uncertaintyYears: 200_000_000, location: 'Earth', ...stub },
-  { id: 5, title: 'Cambrian Explosion', description: 'An extraordinary burst of complex multicellular life', categoryId: 2, categoryName: 'Biology', eventYear: -538_000_000, precisionLevel: 'TEN_MILLION_YEARS', eventMonth: null, eventDay: null, sortOrder: 5, uncertaintyYears: 20_000_000, location: 'Earth', ...stub },
-  { id: 6, title: 'Dinosaur Extinction', description: 'A cataclysmic asteroid impact ends 165 million years of dominance', categoryId: 2, categoryName: 'Biology', eventYear: -66_000_000, precisionLevel: 'MILLION_YEARS', eventMonth: null, eventDay: null, sortOrder: 6, uncertaintyYears: 1_000_000, location: 'Chicxulub, Mexico', ...stub },
-  { id: 7, title: 'First Humans', description: 'Homo sapiens appear on the African plains', categoryId: 3, categoryName: 'Humanity', eventYear: -300_000, precisionLevel: 'HUNDRED_THOUSAND_YEARS', eventMonth: null, eventDay: null, sortOrder: 7, uncertaintyYears: 50_000, location: 'Africa', ...stub },
-  { id: 8, title: 'Dawn of Agriculture', description: 'The Neolithic Revolution transforms human society', categoryId: 3, categoryName: 'Humanity', eventYear: -10_000, precisionLevel: 'MILLENNIUM', eventMonth: null, eventDay: null, sortOrder: 8, uncertaintyYears: 2_000, location: 'Fertile Crescent', ...stub },
-  { id: 9, title: 'Rise of Ancient Egypt', description: 'One of history\u2019s greatest civilizations takes shape along the Nile', categoryId: 4, categoryName: 'Civilisation', eventYear: -3_100, precisionLevel: 'CENTURY', eventMonth: null, eventDay: null, sortOrder: 9, uncertaintyYears: 100, location: 'Egypt', ...stub },
-  { id: 10, title: 'Roman Empire', description: 'Augustus becomes the first Roman Emperor', categoryId: 4, categoryName: 'Civilisation', eventYear: -27, precisionLevel: 'YEAR', eventMonth: 1, eventDay: 16, sortOrder: 10, uncertaintyYears: null, location: 'Rome', ...stub },
-  { id: 11, title: 'Industrial Revolution', description: 'Steam and steel reshape civilisation', categoryId: 5, categoryName: 'Technology', eventYear: 1760, precisionLevel: 'DECADE', eventMonth: null, eventDay: null, sortOrder: 11, uncertaintyYears: 10, location: 'England', ...stub },
-  { id: 12, title: 'World War I', description: 'The Great War engulfs Europe', categoryId: 6, categoryName: 'Conflict', eventYear: 1914, precisionLevel: 'YEAR', eventMonth: 7, eventDay: 28, sortOrder: 12, uncertaintyYears: null, location: 'Europe', ...stub },
-  { id: 13, title: 'Moon Landing', description: 'Humanity sets foot on another world for the first time', categoryId: 5, categoryName: 'Technology', eventYear: 1969, precisionLevel: 'DAY', eventMonth: 7, eventDay: 20, sortOrder: 13, uncertaintyYears: null, location: 'Sea of Tranquility, Moon', ...stub },
-  { id: 14, title: 'World Wide Web', description: 'Tim Berners-Lee connects the world', categoryId: 5, categoryName: 'Technology', eventYear: 1991, precisionLevel: 'YEAR', eventMonth: 8, eventDay: 6, sortOrder: 14, uncertaintyYears: null, location: 'CERN, Switzerland', ...stub },
-  { id: 15, title: 'Present Day', description: 'You are here', categoryId: 7, categoryName: 'Modern', eventYear: 2026, precisionLevel: 'YEAR', eventMonth: 3, eventDay: 14, sortOrder: 15, uncertaintyYears: null, location: 'Earth', ...stub },
+  { id: 1, title: 'Big Bang', description: 'The universe begins in an unimaginably hot, dense singularity', categoryIds: [1], categoryNames: ['Cosmology'], eventYear: -13_800_000_000, precisionLevel: 'BILLION_YEARS', eventMonth: null, eventDay: null, sortOrder: 1, uncertaintyYears: 200_000_000, location: null, ...stub },
+  { id: 2, title: 'First Stars Ignite', description: 'Hydrogen clouds collapse and the first stars blaze to life', categoryIds: [1], categoryNames: ['Cosmology'], eventYear: -13_200_000_000, precisionLevel: 'BILLION_YEARS', eventMonth: null, eventDay: null, sortOrder: 2, uncertaintyYears: 500_000_000, location: null, ...stub },
+  { id: 3, title: 'Solar System Forms', description: 'Our sun and planets coalesce from a swirling nebula', categoryIds: [1], categoryNames: ['Cosmology'], eventYear: -4_600_000_000, precisionLevel: 'BILLION_YEARS', eventMonth: null, eventDay: null, sortOrder: 3, uncertaintyYears: 100_000_000, location: null, ...stub },
+  { id: 4, title: 'First Life on Earth', description: 'Single-celled organisms emerge in primordial oceans', categoryIds: [2], categoryNames: ['Biology'], eventYear: -3_800_000_000, precisionLevel: 'BILLION_YEARS', eventMonth: null, eventDay: null, sortOrder: 4, uncertaintyYears: 200_000_000, location: 'Earth', ...stub },
+  { id: 5, title: 'Cambrian Explosion', description: 'An extraordinary burst of complex multicellular life', categoryIds: [2], categoryNames: ['Biology'], eventYear: -538_000_000, precisionLevel: 'TEN_MILLION_YEARS', eventMonth: null, eventDay: null, sortOrder: 5, uncertaintyYears: 20_000_000, location: 'Earth', ...stub },
+  { id: 6, title: 'Dinosaur Extinction', description: 'A cataclysmic asteroid impact ends 165 million years of dominance', categoryIds: [2], categoryNames: ['Biology'], eventYear: -66_000_000, precisionLevel: 'MILLION_YEARS', eventMonth: null, eventDay: null, sortOrder: 6, uncertaintyYears: 1_000_000, location: 'Chicxulub, Mexico', ...stub },
+  { id: 7, title: 'First Humans', description: 'Homo sapiens appear on the African plains', categoryIds: [3], categoryNames: ['Humanity'], eventYear: -300_000, precisionLevel: 'HUNDRED_THOUSAND_YEARS', eventMonth: null, eventDay: null, sortOrder: 7, uncertaintyYears: 50_000, location: 'Africa', ...stub },
+  { id: 8, title: 'Dawn of Agriculture', description: 'The Neolithic Revolution transforms human society', categoryIds: [3], categoryNames: ['Humanity'], eventYear: -10_000, precisionLevel: 'MILLENNIUM', eventMonth: null, eventDay: null, sortOrder: 8, uncertaintyYears: 2_000, location: 'Fertile Crescent', ...stub },
+  { id: 9, title: 'Rise of Ancient Egypt', description: 'One of history\u2019s greatest civilizations takes shape along the Nile', categoryIds: [4], categoryNames: ['Civilisation'], eventYear: -3_100, precisionLevel: 'CENTURY', eventMonth: null, eventDay: null, sortOrder: 9, uncertaintyYears: 100, location: 'Egypt', ...stub },
+  { id: 10, title: 'Roman Empire', description: 'Augustus becomes the first Roman Emperor', categoryIds: [4], categoryNames: ['Civilisation'], eventYear: -27, precisionLevel: 'YEAR', eventMonth: 1, eventDay: 16, sortOrder: 10, uncertaintyYears: null, location: 'Rome', ...stub },
+  { id: 11, title: 'Industrial Revolution', description: 'Steam and steel reshape civilisation', categoryIds: [5], categoryNames: ['Technology'], eventYear: 1760, precisionLevel: 'DECADE', eventMonth: null, eventDay: null, sortOrder: 11, uncertaintyYears: 10, location: 'England', ...stub },
+  { id: 12, title: 'World War I', description: 'The Great War engulfs Europe', categoryIds: [6], categoryNames: ['Conflict'], eventYear: 1914, precisionLevel: 'YEAR', eventMonth: 7, eventDay: 28, sortOrder: 12, uncertaintyYears: null, location: 'Europe', ...stub },
+  { id: 13, title: 'Moon Landing', description: 'Humanity sets foot on another world for the first time', categoryIds: [5], categoryNames: ['Technology'], eventYear: 1969, precisionLevel: 'DAY', eventMonth: 7, eventDay: 20, sortOrder: 13, uncertaintyYears: null, location: 'Sea of Tranquility, Moon', ...stub },
+  { id: 14, title: 'World Wide Web', description: 'Tim Berners-Lee connects the world', categoryIds: [5], categoryNames: ['Technology'], eventYear: 1991, precisionLevel: 'YEAR', eventMonth: 8, eventDay: 6, sortOrder: 14, uncertaintyYears: null, location: 'CERN, Switzerland', ...stub },
+  { id: 15, title: 'Present Day', description: 'You are here', categoryIds: [7], categoryNames: ['Modern'], eventYear: 2026, precisionLevel: 'YEAR', eventMonth: 3, eventDay: 14, sortOrder: 15, uncertaintyYears: null, location: 'Earth', ...stub },
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -149,7 +149,7 @@ function buildPositionedEvents(events: TimelineEvent[]): PositionedEvent[] {
     return {
       event: evt,
       pos: new THREE.Vector3(x, y, z),
-      color: categoryColor(evt.categoryId),
+      color: categoryColor(evt.categoryIds[0]),
       radius: nodeRadius(evt.precisionLevel),
     };
   });
@@ -435,7 +435,7 @@ function LightTrails({ positioned }: { positioned: PositionedEvent[] }) {
   const trails = useMemo(() => {
     const byCategory: Record<number, PositionedEvent[]> = {};
     for (const pe of positioned) {
-      (byCategory[pe.event.categoryId] ??= []).push(pe);
+      (byCategory[pe.event.categoryIds[0]] ??= []).push(pe);
     }
     const result: { points: THREE.Vector3[]; color: string }[] = [];
     for (const group of Object.values(byCategory)) {

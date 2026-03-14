@@ -26,37 +26,42 @@ public class TimelineServiceImpl implements TimelineService {
 
     @Override
     public List<Timeline> findAll() {
-        return timelineRepository.findAll()
+        return timelineRepository.findAllWithCategories()
                 .stream()
                 .map(TimelineEntity::toDomain)
+                .distinct()
                 .toList();
     }
 
     @Override
     public Optional<Timeline> findById(Long id) {
-        return timelineRepository.findById(id)
+        return timelineRepository.findByIdWithCategories(id)
                 .map(TimelineEntity::toDomain);
     }
 
     @Override
     @Transactional
-    public Timeline create(Timeline timeline, Long categoryId) {
-        CategoryEntity categoryEntity = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new NoSuchElementException("Category not found: " + categoryId));
-        TimelineEntity entity = TimelineEntity.fromDomain(timeline, categoryEntity);
+    public Timeline create(Timeline timeline, List<Long> categoryIds) {
+        List<CategoryEntity> categoryEntities = categoryIds.stream()
+                .map(id -> categoryRepository.findById(id)
+                        .orElseThrow(() -> new NoSuchElementException("Category not found: " + id)))
+                .toList();
+        TimelineEntity entity = TimelineEntity.fromDomain(timeline, categoryEntities);
         return timelineRepository.save(entity).toDomain();
     }
 
     @Override
     @Transactional
-    public Timeline update(Long id, Timeline timeline, Long categoryId) {
+    public Timeline update(Long id, Timeline timeline, List<Long> categoryIds) {
         TimelineEntity entity = timelineRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Timeline not found: " + id));
-        CategoryEntity categoryEntity = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new NoSuchElementException("Category not found: " + categoryId));
+        List<CategoryEntity> categoryEntities = categoryIds.stream()
+                .map(cid -> categoryRepository.findById(cid)
+                        .orElseThrow(() -> new NoSuchElementException("Category not found: " + cid)))
+                .toList();
         entity.setTitle(timeline.title());
         entity.setDescription(timeline.description());
-        entity.setCategory(categoryEntity);
+        entity.setCategories(new java.util.ArrayList<>(categoryEntities));
         entity.setEventYear(timeline.eventYear());
         entity.setPrecisionLevel(timeline.precisionLevel());
         entity.setEventMonth(timeline.eventMonth());
@@ -74,7 +79,7 @@ public class TimelineServiceImpl implements TimelineService {
     @Override
     public List<Timeline> search(Long fromYear, Long toYear, Long categoryId, PrecisionLevel minPrecisionLevel) {
         List<TimelineEntity> entities = timelineRepository.search(fromYear, toYear, categoryId);
-        Stream<Timeline> stream = entities.stream().map(TimelineEntity::toDomain);
+        Stream<Timeline> stream = entities.stream().map(TimelineEntity::toDomain).distinct();
         if (minPrecisionLevel != null) {
             stream = stream.filter(t -> t.precisionLevel().getCode() >= minPrecisionLevel.getCode());
         }

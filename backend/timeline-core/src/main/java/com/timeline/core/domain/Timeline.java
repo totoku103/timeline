@@ -1,12 +1,13 @@
 package com.timeline.core.domain;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record Timeline(
         Long id,
         String title,
         String description,
-        Category category,
+        List<Category> categories,
         long eventYear,
         PrecisionLevel precisionLevel,
         Integer eventMonth,
@@ -36,6 +37,9 @@ public record Timeline(
         }
         if (eventType == null) {
             eventType = EventType.POINT;
+        }
+        if (categories == null) {
+            categories = List.of();
         }
     }
 }

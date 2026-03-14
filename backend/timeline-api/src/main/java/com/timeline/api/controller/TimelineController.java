@@ -75,7 +75,7 @@ public class TimelineController {
                 request.endMonth(),
                 request.endDay()
         );
-        TimelineResponse response = TimelineResponse.from(timelineService.create(domain, request.categoryId()));
+        TimelineResponse response = TimelineResponse.from(timelineService.create(domain, request.categoryIds()));
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
@@ -105,7 +105,7 @@ public class TimelineController {
                 request.endMonth(),
                 request.endDay()
         );
-        TimelineResponse response = TimelineResponse.from(timelineService.update(id, domain, request.categoryId()));
+        TimelineResponse response = TimelineResponse.from(timelineService.update(id, domain, request.categoryIds()));
         return ResponseEntity.ok(response);
     }
 

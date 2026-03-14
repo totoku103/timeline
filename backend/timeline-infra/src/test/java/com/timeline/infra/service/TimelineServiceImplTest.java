@@ -14,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -49,7 +50,7 @@ class TimelineServiceImplTest {
         timelineEntity = TimelineEntity.builder()
                 .title("Test Event")
                 .description("A test event")
-                .category(categoryEntity)
+                .categories(new ArrayList<>(List.of(categoryEntity)))
                 .eventYear(2000L)
                 .precisionLevel(PrecisionLevel.YEAR)
                 .build();
@@ -58,7 +59,7 @@ class TimelineServiceImplTest {
                 null,
                 "Test Event",
                 "A test event",
-                new Category(null, "History", "Historical events", null, null, null, null),
+                List.of(new Category(null, "History", "Historical events", null, null, null, null)),
                 2000L,
                 PrecisionLevel.YEAR,
                 null, null, 0,
@@ -70,44 +71,44 @@ class TimelineServiceImplTest {
 
     @Test
     void findAll_정상_동작() {
-        when(timelineRepository.findAll()).thenReturn(List.of(timelineEntity));
+        when(timelineRepository.findAllWithCategories()).thenReturn(List.of(timelineEntity));
 
         List<Timeline> result = timelineService.findAll();
 
         assertEquals(1, result.size());
         assertEquals("Test Event", result.get(0).title());
-        verify(timelineRepository).findAll();
+        verify(timelineRepository).findAllWithCategories();
     }
 
     @Test
     void findAll_빈_목록_반환() {
-        when(timelineRepository.findAll()).thenReturn(List.of());
+        when(timelineRepository.findAllWithCategories()).thenReturn(List.of());
 
         List<Timeline> result = timelineService.findAll();
 
         assertTrue(result.isEmpty());
-        verify(timelineRepository).findAll();
+        verify(timelineRepository).findAllWithCategories();
     }
 
     @Test
     void findById_존재하는_경우_반환() {
-        when(timelineRepository.findById(1L)).thenReturn(Optional.of(timelineEntity));
+        when(timelineRepository.findByIdWithCategories(1L)).thenReturn(Optional.of(timelineEntity));
 
         Optional<Timeline> result = timelineService.findById(1L);
 
         assertTrue(result.isPresent());
         assertEquals("Test Event", result.get().title());
-        verify(timelineRepository).findById(1L);
+        verify(timelineRepository).findByIdWithCategories(1L);
     }
 
     @Test
     void findById_존재하지_않는_경우_빈_Optional_반환() {
-        when(timelineRepository.findById(99L)).thenReturn(Optional.empty());
+        when(timelineRepository.findByIdWithCategories(99L)).thenReturn(Optional.empty());
 
         Optional<Timeline> result = timelineService.findById(99L);
 
         assertTrue(result.isEmpty());
-        verify(timelineRepository).findById(99L);
+        verify(timelineRepository).findByIdWithCategories(99L);
     }
 
     @Test
@@ -115,7 +116,7 @@ class TimelineServiceImplTest {
         when(categoryRepository.findById(1L)).thenReturn(Optional.of(categoryEntity));
         when(timelineRepository.save(any(TimelineEntity.class))).thenReturn(timelineEntity);
 
-        Timeline result = timelineService.create(timelineDomain, 1L);
+        Timeline result = timelineService.create(timelineDomain, List.of(1L));
 
         assertNotNull(result);
         assertEquals("Test Event", result.title());
@@ -128,7 +129,7 @@ class TimelineServiceImplTest {
         when(categoryRepository.findById(99L)).thenReturn(Optional.empty());
 
         assertThrows(NoSuchElementException.class, () ->
-                timelineService.create(timelineDomain, 99L)
+                timelineService.create(timelineDomain, List.of(99L))
         );
         verify(categoryRepository).findById(99L);
         verify(timelineRepository, never()).save(any());
@@ -140,7 +141,7 @@ class TimelineServiceImplTest {
         when(categoryRepository.findById(1L)).thenReturn(Optional.of(categoryEntity));
         when(timelineRepository.save(any(TimelineEntity.class))).thenReturn(timelineEntity);
 
-        Timeline result = timelineService.update(1L, timelineDomain, 1L);
+        Timeline result = timelineService.update(1L, timelineDomain, List.of(1L));
 
         assertNotNull(result);
         assertEquals("Test Event", result.title());
@@ -154,7 +155,7 @@ class TimelineServiceImplTest {
         when(timelineRepository.findById(99L)).thenReturn(Optional.empty());
 
         assertThrows(NoSuchElementException.class, () ->
-                timelineService.update(99L, timelineDomain, 1L)
+                timelineService.update(99L, timelineDomain, List.of(1L))
         );
         verify(timelineRepository).findById(99L);
         verify(categoryRepository, never()).findById(anyLong());
@@ -167,7 +168,7 @@ class TimelineServiceImplTest {
         when(categoryRepository.findById(99L)).thenReturn(Optional.empty());
 
         assertThrows(NoSuchElementException.class, () ->
-                timelineService.update(1L, timelineDomain, 99L)
+                timelineService.update(1L, timelineDomain, List.of(99L))
         );
         verify(timelineRepository).findById(1L);
         verify(categoryRepository).findById(99L);
@@ -212,14 +213,14 @@ class TimelineServiceImplTest {
         TimelineEntity entity1 = TimelineEntity.builder()
                 .title("Event 1990")
                 .description("1990 event")
-                .category(categoryEntity)
+                .categories(new ArrayList<>(List.of(categoryEntity)))
                 .eventYear(1990L)
                 .precisionLevel(PrecisionLevel.YEAR)
                 .build();
         TimelineEntity entity2 = TimelineEntity.builder()
                 .title("Event 2000")
                 .description("2000 event")
-                .category(categoryEntity)
+                .categories(new ArrayList<>(List.of(categoryEntity)))
                 .eventYear(2000L)
                 .precisionLevel(PrecisionLevel.YEAR)
                 .build();
@@ -249,21 +250,21 @@ class TimelineServiceImplTest {
         TimelineEntity yearEntity = TimelineEntity.builder()
                 .title("Year Event")
                 .description("year precision")
-                .category(categoryEntity)
+                .categories(new ArrayList<>(List.of(categoryEntity)))
                 .eventYear(2000L)
                 .precisionLevel(PrecisionLevel.YEAR)
                 .build();
         TimelineEntity monthEntity = TimelineEntity.builder()
                 .title("Month Event")
                 .description("month precision")
-                .category(categoryEntity)
+                .categories(new ArrayList<>(List.of(categoryEntity)))
                 .eventYear(2000L)
                 .precisionLevel(PrecisionLevel.MONTH)
                 .build();
         TimelineEntity centuryEntity = TimelineEntity.builder()
                 .title("Century Event")
                 .description("century precision")
-                .category(categoryEntity)
+                .categories(new ArrayList<>(List.of(categoryEntity)))
                 .eventYear(2000L)
                 .precisionLevel(PrecisionLevel.CENTURY)
                 .build();
@@ -286,7 +287,7 @@ class TimelineServiceImplTest {
         TimelineEntity entity = TimelineEntity.builder()
                 .title("Filtered Event")
                 .description("filtered")
-                .category(categoryEntity)
+                .categories(new ArrayList<>(List.of(categoryEntity)))
                 .eventYear(2000L)
                 .precisionLevel(PrecisionLevel.MONTH)
                 .build();

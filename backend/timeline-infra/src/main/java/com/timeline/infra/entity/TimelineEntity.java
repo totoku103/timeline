@@ -8,6 +8,8 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(
@@ -30,9 +32,14 @@ public class TimelineEntity extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id", nullable = false)
-    private CategoryEntity category;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "timeline_categories",
+            joinColumns = @JoinColumn(name = "timeline_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    @Builder.Default
+    private List<CategoryEntity> categories = new ArrayList<>();
 
     @Column(name = "event_year", nullable = false)
     private long eventYear;
@@ -88,7 +95,7 @@ public class TimelineEntity extends BaseEntity {
                 getId(),
                 title,
                 description,
-                category.toDomain(),
+                categories.stream().map(CategoryEntity::toDomain).distinct().toList(),
                 eventYear,
                 precisionLevel,
                 eventMonth,
@@ -111,11 +118,10 @@ public class TimelineEntity extends BaseEntity {
         );
     }
 
-    public static TimelineEntity fromDomain(Timeline domain, CategoryEntity categoryEntity) {
-        return TimelineEntity.builder()
+    public static TimelineEntity fromDomain(Timeline domain, List<CategoryEntity> categoryEntities) {
+        TimelineEntity entity = TimelineEntity.builder()
                 .title(domain.title())
                 .description(domain.description())
-                .category(categoryEntity)
                 .eventYear(domain.eventYear())
                 .precisionLevel(domain.precisionLevel())
                 .eventMonth(domain.eventMonth())
@@ -132,5 +138,7 @@ public class TimelineEntity extends BaseEntity {
                 .endMonth(domain.endMonth())
                 .endDay(domain.endDay())
                 .build();
+        entity.setCategories(new ArrayList<>(categoryEntities));
+        return entity;
     }
 }

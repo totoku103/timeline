@@ -65,11 +65,8 @@ export default function ZoomControls({ viewportManagerRef }: ZoomControlsProps) 
         className="zoom-controls__info"
         aria-live="polite"
         aria-atomic="true"
-        aria-label={`현재 보기: ${zoomConfig.nameKo}, ${formatYearShort(fromYear)}부터 ${formatYearShort(toYear)}까지`}
+        aria-label={`현재 보기: ${formatYearShort(fromYear)}부터 ${formatYearShort(toYear)}까지`}
       >
-        <span className="zoom-controls__level-name" aria-hidden="true">
-          {zoomConfig.nameKo}
-        </span>
         <span className="zoom-controls__range" aria-hidden="true">
           {formatYearShort(fromYear)} ~ {formatYearShort(toYear)}
         </span>

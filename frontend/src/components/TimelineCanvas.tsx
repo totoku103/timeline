@@ -69,7 +69,7 @@ export default function TimelineCanvas({ viewportManagerRef }: TimelineCanvasPro
       const zoomConfig = getZoomLevelForRange(range);
       announce(
         `타임라인 위치: ${formatYearShort(viewport.fromYear)}부터 ` +
-        `${formatYearShort(viewport.toYear)}까지, ${zoomConfig.nameKo} 단위 보기`
+        `${formatYearShort(viewport.toYear)}까지 보기`
       );
     }, 300);
     return () => {
@@ -130,7 +130,7 @@ export default function TimelineCanvas({ viewportManagerRef }: TimelineCanvasPro
   const zoomConfig = getZoomLevelForRange(range);
   const ariaLabel =
     `인터랙티브 타임라인. 현재 ${formatYearShort(viewport.fromYear)}부터 ` +
-    `${formatYearShort(viewport.toYear)}까지 표시 중, ${zoomConfig.nameKo} 단위. ` +
+    `${formatYearShort(viewport.toYear)}까지 표시 중. ` +
     `방향키로 탐색 가능.`;
 
   return (

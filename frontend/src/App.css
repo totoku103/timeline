@@ -524,6 +524,56 @@
 }
 
 /* =====================
+   Canvas Zoom Buttons (우측 하단 플로팅)
+   ===================== */
+.canvas-zoom {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 6px 10px;
+  backdrop-filter: blur(12px);
+}
+
+.canvas-zoom__label {
+  font-size: 11px;
+  color: var(--accent);
+  font-weight: 600;
+  margin-right: 2px;
+}
+
+.canvas-zoom__btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-primary);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s, background 0.2s, transform 0.1s;
+}
+
+.canvas-zoom__btn:hover {
+  border-color: var(--accent);
+  background: rgba(68, 136, 255, 0.15);
+}
+
+.canvas-zoom__btn:active {
+  transform: scale(0.92);
+}
+
+/* =====================
    접근성 — 포커스 링
    키보드 사용자에게만 표시 (마우스 클릭 시 숨김)
    ===================== */

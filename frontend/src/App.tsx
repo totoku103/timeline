@@ -6,6 +6,7 @@ import ZoomControls from './components/ZoomControls';
 import SearchBar from './components/SearchBar';
 import CategoryFilter from './components/CategoryFilter';
 import ViewModeToggle from './components/ViewModeToggle';
+import CanvasZoomButtons from './components/CanvasZoomButtons';
 import { useTimelineStore } from './store/useTimelineStore';
 import type { ViewportManager } from './engine/scale/ViewportManager';
 import './App.css';
@@ -56,6 +57,7 @@ function TimelineApp() {
         {rendered === 'pixi' && (
           <TimelineCanvas viewportManagerRef={viewportManagerRef} />
         )}
+        {rendered === 'pixi' && <CanvasZoomButtons />}
         {rendered === 'three' && (
           <Suspense
             fallback={

@@ -16,8 +16,8 @@ export async function getTimeline(id: number): Promise<TimelineEvent> {
 
 export async function searchTimelines(params: SearchParams): Promise<TimelineEvent[]> {
   const query = new URLSearchParams();
-  if (params.fromYear !== undefined) query.set('fromYear', String(params.fromYear));
-  if (params.toYear !== undefined) query.set('toYear', String(params.toYear));
+  if (params.fromYear !== undefined) query.set('fromYear', String(Math.round(params.fromYear)));
+  if (params.toYear !== undefined) query.set('toYear', String(Math.round(params.toYear)));
   if (params.categoryId !== undefined) query.set('categoryId', String(params.categoryId));
   if (params.precisionLevel !== undefined) query.set('precisionLevel', params.precisionLevel);
 

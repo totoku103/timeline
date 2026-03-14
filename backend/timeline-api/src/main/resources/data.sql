@@ -49,6 +49,23 @@ INSERT INTO categories (name, description, created_at, updated_at)
 VALUES ('의학', '의학적 발견, 전염병, 백신, 공중보건 등', NOW(), NOW())
 ON CONFLICT (name) DO NOTHING;
 
+-- 국가 기본 데이터
+INSERT INTO countries (name, code) VALUES ('한국', 'KR') ON CONFLICT (name) DO NOTHING;
+INSERT INTO countries (name, code) VALUES ('미국', 'US') ON CONFLICT (name) DO NOTHING;
+INSERT INTO countries (name, code) VALUES ('중국', 'CN') ON CONFLICT (name) DO NOTHING;
+INSERT INTO countries (name, code) VALUES ('일본', 'JP') ON CONFLICT (name) DO NOTHING;
+INSERT INTO countries (name, code) VALUES ('영국', 'GB') ON CONFLICT (name) DO NOTHING;
+INSERT INTO countries (name, code) VALUES ('프랑스', 'FR') ON CONFLICT (name) DO NOTHING;
+INSERT INTO countries (name, code) VALUES ('독일', 'DE') ON CONFLICT (name) DO NOTHING;
+INSERT INTO countries (name, code) VALUES ('러시아', 'RU') ON CONFLICT (name) DO NOTHING;
+INSERT INTO countries (name, code) VALUES ('이탈리아', 'IT') ON CONFLICT (name) DO NOTHING;
+INSERT INTO countries (name, code) VALUES ('인도', 'IN') ON CONFLICT (name) DO NOTHING;
+INSERT INTO countries (name, code) VALUES ('이집트', 'EG') ON CONFLICT (name) DO NOTHING;
+INSERT INTO countries (name, code) VALUES ('그리스', 'GR') ON CONFLICT (name) DO NOTHING;
+INSERT INTO countries (name, code) VALUES ('터키', 'TR') ON CONFLICT (name) DO NOTHING;
+INSERT INTO countries (name, code) VALUES ('스페인', 'ES') ON CONFLICT (name) DO NOTHING;
+INSERT INTO countries (name, code) VALUES ('글로벌', 'GLOBAL') ON CONFLICT (name) DO NOTHING;
+
 -- 기존 단일 category_id 데이터를 timeline_categories 조인 테이블로 마이그레이션
 INSERT INTO timeline_categories (timeline_id, category_id)
 SELECT id, category_id FROM timelines

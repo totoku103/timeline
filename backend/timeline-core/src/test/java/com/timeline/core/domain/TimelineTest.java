@@ -14,6 +14,7 @@ class TimelineTest {
                 "Test Title",
                 "Test description",
                 List.of(new Category(1L, "History", null, null, null, null, null)),
+                null,
                 2000L,
                 PrecisionLevel.YEAR,
                 null, null, 0,
@@ -36,6 +37,7 @@ class TimelineTest {
                 new Timeline(
                         null, null, null,
                         List.of(new Category(1L, "History", null, null, null, null, null)),
+                        null,
                         2000L, PrecisionLevel.YEAR,
                         null, null, 0,
                         null, null, null, null, null, null,
@@ -51,6 +53,7 @@ class TimelineTest {
                 new Timeline(
                         null, "   ", null,
                         List.of(new Category(1L, "History", null, null, null, null, null)),
+                        null,
                         2000L, PrecisionLevel.YEAR,
                         null, null, 0,
                         null, null, null, null, null, null,
@@ -66,6 +69,7 @@ class TimelineTest {
                 new Timeline(
                         null, "", null,
                         List.of(new Category(1L, "History", null, null, null, null, null)),
+                        null,
                         2000L, PrecisionLevel.YEAR,
                         null, null, 0,
                         null, null, null, null, null, null,
@@ -81,6 +85,7 @@ class TimelineTest {
                 new Timeline(
                         null, "Valid Title", null,
                         List.of(new Category(1L, "History", null, null, null, null, null)),
+                        null,
                         2000L, null,
                         null, null, 0,
                         null, null, null, null, null, null,

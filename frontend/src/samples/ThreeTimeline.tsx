@@ -108,6 +108,8 @@ const stub = {
   updatedAt: '',
   createdBy: '',
   updatedBy: '',
+  countryIds: [] as number[],
+  countryNames: [] as string[],
 } as const;
 
 const DEMO_EVENTS: TimelineEvent[] = [

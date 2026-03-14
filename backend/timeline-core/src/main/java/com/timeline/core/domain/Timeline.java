@@ -8,6 +8,7 @@ public record Timeline(
         String title,
         String description,
         List<Category> categories,
+        List<Country> countries,
         long eventYear,
         PrecisionLevel precisionLevel,
         Integer eventMonth,
@@ -40,6 +41,9 @@ public record Timeline(
         }
         if (categories == null) {
             categories = List.of();
+        }
+        if (countries == null) {
+            countries = List.of();
         }
     }
 }

@@ -58,35 +58,6 @@ public class TimelineController {
                 request.title(),
                 request.description(),
                 null,
-                request.eventYear(),
-                request.precisionLevel(),
-                request.eventMonth(),
-                request.eventDay(),
-                request.sortOrder() != null ? request.sortOrder() : 0,
-                request.eventLocalDateTime(),
-                request.eventUtcDateTime(),
-                request.timeZone(),
-                request.uncertaintyYears(),
-                request.location(),
-                request.source(),
-                null, null, null, null,
-                request.eventType() != null ? request.eventType() : EventType.POINT,
-                request.endYear(),
-                request.endMonth(),
-                request.endDay()
-        );
-        TimelineResponse response = TimelineResponse.from(timelineService.create(domain, request.categoryIds()));
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<TimelineResponse> update(
-            @PathVariable Long id,
-            @Valid @RequestBody TimelineRequest request) {
-        Timeline domain = new Timeline(
-                id,
-                request.title(),
-                request.description(),
                 null,
                 request.eventYear(),
                 request.precisionLevel(),
@@ -105,7 +76,40 @@ public class TimelineController {
                 request.endMonth(),
                 request.endDay()
         );
-        TimelineResponse response = TimelineResponse.from(timelineService.update(id, domain, request.categoryIds()));
+        List<Long> countryIds = request.countryIds() != null ? request.countryIds() : List.of();
+        TimelineResponse response = TimelineResponse.from(timelineService.create(domain, request.categoryIds(), countryIds));
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<TimelineResponse> update(
+            @PathVariable Long id,
+            @Valid @RequestBody TimelineRequest request) {
+        Timeline domain = new Timeline(
+                id,
+                request.title(),
+                request.description(),
+                null,
+                null,
+                request.eventYear(),
+                request.precisionLevel(),
+                request.eventMonth(),
+                request.eventDay(),
+                request.sortOrder() != null ? request.sortOrder() : 0,
+                request.eventLocalDateTime(),
+                request.eventUtcDateTime(),
+                request.timeZone(),
+                request.uncertaintyYears(),
+                request.location(),
+                request.source(),
+                null, null, null, null,
+                request.eventType() != null ? request.eventType() : EventType.POINT,
+                request.endYear(),
+                request.endMonth(),
+                request.endDay()
+        );
+        List<Long> countryIds = request.countryIds() != null ? request.countryIds() : List.of();
+        TimelineResponse response = TimelineResponse.from(timelineService.update(id, domain, request.categoryIds(), countryIds));
         return ResponseEntity.ok(response);
     }
 

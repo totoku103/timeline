@@ -41,6 +41,15 @@ public class TimelineEntity extends BaseEntity {
     @Builder.Default
     private List<CategoryEntity> categories = new ArrayList<>();
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "timeline_countries",
+            joinColumns = @JoinColumn(name = "timeline_id"),
+            inverseJoinColumns = @JoinColumn(name = "country_id")
+    )
+    @Builder.Default
+    private List<CountryEntity> countries = new ArrayList<>();
+
     @Column(name = "event_year", nullable = false)
     private long eventYear;
 
@@ -96,6 +105,7 @@ public class TimelineEntity extends BaseEntity {
                 title,
                 description,
                 categories.stream().map(CategoryEntity::toDomain).distinct().toList(),
+                countries.stream().map(CountryEntity::toDomain).distinct().toList(),
                 eventYear,
                 precisionLevel,
                 eventMonth,
@@ -118,7 +128,7 @@ public class TimelineEntity extends BaseEntity {
         );
     }
 
-    public static TimelineEntity fromDomain(Timeline domain, List<CategoryEntity> categoryEntities) {
+    public static TimelineEntity fromDomain(Timeline domain, List<CategoryEntity> categoryEntities, List<CountryEntity> countryEntities) {
         TimelineEntity entity = TimelineEntity.builder()
                 .title(domain.title())
                 .description(domain.description())
@@ -139,6 +149,7 @@ public class TimelineEntity extends BaseEntity {
                 .endDay(domain.endDay())
                 .build();
         entity.setCategories(new ArrayList<>(categoryEntities));
+        entity.setCountries(new ArrayList<>(countryEntities));
         return entity;
     }
 }

@@ -1,6 +1,7 @@
 package com.timeline.api.dto;
 
 import com.timeline.core.domain.Category;
+import com.timeline.core.domain.Country;
 import com.timeline.core.domain.EventType;
 import com.timeline.core.domain.PrecisionLevel;
 import com.timeline.core.domain.Timeline;
@@ -14,6 +15,8 @@ public record TimelineResponse(
         String description,
         List<Long> categoryIds,
         List<String> categoryNames,
+        List<Long> countryIds,
+        List<String> countryNames,
         long eventYear,
         PrecisionLevel precisionLevel,
         Integer eventMonth,
@@ -41,12 +44,20 @@ public record TimelineResponse(
         List<String> categoryNames = domain.categories().stream()
                 .map(Category::name)
                 .toList();
+        List<Long> countryIds = domain.countries().stream()
+                .map(Country::id)
+                .toList();
+        List<String> countryNames = domain.countries().stream()
+                .map(Country::name)
+                .toList();
         return new TimelineResponse(
                 domain.id(),
                 domain.title(),
                 domain.description(),
                 categoryIds,
                 categoryNames,
+                countryIds,
+                countryNames,
                 domain.eventYear(),
                 domain.precisionLevel(),
                 domain.eventMonth(),

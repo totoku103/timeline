@@ -4,8 +4,10 @@ import com.timeline.core.domain.Category;
 import com.timeline.core.domain.PrecisionLevel;
 import com.timeline.core.domain.Timeline;
 import com.timeline.infra.entity.CategoryEntity;
+import com.timeline.infra.entity.CountryEntity;
 import com.timeline.infra.entity.TimelineEntity;
 import com.timeline.infra.repository.CategoryRepository;
+import com.timeline.infra.repository.CountryRepository;
 import com.timeline.infra.repository.TimelineRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,6 +34,9 @@ class TimelineServiceImplTest {
 
     @Mock
     private CategoryRepository categoryRepository;
+
+    @Mock
+    private CountryRepository countryRepository;
 
     @InjectMocks
     private TimelineServiceImpl timelineService;
@@ -60,6 +65,7 @@ class TimelineServiceImplTest {
                 "Test Event",
                 "A test event",
                 List.of(new Category(null, "History", "Historical events", null, null, null, null)),
+                null,
                 2000L,
                 PrecisionLevel.YEAR,
                 null, null, 0,
@@ -116,7 +122,7 @@ class TimelineServiceImplTest {
         when(categoryRepository.findById(1L)).thenReturn(Optional.of(categoryEntity));
         when(timelineRepository.save(any(TimelineEntity.class))).thenReturn(timelineEntity);
 
-        Timeline result = timelineService.create(timelineDomain, List.of(1L));
+        Timeline result = timelineService.create(timelineDomain, List.of(1L), List.of());
 
         assertNotNull(result);
         assertEquals("Test Event", result.title());
@@ -129,7 +135,7 @@ class TimelineServiceImplTest {
         when(categoryRepository.findById(99L)).thenReturn(Optional.empty());
 
         assertThrows(NoSuchElementException.class, () ->
-                timelineService.create(timelineDomain, List.of(99L))
+                timelineService.create(timelineDomain, List.of(99L), List.of())
         );
         verify(categoryRepository).findById(99L);
         verify(timelineRepository, never()).save(any());
@@ -141,7 +147,7 @@ class TimelineServiceImplTest {
         when(categoryRepository.findById(1L)).thenReturn(Optional.of(categoryEntity));
         when(timelineRepository.save(any(TimelineEntity.class))).thenReturn(timelineEntity);
 
-        Timeline result = timelineService.update(1L, timelineDomain, List.of(1L));
+        Timeline result = timelineService.update(1L, timelineDomain, List.of(1L), List.of());
 
         assertNotNull(result);
         assertEquals("Test Event", result.title());
@@ -155,7 +161,7 @@ class TimelineServiceImplTest {
         when(timelineRepository.findById(99L)).thenReturn(Optional.empty());
 
         assertThrows(NoSuchElementException.class, () ->
-                timelineService.update(99L, timelineDomain, List.of(1L))
+                timelineService.update(99L, timelineDomain, List.of(1L), List.of())
         );
         verify(timelineRepository).findById(99L);
         verify(categoryRepository, never()).findById(anyLong());
@@ -168,7 +174,7 @@ class TimelineServiceImplTest {
         when(categoryRepository.findById(99L)).thenReturn(Optional.empty());
 
         assertThrows(NoSuchElementException.class, () ->
-                timelineService.update(1L, timelineDomain, List.of(99L))
+                timelineService.update(1L, timelineDomain, List.of(99L), List.of())
         );
         verify(timelineRepository).findById(1L);
         verify(categoryRepository).findById(99L);

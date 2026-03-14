@@ -29,6 +29,7 @@ export default function TimelineCanvas({ viewportManagerRef }: TimelineCanvasPro
   const { data: events } = useViewportEvents();
   const { data: categories } = useCategories();
   const selectedCategoryIds = useTimelineStore((s) => s.filters.categoryIds);
+  const selectedCountryIds = useTimelineStore((s) => s.filters.countryIds);
   const viewport = useTimelineStore((s) => s.viewport);
 
   const { announce } = useAriaLiveRegion();
@@ -86,11 +87,19 @@ export default function TimelineCanvas({ viewportManagerRef }: TimelineCanvasPro
 
   const filteredEvents = useMemo(() => {
     if (!events) return [];
-    if (!selectedCategoryIds || selectedCategoryIds.length === 0) return events;
-    return events.filter((e) =>
-      e.categoryIds.some((id) => selectedCategoryIds.includes(id))
-    );
-  }, [events, selectedCategoryIds]);
+    let result = events;
+    if (selectedCategoryIds && selectedCategoryIds.length > 0) {
+      result = result.filter((e) =>
+        e.categoryIds.some((id) => selectedCategoryIds.includes(id))
+      );
+    }
+    if (selectedCountryIds && selectedCountryIds.length > 0) {
+      result = result.filter((e) =>
+        e.countryIds.some((id) => selectedCountryIds.includes(id))
+      );
+    }
+    return result;
+  }, [events, selectedCategoryIds, selectedCountryIds]);
 
   useEffect(() => {
     if (ready && engineRef.current) {

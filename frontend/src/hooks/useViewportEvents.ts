@@ -2,6 +2,7 @@ import { useRef, useMemo } from 'react';
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import { searchTimelines } from '../api/timelineApi';
 import { getCategories } from '../api/categoryApi';
+import { getCountries } from '../api/countryApi';
 import { useTimelineStore } from '../store/useTimelineStore';
 import { getZoomLevelForRange } from '../engine/scale/precisionMapping';
 
@@ -68,6 +69,14 @@ export function useCategories() {
   return useQuery({
     queryKey: ['categories'],
     queryFn: getCategories,
+    staleTime: 5 * 60 * 1000,
+  });
+}
+
+export function useCountries() {
+  return useQuery({
+    queryKey: ['countries'],
+    queryFn: getCountries,
     staleTime: 5 * 60 * 1000,
   });
 }

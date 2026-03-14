@@ -13,6 +13,7 @@ public record TimelineRequest(
         @NotBlank String title,
         String description,
         @NotEmpty List<Long> categoryIds,
+        List<Long> countryIds,
         @NotNull Long eventYear,
         @NotNull PrecisionLevel precisionLevel,
         Integer eventMonth,

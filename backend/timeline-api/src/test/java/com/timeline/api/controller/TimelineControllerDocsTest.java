@@ -71,6 +71,7 @@ class TimelineControllerDocsTest {
                 "제2차 세계대전 종전",
                 "1945년 제2차 세계대전이 종전되었습니다.",
                 List.of(sampleCategory),
+                null,
                 1945L,
                 PrecisionLevel.YEAR,
                 8,
@@ -109,6 +110,8 @@ class TimelineControllerDocsTest {
                                 fieldWithPath("[].description").type(JsonFieldType.STRING).optional().description("설명"),
                                 fieldWithPath("[].categoryIds").type(JsonFieldType.ARRAY).description("카테고리 ID 목록"),
                                 fieldWithPath("[].categoryNames").type(JsonFieldType.ARRAY).description("카테고리명 목록"),
+                                fieldWithPath("[].countryIds").type(JsonFieldType.ARRAY).description("국가 ID 목록"),
+                                fieldWithPath("[].countryNames").type(JsonFieldType.ARRAY).description("국가명 목록"),
                                 fieldWithPath("[].eventYear").type(JsonFieldType.NUMBER).description("사건 연도"),
                                 fieldWithPath("[].precisionLevel").type(JsonFieldType.STRING).description("정밀도 레벨 (BILLION_YEARS ~ SECOND)"),
                                 fieldWithPath("[].eventMonth").type(JsonFieldType.NUMBER).optional().description("사건 월"),
@@ -158,6 +161,8 @@ class TimelineControllerDocsTest {
                                 fieldWithPath("[].description").type(JsonFieldType.STRING).optional().description("설명"),
                                 fieldWithPath("[].categoryIds").type(JsonFieldType.ARRAY).description("카테고리 ID 목록"),
                                 fieldWithPath("[].categoryNames").type(JsonFieldType.ARRAY).description("카테고리명 목록"),
+                                fieldWithPath("[].countryIds").type(JsonFieldType.ARRAY).description("국가 ID 목록"),
+                                fieldWithPath("[].countryNames").type(JsonFieldType.ARRAY).description("국가명 목록"),
                                 fieldWithPath("[].eventYear").type(JsonFieldType.NUMBER).description("사건 연도"),
                                 fieldWithPath("[].precisionLevel").type(JsonFieldType.STRING).description("정밀도 레벨"),
                                 fieldWithPath("[].eventMonth").type(JsonFieldType.NUMBER).optional().description("사건 월"),
@@ -200,6 +205,8 @@ class TimelineControllerDocsTest {
                                 fieldWithPath("description").type(JsonFieldType.STRING).optional().description("설명"),
                                 fieldWithPath("categoryIds").type(JsonFieldType.ARRAY).description("카테고리 ID 목록"),
                                 fieldWithPath("categoryNames").type(JsonFieldType.ARRAY).description("카테고리명 목록"),
+                                fieldWithPath("countryIds").type(JsonFieldType.ARRAY).description("국가 ID 목록"),
+                                fieldWithPath("countryNames").type(JsonFieldType.ARRAY).description("국가명 목록"),
                                 fieldWithPath("eventYear").type(JsonFieldType.NUMBER).description("사건 연도"),
                                 fieldWithPath("precisionLevel").type(JsonFieldType.STRING).description("정밀도 레벨"),
                                 fieldWithPath("eventMonth").type(JsonFieldType.NUMBER).optional().description("사건 월"),
@@ -229,6 +236,7 @@ class TimelineControllerDocsTest {
                 "제2차 세계대전 종전",
                 "1945년 제2차 세계대전이 종전되었습니다.",
                 List.of(1L),
+                null,
                 1945L,
                 PrecisionLevel.YEAR,
                 8,
@@ -246,7 +254,7 @@ class TimelineControllerDocsTest {
                 null
         );
 
-        given(timelineService.create(any(Timeline.class), anyList())).willReturn(sampleTimeline);
+        given(timelineService.create(any(Timeline.class), anyList(), anyList())).willReturn(sampleTimeline);
 
         mockMvc.perform(RestDocumentationRequestBuilders.post("/api/timelines")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -260,6 +268,7 @@ class TimelineControllerDocsTest {
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("제목 (필수)"),
                                 fieldWithPath("description").type(JsonFieldType.STRING).optional().description("설명"),
                                 fieldWithPath("categoryIds").type(JsonFieldType.ARRAY).description("카테고리 ID 목록 (필수, 1개 이상)"),
+                                fieldWithPath("countryIds").type(JsonFieldType.ARRAY).optional().description("국가 ID 목록 (선택)"),
                                 fieldWithPath("eventYear").type(JsonFieldType.NUMBER).description("사건 연도 (필수)"),
                                 fieldWithPath("precisionLevel").type(JsonFieldType.STRING).description("정밀도 레벨 (필수, BILLION_YEARS ~ SECOND)"),
                                 fieldWithPath("eventMonth").type(JsonFieldType.NUMBER).optional().description("사건 월"),
@@ -282,6 +291,8 @@ class TimelineControllerDocsTest {
                                 fieldWithPath("description").type(JsonFieldType.STRING).optional().description("설명"),
                                 fieldWithPath("categoryIds").type(JsonFieldType.ARRAY).description("카테고리 ID 목록"),
                                 fieldWithPath("categoryNames").type(JsonFieldType.ARRAY).description("카테고리명 목록"),
+                                fieldWithPath("countryIds").type(JsonFieldType.ARRAY).description("국가 ID 목록"),
+                                fieldWithPath("countryNames").type(JsonFieldType.ARRAY).description("국가명 목록"),
                                 fieldWithPath("eventYear").type(JsonFieldType.NUMBER).description("사건 연도"),
                                 fieldWithPath("precisionLevel").type(JsonFieldType.STRING).description("정밀도 레벨"),
                                 fieldWithPath("eventMonth").type(JsonFieldType.NUMBER).optional().description("사건 월"),
@@ -311,6 +322,7 @@ class TimelineControllerDocsTest {
                 "제2차 세계대전 종전 (수정)",
                 "1945년 제2차 세계대전이 종전되었습니다. (수정)",
                 List.of(1L),
+                null,
                 1945L,
                 PrecisionLevel.YEAR,
                 8,
@@ -328,7 +340,7 @@ class TimelineControllerDocsTest {
                 null
         );
 
-        given(timelineService.update(anyLong(), any(Timeline.class), anyList())).willReturn(sampleTimeline);
+        given(timelineService.update(anyLong(), any(Timeline.class), anyList(), anyList())).willReturn(sampleTimeline);
 
         mockMvc.perform(RestDocumentationRequestBuilders.put("/api/timelines/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -345,6 +357,7 @@ class TimelineControllerDocsTest {
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("제목 (필수)"),
                                 fieldWithPath("description").type(JsonFieldType.STRING).optional().description("설명"),
                                 fieldWithPath("categoryIds").type(JsonFieldType.ARRAY).description("카테고리 ID 목록 (필수, 1개 이상)"),
+                                fieldWithPath("countryIds").type(JsonFieldType.ARRAY).optional().description("국가 ID 목록 (선택)"),
                                 fieldWithPath("eventYear").type(JsonFieldType.NUMBER).description("사건 연도 (필수)"),
                                 fieldWithPath("precisionLevel").type(JsonFieldType.STRING).description("정밀도 레벨 (필수)"),
                                 fieldWithPath("eventMonth").type(JsonFieldType.NUMBER).optional().description("사건 월"),
@@ -367,6 +380,8 @@ class TimelineControllerDocsTest {
                                 fieldWithPath("description").type(JsonFieldType.STRING).optional().description("설명"),
                                 fieldWithPath("categoryIds").type(JsonFieldType.ARRAY).description("카테고리 ID 목록"),
                                 fieldWithPath("categoryNames").type(JsonFieldType.ARRAY).description("카테고리명 목록"),
+                                fieldWithPath("countryIds").type(JsonFieldType.ARRAY).description("국가 ID 목록"),
+                                fieldWithPath("countryNames").type(JsonFieldType.ARRAY).description("국가명 목록"),
                                 fieldWithPath("eventYear").type(JsonFieldType.NUMBER).description("사건 연도"),
                                 fieldWithPath("precisionLevel").type(JsonFieldType.STRING).description("정밀도 레벨"),
                                 fieldWithPath("eventMonth").type(JsonFieldType.NUMBER).optional().description("사건 월"),

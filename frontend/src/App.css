@@ -683,6 +683,34 @@
 }
 
 /* =====================
+   Loading Bar (데이터 로딩 프로그레스)
+   ===================== */
+.loading-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 150;
+  background: rgba(68, 136, 255, 0.1);
+  overflow: hidden;
+}
+
+.loading-bar__indicator {
+  width: 40%;
+  height: 100%;
+  background: var(--accent);
+  border-radius: 0 2px 2px 0;
+  animation: loading-slide 1.2s ease-in-out infinite;
+}
+
+@keyframes loading-slide {
+  0% { transform: translateX(-100%); }
+  50% { transform: translateX(150%); }
+  100% { transform: translateX(350%); }
+}
+
+/* =====================
    Canvas Zoom Buttons (우측 하단 플로팅)
    ===================== */
 .canvas-zoom {

@@ -26,7 +26,7 @@ interface TimelineCanvasProps {
 export default function TimelineCanvas({ viewportManagerRef }: TimelineCanvasProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const { engineRef, ready } = useTimelineEngine(containerRef);
-  const { data: events } = useViewportEvents();
+  const { data: events, isFetching } = useViewportEvents();
   const { data: categories } = useCategories();
   const selectedCategoryIds = useTimelineStore((s) => s.filters.categoryIds);
   const selectedCountryIds = useTimelineStore((s) => s.filters.countryIds);
@@ -143,15 +143,22 @@ export default function TimelineCanvas({ viewportManagerRef }: TimelineCanvasPro
     `방향키로 탐색 가능.`;
 
   return (
-    <div
-      ref={containerRef}
-      className="timeline-canvas"
-      style={{ width: '100%', height: '100%', background: '#0a0a1a' }}
-      role="application"
-      aria-label={ariaLabel}
-      aria-roledescription="인터랙티브 타임라인"
-      tabIndex={0}
-      onFocus={handleFocus}
-    />
+    <>
+      {isFetching && (
+        <div className="loading-bar" role="progressbar" aria-label="데이터 로딩 중">
+          <div className="loading-bar__indicator" />
+        </div>
+      )}
+      <div
+        ref={containerRef}
+        className="timeline-canvas"
+        style={{ width: '100%', height: '100%', background: '#0a0a1a' }}
+        role="application"
+        aria-label={ariaLabel}
+        aria-roledescription="인터랙티브 타임라인"
+        tabIndex={0}
+        onFocus={handleFocus}
+      />
+    </>
   );
 }

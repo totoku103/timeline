@@ -78,24 +78,34 @@ export default function EventDetailPanel() {
           <div className="event-detail-panel__meta">
             <div className="event-detail-panel__meta-item">
               <span className="event-detail-panel__meta-label">연도</span>
-              <span className="event-detail-panel__meta-value">{formatYear(event.eventYear)}</span>
-            </div>
-            <div className="event-detail-panel__meta-item">
-              <span className="event-detail-panel__meta-label">카테고리</span>
-              <span className="event-detail-panel__meta-value">{event.categoryNames.join(', ')}</span>
-            </div>
-            <div className="event-detail-panel__meta-item">
-              <span className="event-detail-panel__meta-label">정밀도</span>
               <span className="event-detail-panel__meta-value">
-                {PRECISION_LABELS[event.precisionLevel] ?? event.precisionLevel}
+                {event.eventType === 'RANGE' && event.endYear
+                  ? `${formatYear(event.eventYear)} ~ ${formatYear(event.endYear)}`
+                  : formatYear(event.eventYear)}
               </span>
             </div>
+            <div className="event-detail-panel__meta-item">
+              <span className="event-detail-panel__meta-label">태그</span>
+              <span className="event-detail-panel__meta-value">{event.categoryNames.join(', ') || '-'}</span>
+            </div>
+            {event.countryNames && event.countryNames.length > 0 && (
+              <div className="event-detail-panel__meta-item">
+                <span className="event-detail-panel__meta-label">국가</span>
+                <span className="event-detail-panel__meta-value">{event.countryNames.join(', ')}</span>
+              </div>
+            )}
             {event.location && (
               <div className="event-detail-panel__meta-item">
                 <span className="event-detail-panel__meta-label">위치</span>
                 <span className="event-detail-panel__meta-value">{event.location}</span>
               </div>
             )}
+            <div className="event-detail-panel__meta-item">
+              <span className="event-detail-panel__meta-label">정밀도</span>
+              <span className="event-detail-panel__meta-value">
+                {PRECISION_LABELS[event.precisionLevel] ?? event.precisionLevel}
+              </span>
+            </div>
           </div>
 
           {event.description && (

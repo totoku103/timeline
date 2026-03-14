@@ -6,16 +6,14 @@ import YearJumper from './YearJumper';
 import type { ViewportManager } from '../engine/scale/ViewportManager';
 
 function formatYearShort(year: number): string {
-  if (year < 0) {
-    const abs = Math.abs(year);
-    if (abs >= 1_000_000_000) return `${(abs / 1_000_000_000).toFixed(1)}B BCE`;
-    if (abs >= 1_000_000) return `${(abs / 1_000_000).toFixed(1)}M BCE`;
-    if (abs >= 1_000) return `${Math.round(abs / 1_000)}K BCE`;
-    return `${abs} BCE`;
-  }
-  if (year >= 1_000_000_000) return `${(year / 1_000_000_000).toFixed(1)}B`;
-  if (year >= 1_000_000) return `${(year / 1_000_000).toFixed(1)}M`;
-  return `${year}`;
+  const abs = Math.abs(year);
+  const suffix = year < 0 ? ' BCE' : '';
+
+  if (abs >= 1_000_000_000) return `${(abs / 1_000_000_000).toFixed(1)}B${suffix}`;
+  if (abs >= 1_000_000) return `${(abs / 1_000_000).toFixed(1)}M${suffix}`;
+  if (abs >= 10_000) return `${Math.round(abs / 1_000)}K${suffix}`;
+  if (abs < 1) return '0';
+  return `${Math.round(abs)}${suffix}`;
 }
 
 const PRESET_RANGES: Array<{ label: string; fromYear: number; toYear: number }> = [

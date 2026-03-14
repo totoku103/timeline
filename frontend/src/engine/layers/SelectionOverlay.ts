@@ -145,10 +145,11 @@ export class SelectionOverlay {
 
   private formatYear(year: number): string {
     const abs = Math.abs(year);
-    if (abs >= 1_000_000_000) return `${(abs / 1_000_000_000).toFixed(1)}B ${year < 0 ? 'BCE' : ''}`.trim();
-    if (abs >= 1_000_000) return `${(abs / 1_000_000).toFixed(1)}M ${year < 0 ? 'BCE' : ''}`.trim();
-    if (abs >= 10_000) return `${(abs / 1_000).toFixed(1)}K ${year < 0 ? 'BCE' : ''}`.trim();
-    if (year < 0) return `${abs} BCE`;
-    return `${Math.round(year)}`;
+    const suffix = year < 0 ? ' BCE' : '년';
+    if (abs < 1) return '0';
+    if (abs >= 1_000_000_000) return `${(abs / 1_000_000_000).toFixed(1)}B${year < 0 ? ' BCE' : ''}`;
+    if (abs >= 1_000_000) return `${(abs / 1_000_000).toFixed(1)}M${year < 0 ? ' BCE' : ''}`;
+    if (abs >= 10_000) return `${(abs / 1_000).toFixed(1)}K${year < 0 ? ' BCE' : ''}`;
+    return `${Math.round(abs)}${suffix}`;
   }
 }

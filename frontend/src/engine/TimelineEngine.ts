@@ -1,4 +1,4 @@
-import { Application, FederatedPointerEvent } from 'pixi.js';
+import { Application, FederatedPointerEvent, Graphics, Container } from 'pixi.js';
 import type { TimelineEvent, Category } from '../types/timeline';
 import type { Viewport } from '../types/viewport';
 import type { RenderNode } from '../types/render';
@@ -20,6 +20,9 @@ export class TimelineEngine {
   private viewportManager!: ViewportManager;
   private panZoomHandler!: PanZoomHandler;
   private spatialIndex: SpatialIndex;
+  private scrollContainer: Container;   // 세로 스크롤 가능 콘텐츠
+  private scrollMask: Graphics;         // 시간축 아래 영역만 보이게 클리핑
+  private timeAxisBg: Graphics;         // 시간축 배경 (스크롤 콘텐츠 가림)
   private categoryLaneLayer: CategoryLaneLayer;
   private timeAxisLayer: TimeAxisLayer;
   private eventNodesLayer: EventNodesLayer;
@@ -43,6 +46,9 @@ export class TimelineEngine {
   constructor() {
     this.app = new Application();
     this.spatialIndex = new SpatialIndex();
+    this.scrollContainer = new Container();
+    this.scrollMask = new Graphics();
+    this.timeAxisBg = new Graphics();
     this.categoryLaneLayer = new CategoryLaneLayer();
     this.timeAxisLayer = new TimeAxisLayer();
     this.eventNodesLayer = new EventNodesLayer();
@@ -72,12 +78,22 @@ export class TimelineEngine {
     this.app.stage.eventMode = 'static';
     this.app.stage.hitArea = this.app.screen;
 
-    // Add layers in order (bottom to top):
-    // categoryLaneLayer → timeAxisLayer → eventNodesLayer → selectionOverlay
-    this.app.stage.addChild(this.categoryLaneLayer.container);
+    // 스크롤 가능 콘텐츠: 시간축 아래 영역에만 표시되도록 마스크 적용
+    this.scrollMask.rect(0, 60, width, height - 60).fill({ color: 0xffffff });
+    this.scrollContainer.mask = this.scrollMask;
+    this.scrollContainer.addChild(this.categoryLaneLayer.container);
+    this.scrollContainer.addChild(this.eventNodesLayer.container);
+    this.scrollContainer.addChild(this.selectionOverlay.container);
+
+    // 레이어 순서 (bottom → top):
+    // 1. scrollContainer (카테고리 + 이벤트 + 툴팁, 마스크로 클리핑)
+    // 2. scrollMask
+    // 3. timeAxisBg (시간축 배경, 스크롤 콘텐츠 가림)
+    // 4. timeAxisLayer (시간축 라벨/틱)
+    this.app.stage.addChild(this.scrollContainer);
+    this.app.stage.addChild(this.scrollMask);
+    this.app.stage.addChild(this.timeAxisBg);
     this.app.stage.addChild(this.timeAxisLayer.container);
-    this.app.stage.addChild(this.eventNodesLayer.container);
-    this.app.stage.addChild(this.selectionOverlay.container);
 
     // Create viewport manager
     this.viewportManager = new ViewportManager(width, height, (vp) => {
@@ -133,6 +149,9 @@ export class TimelineEngine {
     if (!this.initialized) return;
     this.app.renderer.resize(width, height);
     this.viewportManager.resize(width, height);
+    // 마스크 갱신
+    this.scrollMask.clear();
+    this.scrollMask.rect(0, 60, width, height - 60).fill({ color: 0xffffff });
     this.updateLayers();
   }
 
@@ -194,7 +213,11 @@ export class TimelineEngine {
       node.y = this.categoryLaneLayer.getNodeY(node.categoryRow, node.subLane);
     }
 
-    // 3. 시간축 (상단 고정)
+    // 3. 시간축 배경 (스크롤 콘텐츠가 시간축 위로 올라오지 않게)
+    this.timeAxisBg.clear();
+    this.timeAxisBg.rect(0, 0, vp.width, 60).fill({ color: BG_COLOR });
+
+    // 4. 시간축 (상단 고정)
     this.timeAxisLayer.update(vp, vp.width, vp.height);
 
     // 4. 이벤트 노드
@@ -207,12 +230,9 @@ export class TimelineEngine {
     this.applyScrollY();
   }
 
-  /** 세로 스크롤 오프셋 적용 — 시간축은 고정, 나머지 레이어만 이동 */
+  /** 세로 스크롤 오프셋 적용 — scrollContainer 전체를 이동 */
   private applyScrollY(): void {
-    this.categoryLaneLayer.container.y = -this.scrollY;
-    this.eventNodesLayer.container.y = -this.scrollY;
-    this.selectionOverlay.container.y = -this.scrollY;
-    // timeAxisLayer는 y=0 고정 (상단 sticky)
+    this.scrollContainer.y = -this.scrollY;
   }
 
   private onPointerMove(e: FederatedPointerEvent): void {

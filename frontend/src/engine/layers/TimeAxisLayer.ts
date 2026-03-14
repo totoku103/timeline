@@ -162,22 +162,25 @@ export class TimeAxisLayer {
 
   private formatYear(year: number, zoomLevel: number): string {
     const absYear = Math.abs(year);
-    const suffix = year < 0 ? ' BCE' : '';
+    const isBCE = year < 0;
+    const eraLabel = isBCE ? ' BCE' : '';
+
+    // 0년 근처
+    if (absYear < 1) return '0';
 
     if (absYear >= 1_000_000_000) {
       const val = absYear / 1_000_000_000;
-      return `${val.toFixed(1)}B${suffix}`;
+      return `${val.toFixed(1)}B${eraLabel}`;
     }
     if (absYear >= 1_000_000) {
       const val = absYear / 1_000_000;
-      return `${val.toFixed(val >= 100 ? 0 : 1)}M${suffix}`;
+      return `${val.toFixed(val >= 100 ? 0 : 1)}M${eraLabel}`;
     }
     if (absYear >= 10_000) {
       const val = absYear / 1_000;
-      return `${val.toFixed(val >= 100 ? 0 : 1)}K${suffix}`;
+      return `${val.toFixed(val >= 100 ? 0 : 1)}K${eraLabel}`;
     }
     if (zoomLevel >= 10) {
-      // Monthly: show year and month
       const wholeYear = Math.floor(absYear);
       const monthFrac = (absYear - wholeYear) * 12;
       const month = Math.round(monthFrac) + 1;
@@ -185,11 +188,13 @@ export class TimeAxisLayer {
         return `${wholeYear}년 ${month}월`;
       }
     }
-    if (zoomLevel >= 9) {
-      return `${Math.round(absYear)}년${suffix ? ' ' + suffix : ''}`;
-    }
 
-    return `${Math.round(absYear)}${suffix}`;
+    // 일반 연도: "1800년", "500 BCE"
+    const rounded = Math.round(absYear);
+    if (isBCE) {
+      return `${rounded} BCE`;
+    }
+    return `${rounded}년`;
   }
 
   private getLabel(index: number): Text {

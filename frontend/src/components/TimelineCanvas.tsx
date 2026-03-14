@@ -106,6 +106,18 @@ export default function TimelineCanvas({ viewportManagerRef }: TimelineCanvasPro
     }
   }, [filteredEvents, ready, engineRef]);
 
+  // 스토어 viewport 변경 → 엔진 동기화 (프리셋 버튼, 줌 컨트롤 등)
+  const prevViewportRef = useRef({ fromYear: 0, toYear: 0 });
+  useEffect(() => {
+    if (!ready || !engineRef.current) return;
+    const prev = prevViewportRef.current;
+    // 스토어에서 변경된 경우에만 엔진에 전달 (엔진→스토어 루프 방지)
+    if (prev.fromYear !== viewport.fromYear || prev.toYear !== viewport.toYear) {
+      engineRef.current.setViewport(viewport);
+      prevViewportRef.current = { fromYear: viewport.fromYear, toYear: viewport.toYear };
+    }
+  }, [viewport.fromYear, viewport.toYear, ready, engineRef]);
+
   // 포커스 시 키보드 힌트 안내
   const handleFocus = useCallback(() => {
     announce(

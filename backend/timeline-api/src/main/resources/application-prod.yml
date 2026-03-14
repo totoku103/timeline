@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://aws-0-ap-northeast-2.pooler.supabase.com:5432/postgres
+    username: postgres.ogvxxvrwxorfxhlurora
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+logging:
+  level:
+    com.timeline: INFO
+    org.hibernate.SQL: WARN

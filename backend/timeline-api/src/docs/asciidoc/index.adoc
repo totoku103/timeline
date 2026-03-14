@@ -1,0 +1,103 @@
+= Timeline API Documentation
+:doctype: book
+:toc: left
+:toclevels: 3
+:sectlinks:
+:source-highlighter: highlight.js
+
+== 개요
+
+세계 다양한 사건들을 타임라인으로 비교·열람하는 API입니다.
+
+=== PrecisionLevel (정밀도 레벨)
+
+[cols="1,1,2"]
+|===
+| 값 | 코드 | 설명
+
+| BILLION_YEARS | 0 | 10억년
+| HUNDRED_MILLION_YEARS | 1 | 1억년
+| TEN_MILLION_YEARS | 2 | 1000만년
+| MILLION_YEARS | 3 | 백만년
+| HUNDRED_THOUSAND_YEARS | 4 | 10만년
+| TEN_THOUSAND_YEARS | 5 | 1만년
+| MILLENNIUM | 6 | 천년
+| CENTURY | 7 | 세기
+| DECADE | 8 | 10년
+| YEAR | 9 | 연도
+| MONTH | 10 | 월
+| DAY | 11 | 일
+| HOUR | 12 | 시
+| MINUTE | 13 | 분
+| SECOND | 14 | 초
+|===
+
+== Category API
+
+=== 전체 조회
+
+`GET /api/categories`
+
+operation::category-find-all[snippets='http-request,http-response,response-fields']
+
+=== 단건 조회
+
+`GET /api/categories/{id}`
+
+operation::category-find-by-id[snippets='http-request,path-parameters,http-response,response-fields']
+
+=== 생성
+
+`POST /api/categories`
+
+operation::category-create[snippets='http-request,request-fields,http-response,response-fields']
+
+=== 수정
+
+`PUT /api/categories/{id}`
+
+operation::category-update[snippets='http-request,path-parameters,request-fields,http-response,response-fields']
+
+=== 삭제
+
+`DELETE /api/categories/{id}`
+
+operation::category-delete[snippets='http-request,path-parameters,http-response']
+
+== Timeline API
+
+=== 전체 조회
+
+`GET /api/timelines`
+
+operation::timeline-find-all[snippets='http-request,http-response,response-fields']
+
+=== 범위/필터 조회
+
+`GET /api/timelines/search`
+
+operation::timeline-search[snippets='http-request,query-parameters,http-response,response-fields']
+
+=== 단건 조회
+
+`GET /api/timelines/{id}`
+
+operation::timeline-find-by-id[snippets='http-request,path-parameters,http-response,response-fields']
+
+=== 생성
+
+`POST /api/timelines`
+
+operation::timeline-create[snippets='http-request,request-fields,http-response,response-fields']
+
+=== 수정
+
+`PUT /api/timelines/{id}`
+
+operation::timeline-update[snippets='http-request,path-parameters,request-fields,http-response,response-fields']
+
+=== 삭제
+
+`DELETE /api/timelines/{id}`
+
+operation::timeline-delete[snippets='http-request,path-parameters,http-response']

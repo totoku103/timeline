@@ -1,0 +1,24 @@
+# Backend
+backend/build/
+backend/*/build/
+backend/.gradle/
+backend/*.iml
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/*.local
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+
+# Environment
+.env
+
+# OMC
+.omc/

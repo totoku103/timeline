@@ -5,7 +5,7 @@ import EventDetailPanel from './components/EventDetailPanel';
 import ZoomControls from './components/ZoomControls';
 import SearchBar from './components/SearchBar';
 import CategoryFilter from './components/CategoryFilter';
-import CountryFilter from './components/CountryFilter';
+
 import ViewModeToggle from './components/ViewModeToggle';
 import CanvasZoomButtons from './components/CanvasZoomButtons';
 import { useTimelineStore } from './store/useTimelineStore';
@@ -51,7 +51,6 @@ function TimelineApp() {
       <div className="app__header" role="banner">
         <SearchBar />
         <CategoryFilter />
-        <CountryFilter />
         <ZoomControls viewportManagerRef={viewportManagerRef} />
         <ViewModeToggle />
       </div>
@@ -89,7 +88,7 @@ function TimelineApp() {
               alignItems: 'center',
               justifyContent: 'center',
               color: '#8888aa',
-              background: '#0a0a1a',
+              background: '#141210',
             }}
           >
             전환 중...

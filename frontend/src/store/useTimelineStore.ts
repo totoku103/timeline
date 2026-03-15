@@ -48,7 +48,7 @@ export const useTimelineStore = create<TimelineState>((set) => ({
   setSelectedEventId: (id) => set({ selectedEventId: id }),
 
   // Filters
-  filters: { categoryIds: [9, 3], countryIds: [1] }, // 초기: 사회, 정치 + 한국
+  filters: { categoryIds: [9, 3] }, // 초기: 사회, 정치
   setFilters: (partial) =>
     set((state) => ({ filters: { ...state.filters, ...partial } })),
 

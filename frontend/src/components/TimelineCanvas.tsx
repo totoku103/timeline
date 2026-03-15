@@ -29,7 +29,6 @@ export default function TimelineCanvas({ viewportManagerRef }: TimelineCanvasPro
   const { data: events, isFetching } = useViewportEvents();
   const { data: categories } = useCategories();
   const selectedCategoryIds = useTimelineStore((s) => s.filters.categoryIds);
-  const selectedCountryIds = useTimelineStore((s) => s.filters.countryIds);
   const viewport = useTimelineStore((s) => s.viewport);
 
   const { announce } = useAriaLiveRegion();
@@ -93,13 +92,8 @@ export default function TimelineCanvas({ viewportManagerRef }: TimelineCanvasPro
         e.categoryIds.some((id) => selectedCategoryIds.includes(id))
       );
     }
-    if (selectedCountryIds && selectedCountryIds.length > 0) {
-      result = result.filter((e) =>
-        e.countryIds.some((id) => selectedCountryIds.includes(id))
-      );
-    }
     return result;
-  }, [events, selectedCategoryIds, selectedCountryIds]);
+  }, [events, selectedCategoryIds]);
 
   useEffect(() => {
     if (ready && engineRef.current) {
@@ -152,7 +146,7 @@ export default function TimelineCanvas({ viewportManagerRef }: TimelineCanvasPro
       <div
         ref={containerRef}
         className="timeline-canvas"
-        style={{ width: '100%', height: '100%', background: '#0a0a1a' }}
+        style={{ width: '100%', height: '100%', background: '#141210' }}
         role="application"
         aria-label={ariaLabel}
         aria-roledescription="인터랙티브 타임라인"

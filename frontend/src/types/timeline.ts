@@ -15,20 +15,12 @@ export type PrecisionLevel =
   | 'MINUTE'
   | 'SECOND';
 
-export interface Country {
-  id: number;
-  name: string;
-  code: string;
-}
-
 export interface TimelineEvent {
   id: number;
   title: string;
   description: string;
   categoryIds: number[];
   categoryNames: string[];
-  countryIds: number[];
-  countryNames: string[];
   eventYear: number;
   precisionLevel: PrecisionLevel;
   eventMonth: number | null;
@@ -54,7 +46,6 @@ export interface TimelineRequest {
   title: string;
   description?: string;
   categoryIds: number[];
-  countryIds?: number[];
   eventYear: number;
   precisionLevel: PrecisionLevel;
   eventMonth?: number;
@@ -86,6 +77,5 @@ export interface SearchParams {
   fromYear?: number;
   toYear?: number;
   categoryIds?: number[];
-  countryIds?: number[];
   precisionLevel?: PrecisionLevel;
 }

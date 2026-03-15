@@ -21,9 +21,6 @@ export async function searchTimelines(params: SearchParams): Promise<TimelineEve
   if (params.categoryIds !== undefined && params.categoryIds.length > 0) {
     params.categoryIds.forEach(id => query.append('categoryIds', String(id)));
   }
-  if (params.countryIds !== undefined && params.countryIds.length > 0) {
-    params.countryIds.forEach(id => query.append('countryIds', String(id)));
-  }
   if (params.precisionLevel !== undefined) query.set('precisionLevel', params.precisionLevel);
 
   const res = await fetch(`${BASE_URL}/search?${query.toString()}`);

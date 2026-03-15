@@ -76,7 +76,7 @@ export default function ZoomControls({ viewportManagerRef }: ZoomControlsProps) 
         className="zoom-controls__btn zoom-controls__btn--reset"
         onClick={() => {
           handlePreset(INITIAL_VIEWPORT);
-          setFilters({ categoryIds: [9, 3], countryIds: [1] });
+          setFilters({ categoryIds: [9, 3] });
           setSearchQuery('');
           announce('타임라인이 초기화되었습니다. 현대 뷰로 돌아갑니다.');
         }}

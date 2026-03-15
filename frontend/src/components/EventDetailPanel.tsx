@@ -71,7 +71,8 @@ export default function EventDetailPanel() {
       `제목: ${event.title}\n` +
       `연도: ${yearInfo}\n` +
       `태그: ${event.categoryNames.join(', ') || '-'}\n` +
-      (event.countryNames?.length ? `국가: ${event.countryNames.join(', ')}\n` : '') +
+
+
       `────────────────\n\n` +
       `수정 내용:\n\n`
     );
@@ -108,12 +109,6 @@ export default function EventDetailPanel() {
               <span className="event-detail-panel__meta-label">태그</span>
               <span className="event-detail-panel__meta-value">{event.categoryNames.join(', ') || '-'}</span>
             </div>
-            {event.countryNames && event.countryNames.length > 0 && (
-              <div className="event-detail-panel__meta-item">
-                <span className="event-detail-panel__meta-label">국가</span>
-                <span className="event-detail-panel__meta-value">{event.countryNames.join(', ')}</span>
-              </div>
-            )}
             {event.location && (
               <div className="event-detail-panel__meta-item">
                 <span className="event-detail-panel__meta-label">위치</span>

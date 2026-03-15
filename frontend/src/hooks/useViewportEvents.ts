@@ -2,7 +2,7 @@ import { useRef, useMemo } from 'react';
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import { searchTimelines } from '../api/timelineApi';
 import { getCategories } from '../api/categoryApi';
-import { getCountries } from '../api/countryApi';
+
 import { useTimelineStore } from '../store/useTimelineStore';
 import { getZoomLevelForRange } from '../engine/scale/precisionMapping';
 
@@ -23,7 +23,6 @@ export function useViewportEvents() {
   // 필터 변경 감지용 키
   const filterKey = JSON.stringify({
     categoryIds: filters.categoryIds ?? [],
-    countryIds: filters.countryIds ?? [],
   });
 
   // 마지막으로 fetch한 버퍼 범위 + 필터 상태 추적
@@ -71,7 +70,6 @@ export function useViewportEvents() {
         toYear: fetchRange.to,
         precisionLevel,
         categoryIds: filters.categoryIds,
-        countryIds: filters.countryIds,
       }),
     staleTime: 60_000,
     placeholderData: keepPreviousData,
@@ -86,10 +84,3 @@ export function useCategories() {
   });
 }
 
-export function useCountries() {
-  return useQuery({
-    queryKey: ['countries'],
-    queryFn: getCountries,
-    staleTime: 5 * 60 * 1000,
-  });
-}

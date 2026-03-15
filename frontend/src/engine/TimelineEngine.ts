@@ -10,6 +10,8 @@ import { TimeAxisLayer } from './layers/TimeAxisLayer';
 import { EventNodesLayer } from './layers/EventNodesLayer';
 import { SelectionOverlay } from './layers/SelectionOverlay';
 import { CategoryLaneLayer } from './layers/CategoryLaneLayer';
+import { MinimapLayer } from './layers/MinimapLayer';
+import { ReferenceLineLayer } from './layers/ReferenceLineLayer';
 
 const BG_COLOR = 0x141210;
 const HIT_RADIUS = 20;
@@ -27,6 +29,8 @@ export class TimelineEngine {
   private timeAxisLayer: TimeAxisLayer;
   private eventNodesLayer: EventNodesLayer;
   private selectionOverlay: SelectionOverlay;
+  private minimapLayer: MinimapLayer;
+  private referenceLineLayer: ReferenceLineLayer;
 
   private categories: Category[] = [];
   private visibleNodes: RenderNode[] = [];
@@ -37,6 +41,7 @@ export class TimelineEngine {
   private initialized = false;
   private scrollY = 0;
   private maxScrollY = 0;
+  private isDraggingRefLine = false;
 
   // Public callbacks
   onEventClick: ((event: TimelineEvent) => void) | null = null;
@@ -53,6 +58,8 @@ export class TimelineEngine {
     this.timeAxisLayer = new TimeAxisLayer();
     this.eventNodesLayer = new EventNodesLayer();
     this.selectionOverlay = new SelectionOverlay();
+    this.minimapLayer = new MinimapLayer();
+    this.referenceLineLayer = new ReferenceLineLayer();
   }
 
   async init(container: HTMLElement): Promise<void> {
@@ -94,6 +101,8 @@ export class TimelineEngine {
     this.app.stage.addChild(this.scrollMask);
     this.app.stage.addChild(this.timeAxisBg);
     this.app.stage.addChild(this.timeAxisLayer.container);
+    this.app.stage.addChild(this.referenceLineLayer.container);
+    this.app.stage.addChild(this.minimapLayer.container);
 
     // Create viewport manager
     this.viewportManager = new ViewportManager(width, height, (vp) => {
@@ -111,6 +120,8 @@ export class TimelineEngine {
     // Set up interaction events
     this.app.stage.on('pointermove', this.onPointerMove, this);
     this.app.stage.on('pointerdown', this.onPointerDown, this);
+    this.app.stage.on('pointerup', this.onPointerUp, this);
+    (this.app.canvas as HTMLElement).addEventListener('dblclick', this.onDoubleClick);
 
     // Set up render loop
     this.app.ticker.add(this.onTick, this);
@@ -126,12 +137,14 @@ export class TimelineEngine {
 
   setEvents(events: TimelineEvent[]): void {
     this.spatialIndex.build(events);
+    this.minimapLayer.setEvents(this.spatialIndex.getAll());
     this.updateVisibleData();
     this.updateLayers();
   }
 
   setCategories(categories: Category[]): void {
     this.categories = categories;
+    this.minimapLayer.setCategories(categories);
     this.updateVisibleData();
     this.updateLayers();
   }
@@ -162,11 +175,15 @@ export class TimelineEngine {
     this.app.ticker.remove(this.onTick, this);
     this.app.stage.off('pointermove', this.onPointerMove, this);
     this.app.stage.off('pointerdown', this.onPointerDown, this);
+    this.app.stage.off('pointerup', this.onPointerUp, this);
+    (this.app.canvas as HTMLElement).removeEventListener('dblclick', this.onDoubleClick);
 
     this.categoryLaneLayer.destroy();
     this.timeAxisLayer.destroy();
     this.eventNodesLayer.destroy();
     this.selectionOverlay.destroy();
+    this.referenceLineLayer.destroy();
+    this.minimapLayer.destroy();
     this.spatialIndex.clear();
 
     // Explicitly release WebGL context before destroying
@@ -228,6 +245,13 @@ export class TimelineEngine {
     this.maxScrollY = Math.max(0, totalHeight - vp.height);
     this.scrollY = Math.min(this.scrollY, this.maxScrollY);
     this.applyScrollY();
+
+    // 6. 기준선
+    this.referenceLineLayer.update(vp, Math.max(vp.height, totalHeight));
+
+    // 7. 미니맵
+    this.minimapLayer.setRowConfigs(this.rowConfigs);
+    this.minimapLayer.update(vp);
   }
 
   /** 세로 스크롤 오프셋 적용 — scrollContainer 전체를 이동 */
@@ -237,6 +261,31 @@ export class TimelineEngine {
 
   private onPointerMove(e: FederatedPointerEvent): void {
     const pos = e.global;
+
+    // 기준선 드래그 중
+    if (this.isDraggingRefLine) {
+      const vp = this.viewportManager.getViewport();
+      const year = this.referenceLineLayer.screenToYear(pos.x, vp);
+      this.referenceLineLayer.setYear(year);
+      this.referenceLineLayer.update(vp, Math.max(vp.height, this.categoryLaneLayer.getTotalHeight()));
+      (this.app.canvas as HTMLElement).style.cursor = 'col-resize';
+      return;
+    }
+
+    // 기준선 호버 감지
+    const vp = this.viewportManager.getViewport();
+    if (this.referenceLineLayer.isVisible() && this.referenceLineLayer.hitTest(pos.x, vp)) {
+      (this.app.canvas as HTMLElement).style.cursor = 'col-resize';
+      // 다른 호버 상태 초기화
+      if (this.hoveredNodeId !== null) {
+        this.hoveredNodeId = null;
+        this.eventNodesLayer.setHoveredNode(null);
+        this.selectionOverlay.hideTooltip();
+        this.onEventHover?.(null);
+      }
+      return;
+    }
+
     const hitNode = this.findNodeAt(pos.x, pos.y + this.scrollY);
 
     if (hitNode) {
@@ -247,7 +296,6 @@ export class TimelineEngine {
         const event = this.findEventById(hitNode.id);
         if (event) {
           this.selectionOverlay.showTooltip(hitNode, event, pos.x, pos.y);
-          const vp = this.viewportManager.getViewport();
           this.selectionOverlay.constrainToCanvas(vp.width, vp.height);
           this.onEventHover?.(event);
         }
@@ -266,6 +314,23 @@ export class TimelineEngine {
 
   private onPointerDown(e: FederatedPointerEvent): void {
     const pos = e.global;
+
+    // 미니맵 클릭 처리
+    const vp = this.viewportManager.getViewport();
+    const minimapYear = this.minimapLayer.hitTest(pos.x, pos.y, vp.height);
+    if (minimapYear !== null) {
+      this.viewportManager.jumpToYear(minimapYear);
+      return;
+    }
+
+    // 기준선 드래그 시작
+    if (this.referenceLineLayer.isVisible() && this.referenceLineLayer.hitTest(pos.x, vp)) {
+      this.isDraggingRefLine = true;
+      this.panZoomHandler.panLocked = true;
+      (this.app.canvas as HTMLElement).style.cursor = 'col-resize';
+      return;
+    }
+
     const hitNode = this.findNodeAt(pos.x, pos.y + this.scrollY);
 
     if (hitNode) {
@@ -274,6 +339,7 @@ export class TimelineEngine {
 
       const event = this.findEventById(hitNode.id);
       if (event) {
+        this.centerOnNode(hitNode, event);
         this.onEventClick?.(event);
       }
     } else {
@@ -307,6 +373,62 @@ export class TimelineEngine {
     }
     return null;
   }
+
+  private centerOnNode(node: RenderNode, event: TimelineEvent): void {
+    // 가로: 이벤트 연도를 화면 중앙으로
+    let preciseYear = event.eventYear;
+    if (event.eventMonth != null && event.eventMonth >= 1) {
+      preciseYear += (event.eventMonth - 1) * 30.44 / 365;
+      if (event.eventDay != null && event.eventDay >= 1) {
+        preciseYear += (event.eventDay - 1) / 365;
+      }
+    }
+    if (event.eventType === 'RANGE' && event.endYear != null) {
+      let preciseEnd = event.endYear;
+      if (event.endMonth != null && event.endMonth >= 1) {
+        preciseEnd += (event.endMonth - 1) * 30.44 / 365;
+        if (event.endDay != null && event.endDay >= 1) {
+          preciseEnd += (event.endDay - 1) / 365;
+        }
+      }
+      preciseYear = (preciseYear + preciseEnd) / 2;
+    }
+    this.viewportManager.jumpToYear(preciseYear);
+
+    // 세로: 노드의 y가 화면 중앙에 오도록 스크롤
+    const vp = this.viewportManager.getViewport();
+    const visibleHeight = vp.height - 60; // 시간축 높이 제외
+    const targetScrollY = node.y - visibleHeight / 2;
+    this.scrollY = Math.max(0, Math.min(this.maxScrollY, targetScrollY));
+    this.applyScrollY();
+  }
+
+  private onPointerUp(_e: FederatedPointerEvent): void {
+    if (this.isDraggingRefLine) {
+      this.isDraggingRefLine = false;
+      this.panZoomHandler.panLocked = false;
+      (this.app.canvas as HTMLElement).style.cursor = 'grab';
+    }
+  }
+
+  private onDoubleClick = (e: MouseEvent): void => {
+    const rect = (this.app.canvas as HTMLElement).getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    // 이벤트가 있는 곳은 무시
+    const hitNode = this.findNodeAt(x, y + this.scrollY);
+    if (hitNode) return;
+
+    // 미니맵 영역 무시
+    const vp = this.viewportManager.getViewport();
+    if (this.minimapLayer.hitTest(x, y, vp.height) !== null) return;
+
+    // 기준선 배치
+    const year = this.referenceLineLayer.screenToYear(x, vp);
+    this.referenceLineLayer.setYear(year);
+    this.referenceLineLayer.update(vp, Math.max(vp.height, this.categoryLaneLayer.getTotalHeight()));
+  };
 
   private findEventById(id: number): TimelineEvent | undefined {
     return this.visibleEvents.find(e => e.id === id);

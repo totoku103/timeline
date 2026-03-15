@@ -3,6 +3,7 @@ package com.timeline.infra.service;
 import com.timeline.core.domain.PrecisionLevel;
 import com.timeline.core.domain.Timeline;
 import com.timeline.core.service.TimelineService;
+import com.timeline.infra.config.CacheConfig;
 import com.timeline.infra.entity.CategoryEntity;
 import com.timeline.infra.entity.CountryEntity;
 import com.timeline.infra.entity.TimelineEntity;
@@ -10,6 +11,9 @@ import com.timeline.infra.repository.CategoryRepository;
 import com.timeline.infra.repository.CountryRepository;
 import com.timeline.infra.repository.TimelineRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +32,7 @@ public class TimelineServiceImpl implements TimelineService {
     private final CountryRepository countryRepository;
 
     @Override
+    @Cacheable(CacheConfig.TIMELINES)
     public List<Timeline> findAll() {
         return timelineRepository.findAllWithCategories()
                 .stream()
@@ -37,6 +42,7 @@ public class TimelineServiceImpl implements TimelineService {
     }
 
     @Override
+    @Cacheable(value = CacheConfig.TIMELINE, key = "#id")
     public Optional<Timeline> findById(Long id) {
         return timelineRepository.findByIdWithCategories(id)
                 .map(TimelineEntity::toDomain);
@@ -44,6 +50,10 @@ public class TimelineServiceImpl implements TimelineService {
 
     @Override
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = CacheConfig.TIMELINES, allEntries = true),
+            @CacheEvict(value = CacheConfig.TIMELINE_SEARCH, allEntries = true)
+    })
     public Timeline create(Timeline timeline, List<Long> categoryIds, List<Long> countryIds) {
         List<CategoryEntity> categoryEntities = categoryIds.stream()
                 .map(id -> categoryRepository.findById(id)
@@ -59,6 +69,11 @@ public class TimelineServiceImpl implements TimelineService {
 
     @Override
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = CacheConfig.TIMELINES, allEntries = true),
+            @CacheEvict(value = CacheConfig.TIMELINE, key = "#id"),
+            @CacheEvict(value = CacheConfig.TIMELINE_SEARCH, allEntries = true)
+    })
     public Timeline update(Long id, Timeline timeline, List<Long> categoryIds, List<Long> countryIds) {
         TimelineEntity entity = timelineRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Timeline not found: " + id));
@@ -72,8 +87,8 @@ public class TimelineServiceImpl implements TimelineService {
                 .toList();
         entity.setTitle(timeline.title());
         entity.setDescription(timeline.description());
-        entity.setCategories(new java.util.ArrayList<>(categoryEntities));
-        entity.setCountries(new java.util.ArrayList<>(countryEntities));
+        entity.setCategories(new java.util.HashSet<>(categoryEntities));
+        entity.setCountries(new java.util.HashSet<>(countryEntities));
         entity.setEventYear(timeline.eventYear());
         entity.setPrecisionLevel(timeline.precisionLevel());
         entity.setEventMonth(timeline.eventMonth());
@@ -89,6 +104,7 @@ public class TimelineServiceImpl implements TimelineService {
     }
 
     @Override
+    @Cacheable(value = CacheConfig.TIMELINE_SEARCH, key = "T(java.util.Objects).hash(#fromYear, #toYear, #categoryIds, #countryIds, #minPrecisionLevel)")
     public List<Timeline> search(Long fromYear, Long toYear, List<Long> categoryIds, List<Long> countryIds, PrecisionLevel minPrecisionLevel) {
         List<Long> catIds = (categoryIds != null && !categoryIds.isEmpty()) ? categoryIds : null;
         List<Long> cntIds = (countryIds != null && !countryIds.isEmpty()) ? countryIds : null;
@@ -102,6 +118,11 @@ public class TimelineServiceImpl implements TimelineService {
 
     @Override
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = CacheConfig.TIMELINES, allEntries = true),
+            @CacheEvict(value = CacheConfig.TIMELINE, key = "#id"),
+            @CacheEvict(value = CacheConfig.TIMELINE_SEARCH, allEntries = true)
+    })
     public void delete(Long id) {
         if (!timelineRepository.existsById(id)) {
             throw new NoSuchElementException("Timeline not found: " + id);

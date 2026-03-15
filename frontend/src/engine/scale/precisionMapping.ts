@@ -14,6 +14,7 @@ export const ZOOM_LEVELS: ZoomLevelConfig[] = [
   { level: 9, name: 'ANNUAL', nameKo: '연간', precisionLevel: 'YEAR', minRange: 1, maxRange: 10 },
   { level: 10, name: 'MONTHLY', nameKo: '월간', precisionLevel: 'MONTH', minRange: 1 / 12, maxRange: 1 },
   { level: 11, name: 'DAILY', nameKo: '일간', precisionLevel: 'DAY', minRange: 1 / 365, maxRange: 1 / 12 },
+  { level: 12, name: 'HOURLY', nameKo: '시간', precisionLevel: 'HOUR', minRange: 1 / (365 * 24), maxRange: 1 / 365 },
 ];
 
 /**

@@ -29,9 +29,24 @@ export default function TimelineCanvas({ viewportManagerRef }: TimelineCanvasPro
   const { data: events, isFetching } = useViewportEvents();
   const { data: categories } = useCategories();
   const selectedCategoryIds = useTimelineStore((s) => s.filters.categoryIds);
+  const setFilters = useTimelineStore((s) => s.setFilters);
   const viewport = useTimelineStore((s) => s.viewport);
 
   const { announce } = useAriaLiveRegion();
+
+  // 초기 태그 선택: 카테고리 로드 후 한국, 미국을 기본 선택
+  const initializedRef = useRef(false);
+  useEffect(() => {
+    if (initializedRef.current || !categories || categories.length === 0) return;
+    initializedRef.current = true;
+    const defaultNames = ['한국', '미국'];
+    const defaultIds = categories
+      .filter((c) => defaultNames.includes(c.name))
+      .map((c) => c.id);
+    if (defaultIds.length > 0) {
+      setFilters({ categoryIds: defaultIds });
+    }
+  }, [categories, setFilters]);
 
   // 내부 키보드 훅용 ref
   const localVmRef = useRef<ViewportManager | null>(null);

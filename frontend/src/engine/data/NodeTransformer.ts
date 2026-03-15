@@ -15,6 +15,32 @@ export interface CategoryRowConfig {
 }
 
 /**
+ * Compute a precise fractional year incorporating month and day.
+ * e.g., July 15 of year 2000 → 2000 + (6*30.44 + 14) / 365 ≈ 2000.537
+ */
+function toPreciseYear(event: TimelineEvent): number {
+  let year = event.eventYear;
+  if (event.eventMonth != null && event.eventMonth >= 1) {
+    year += (event.eventMonth - 1) * 30.44 / 365;
+    if (event.eventDay != null && event.eventDay >= 1) {
+      year += (event.eventDay - 1) / 365;
+    }
+  }
+  return year;
+}
+
+function toPreciseEndYear(event: TimelineEvent): number {
+  let year = event.endYear ?? event.eventYear;
+  if (event.endMonth != null && event.endMonth >= 1) {
+    year += (event.endMonth - 1) * 30.44 / 365;
+    if (event.endDay != null && event.endDay >= 1) {
+      year += (event.endDay - 1) / 365;
+    }
+  }
+  return year;
+}
+
+/**
  * Transform TimelineEvent[] to RenderNode[] using category-fixed row layout.
  * Each category gets a fixed row index; events within a row use sub-lanes to avoid overlaps.
  * y is set to 0 — actual y is computed by the rendering layer using categoryRow + subLane.
@@ -58,11 +84,20 @@ export function transformNodes(
   for (const [categoryId, catEvents] of eventsByCategory) {
     const rowIndex = categoryRowMap.get(categoryId)!;
 
+    // 시간순 정렬: 정밀 연도 → sortOrder → id
+    catEvents.sort((a, b) => {
+      const yearDiff = toPreciseYear(a) - toPreciseYear(b);
+      if (yearDiff !== 0) return yearDiff;
+      const sortDiff = a.sortOrder - b.sortOrder;
+      if (sortDiff !== 0) return sortDiff;
+      return a.id - b.id;
+    });
+
     // Sub-lane occupancy for this category row
     const subLaneOccupancy: Array<Array<{ left: number; right: number }>> = [[]];
 
     for (const event of catEvents) {
-      const x = yearToScreen(event.eventYear, viewport);
+      const x = yearToScreen(toPreciseYear(event), viewport);
 
       let type: 'point' | 'range';
       let width: number;
@@ -71,7 +106,7 @@ export function transformNodes(
 
       if (event.eventType === 'RANGE' && event.endYear != null) {
         type = 'range';
-        endX = yearToScreen(event.endYear, viewport);
+        endX = yearToScreen(toPreciseEndYear(event), viewport);
         width = Math.max(0, endX - x);
         visible = endX >= 0 && x <= viewport.width;
       } else {

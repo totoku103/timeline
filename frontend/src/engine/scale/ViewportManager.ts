@@ -2,7 +2,7 @@ import type { Viewport } from '../../types/viewport';
 import { symlog, symlogInverse } from './symlog';
 import { getZoomLevelForRange } from './precisionMapping';
 
-const MIN_RANGE = 0.001;
+const MIN_RANGE = 1 / (365 * 24); // ~1 hour
 const MAX_RANGE = 14_000_000_000;
 const MIN_YEAR = -13_800_000_000;
 const MAX_YEAR = 2100;

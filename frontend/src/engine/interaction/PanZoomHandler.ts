@@ -14,6 +14,7 @@ export class PanZoomHandler {
 
   private isDragging = false;
   private lastX = 0;
+  private _panLocked = false;
 
   // Touch state
   private lastTouchX: number | null = null;
@@ -75,8 +76,13 @@ export class PanZoomHandler {
     }
   }
 
+  set panLocked(locked: boolean) {
+    this._panLocked = locked;
+    if (locked) this.isDragging = false;
+  }
+
   private onMouseDown(e: MouseEvent): void {
-    if (e.button !== 0) return;
+    if (e.button !== 0 || this._panLocked) return;
     this.isDragging = true;
     this.lastX = e.clientX;
     this.element.style.cursor = 'grabbing';

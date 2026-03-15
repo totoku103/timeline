@@ -9,7 +9,9 @@ import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(
@@ -39,7 +41,7 @@ public class TimelineEntity extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
     @Builder.Default
-    private List<CategoryEntity> categories = new ArrayList<>();
+    private Set<CategoryEntity> categories = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -48,7 +50,7 @@ public class TimelineEntity extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "country_id")
     )
     @Builder.Default
-    private List<CountryEntity> countries = new ArrayList<>();
+    private Set<CountryEntity> countries = new HashSet<>();
 
     @Column(name = "event_year", nullable = false)
     private long eventYear;
@@ -148,8 +150,8 @@ public class TimelineEntity extends BaseEntity {
                 .endMonth(domain.endMonth())
                 .endDay(domain.endDay())
                 .build();
-        entity.setCategories(new ArrayList<>(categoryEntities));
-        entity.setCountries(new ArrayList<>(countryEntities));
+        entity.setCategories(new HashSet<>(categoryEntities));
+        entity.setCountries(new HashSet<>(countryEntities));
         return entity;
     }
 }

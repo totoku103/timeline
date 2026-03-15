@@ -41,6 +41,10 @@ export class SpatialIndex {
     this.events = [];
   }
 
+  getAll(): TimelineEvent[] {
+    return this.events;
+  }
+
   /**
    * Find the first index where eventYear >= target.
    */

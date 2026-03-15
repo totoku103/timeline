@@ -12,13 +12,13 @@ import java.util.Optional;
 @Repository
 public interface TimelineRepository extends JpaRepository<TimelineEntity, Long> {
 
-    @Query("SELECT t FROM TimelineEntity t LEFT JOIN FETCH t.categories")
+    @Query("SELECT t FROM TimelineEntity t LEFT JOIN FETCH t.categories LEFT JOIN FETCH t.countries")
     List<TimelineEntity> findAllWithCategories();
 
-    @Query("SELECT t FROM TimelineEntity t LEFT JOIN FETCH t.categories WHERE t.id = :id")
+    @Query("SELECT t FROM TimelineEntity t LEFT JOIN FETCH t.categories LEFT JOIN FETCH t.countries WHERE t.id = :id")
     Optional<TimelineEntity> findByIdWithCategories(@Param("id") Long id);
 
-    @Query("SELECT t FROM TimelineEntity t LEFT JOIN FETCH t.categories " +
+    @Query("SELECT t FROM TimelineEntity t LEFT JOIN FETCH t.categories LEFT JOIN FETCH t.countries " +
            "WHERE (:fromYear IS NULL OR t.eventYear >= :fromYear OR (t.endYear IS NOT NULL AND t.endYear >= :fromYear)) " +
            "AND (:toYear IS NULL OR t.eventYear <= :toYear) " +
            "AND (:categoryIds IS NULL OR EXISTS (SELECT c FROM t.categories c WHERE c.id IN :categoryIds)) " +

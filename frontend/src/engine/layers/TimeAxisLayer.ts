@@ -129,21 +129,56 @@ export class TimeAxisLayer {
     return ticks;
   }
 
-  /**
-   * 목표 15~25개 major tick이 되도록 "예쁜" 간격을 자동 선택.
-   * 1, 2, 5, 10, 20, 50, 100, ... 계열에서 선택.
-   */
   private getTickInterval(_level: number, yearRange: number): number {
-    if (yearRange < 1) return 1 / 12;
+    // Sub-day range: use hour intervals
+    if (yearRange < 1 / 365) {
+      const hourRange = yearRange * 365 * 24;
+      const candidates = [1, 2, 3, 4, 6, 8, 12];
+      let best = candidates[0];
+      let bestDiff = Infinity;
+      for (const c of candidates) {
+        const ticks = hourRange / c;
+        const diff = Math.abs(ticks - 20);
+        if (diff < bestDiff) { bestDiff = diff; best = c; }
+      }
+      return best / (365 * 24);
+    }
+
+    // Sub-month range: use day intervals
+    if (yearRange < 1 / 12) {
+      const dayRange = yearRange * 365;
+      const candidates = [1, 2, 5, 7, 10, 15];
+      let best = candidates[0];
+      let bestDiff = Infinity;
+      for (const c of candidates) {
+        const ticks = dayRange / c;
+        const diff = Math.abs(ticks - 20);
+        if (diff < bestDiff) { bestDiff = diff; best = c; }
+      }
+      return best / 365;
+    }
+
+    // Sub-year range: use month intervals
+    if (yearRange < 1) {
+      const monthRange = yearRange * 12;
+      const candidates = [1, 2, 3, 6];
+      let best = candidates[0];
+      let bestDiff = Infinity;
+      for (const c of candidates) {
+        const ticks = monthRange / c;
+        const diff = Math.abs(ticks - 20);
+        if (diff < bestDiff) { bestDiff = diff; best = c; }
+      }
+      return best / 12;
+    }
 
     const TARGET_TICKS = 20;
     const rawInterval = yearRange / TARGET_TICKS;
 
-    // "예쁜" 간격 후보: 1, 2, 5 × 10^n
+    // "Pretty" interval candidates: 1, 2, 5 × 10^n
     const magnitude = Math.pow(10, Math.floor(Math.log10(rawInterval)));
     const candidates = [1, 2, 5, 10].map(m => m * magnitude);
 
-    // 목표 tick 수에 가장 가까운 후보 선택
     let best = candidates[0];
     let bestDiff = Infinity;
     for (const c of candidates) {
@@ -154,8 +189,7 @@ export class TimeAxisLayer {
         best = c;
       }
     }
-    return Math.max(best, 1 / 12);
-    return 1 / 365;
+    return best;
   }
 
   private formatYear(year: number, zoomLevel: number): string {
@@ -164,7 +198,7 @@ export class TimeAxisLayer {
     const eraLabel = isBCE ? ' BCE' : '';
 
     // 0년 근처
-    if (absYear < 1) return '0';
+    if (absYear < 1 && zoomLevel < 10) return '0';
 
     if (absYear >= 1_000_000_000) {
       const val = absYear / 1_000_000_000;
@@ -178,6 +212,28 @@ export class TimeAxisLayer {
       const val = absYear / 1_000;
       return `${val.toFixed(val >= 100 ? 0 : 1)}K${eraLabel}`;
     }
+
+    // Hourly level (zoomLevel >= 12)
+    if (zoomLevel >= 12) {
+      const wholeYear = Math.floor(absYear);
+      const dayOfYear = (absYear - wholeYear) * 365;
+      const month = Math.floor(dayOfYear / 30.44) + 1;
+      const day = Math.floor(dayOfYear - (month - 1) * 30.44) + 1;
+      const hourFrac = (dayOfYear - Math.floor(dayOfYear)) * 24;
+      const hour = Math.floor(hourFrac);
+      return `${month}월 ${day}일 ${hour}시`;
+    }
+
+    // Daily level (zoomLevel >= 11)
+    if (zoomLevel >= 11) {
+      const wholeYear = Math.floor(absYear);
+      const dayOfYear = (absYear - wholeYear) * 365;
+      const month = Math.floor(dayOfYear / 30.44) + 1;
+      const day = Math.floor(dayOfYear - (month - 1) * 30.44) + 1;
+      return `${wholeYear}년 ${Math.min(month, 12)}월 ${Math.min(day, 31)}일`;
+    }
+
+    // Monthly level (zoomLevel >= 10)
     if (zoomLevel >= 10) {
       const wholeYear = Math.floor(absYear);
       const monthFrac = (absYear - wholeYear) * 12;
@@ -187,7 +243,7 @@ export class TimeAxisLayer {
       }
     }
 
-    // 일반 연도: "1800년", "500 BCE"
+    // 일반 연도
     const rounded = Math.round(absYear);
     if (isBCE) {
       return `${rounded} BCE`;

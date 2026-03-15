@@ -6,6 +6,7 @@ dependencies {
     implementation(project(":timeline-core"))
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-cache")
     runtimeOnly("org.postgresql:postgresql")
 
     // Mockito for service unit tests

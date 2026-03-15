@@ -2,9 +2,13 @@ package com.timeline.infra.service;
 
 import com.timeline.core.domain.Category;
 import com.timeline.core.service.CategoryService;
+import com.timeline.infra.config.CacheConfig;
 import com.timeline.infra.entity.CategoryEntity;
 import com.timeline.infra.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +24,7 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
 
     @Override
+    @Cacheable(CacheConfig.CATEGORIES)
     public List<Category> findAll() {
         return categoryRepository.findAll()
                 .stream()
@@ -28,6 +33,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Cacheable(value = CacheConfig.CATEGORY, key = "#id")
     public Optional<Category> findById(Long id) {
         return categoryRepository.findById(id)
                 .map(CategoryEntity::toDomain);
@@ -35,6 +41,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = CacheConfig.CATEGORIES, allEntries = true),
+            @CacheEvict(value = CacheConfig.TIMELINE_SEARCH, allEntries = true)
+    })
     public Category create(Category category) {
         CategoryEntity entity = CategoryEntity.fromDomain(category);
         return categoryRepository.save(entity).toDomain();
@@ -42,6 +52,11 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = CacheConfig.CATEGORIES, allEntries = true),
+            @CacheEvict(value = CacheConfig.CATEGORY, key = "#id"),
+            @CacheEvict(value = CacheConfig.TIMELINE_SEARCH, allEntries = true)
+    })
     public Category update(Long id, Category category) {
         CategoryEntity entity = categoryRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Category not found: " + id));
@@ -52,6 +67,11 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = CacheConfig.CATEGORIES, allEntries = true),
+            @CacheEvict(value = CacheConfig.CATEGORY, key = "#id"),
+            @CacheEvict(value = CacheConfig.TIMELINE_SEARCH, allEntries = true)
+    })
     public void delete(Long id) {
         if (!categoryRepository.existsById(id)) {
             throw new NoSuchElementException("Category not found: " + id);

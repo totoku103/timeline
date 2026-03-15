@@ -38,6 +38,10 @@ subprojects {
         testImplementation("org.springframework.boot:spring-boot-starter-test")
     }
 
+    tasks.withType<JavaCompile> {
+        options.compilerArgs.add("-parameters")
+    }
+
     tasks.withType<Test> {
         useJUnitPlatform()
     }

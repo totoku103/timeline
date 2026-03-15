@@ -34,9 +34,10 @@ public class TimelineController {
     public ResponseEntity<List<TimelineResponse>> search(
             @RequestParam(required = false) Long fromYear,
             @RequestParam(required = false) Long toYear,
-            @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) List<Long> categoryIds,
+            @RequestParam(required = false) List<Long> countryIds,
             @RequestParam(required = false) PrecisionLevel precisionLevel) {
-        List<TimelineResponse> responses = timelineService.search(fromYear, toYear, categoryId, precisionLevel)
+        List<TimelineResponse> responses = timelineService.search(fromYear, toYear, categoryIds, countryIds, precisionLevel)
                 .stream()
                 .map(TimelineResponse::from)
                 .toList();

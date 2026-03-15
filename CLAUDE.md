@@ -1,25 +1,25 @@
 # Timeline Project
 
 다양한 사람들이 빅뱅부터 현재까지의 역사적 이벤트를 탐색하고 관리하는 한국어 인터랙티브 타임라인 시각화 웹앱.
-이 디렉토리에서 frontend/backend를 통합 지휘한다.
+이 디렉토리에서 frontend/backend/crawler를 통합 지휘한다.
 
 ## 핵심 컨셉
 
-"시간축 x 카테고리 Row"의 **2차원 매트릭스**로 역사적 사건을 비교/학습하는 시각화 도구.
+"시간축 x 태그 Row"의 **2차원 매트릭스**로 역사적 사건을 비교/학습하는 시각화 도구.
 
 ### 레이아웃
 - **가로축 (X)**: 시간순 나열 (빅뱅 ~ 현재, symlog 스케일)
-- **세로축 (Y)**: 카테고리(태그) 그룹별 **고정 Row** — 각 카테고리가 전용 행을 차지
+- **세로축 (Y)**: 태그 그룹별 **고정 Row** — 각 태그가 전용 행을 차지
 - **상단 고정**: 시간축 (세로 스크롤 시에도 항상 상단에 sticky 고정)
-- **좌측 고정**: 카테고리 이름 헤더
+- **좌측 고정**: 태그 이름 헤더
 
 ### 이벤트 유형
 - **시점(point)**: 특정 시점 사건 → 점/원으로 표시 (예: 조선 건국 1392년)
 - **기간(range)**: 시작~끝 사건 → 가로 바(bar)로 표시 (예: 임진왜란 1592-1598)
 
 ### 핵심 가치
-동일 시간대에 여러 카테고리에서 어떤 사건이 동시에 일어났는지 **한눈에 비교/학습**.
-카테고리별 Row가 고정되어 있으므로 시간축을 스크롤하면 각 분야의 사건이 정렬되어 보인다.
+동일 시간대에 여러 태그에서 어떤 사건이 동시에 일어났는지 **한눈에 비교/학습**.
+태그별 Row가 고정되어 있으므로 시간축을 스크롤하면 각 분야의 사건이 정렬되어 보인다.
 
 ## 제품 방향 (확정)
 
@@ -50,6 +50,11 @@ timeline/
 │       ├── hooks/        # TanStack Query + 엔진 라이프사이클
 │       ├── components/   # React UI 컴포넌트
 │       └── types/        # TypeScript 인터페이스
+├── crawler/              # Python 3.12+ 데이터 크롤러
+│   └── src/crawler/
+│       ├── core/         # HTTP 클라이언트, API 클라이언트, 데이터 모델
+│       └── spiders/
+│           └── wikipedia/ # Wikidata SPARQL + MediaWiki API spider
 └── README.md
 ```
 
@@ -67,6 +72,13 @@ timeline/
 - Zustand 5 (UI 상태), TanStack Query 5 (서버 상태)
 - Plain CSS + CSS Custom Properties
 
+### Crawler
+- Python 3.12+, Click (CLI)
+- Wikidata SPARQL (SPARQLWrapper) + MediaWiki API (httpx)
+- Pydantic 2 (데이터 모델), BeautifulSoup4 (HTML 파싱)
+- 2단계 파이프라인: Extract(→JSON) → Load(→Backend API)
+- 데이터 적재는 항상 Backend REST API를 통해 수행
+
 ## 실행 방법
 
 ```bash
@@ -75,17 +87,23 @@ DB_PASSWORD=xxx ./backend/gradlew -p backend :timeline-api:bootRun  # :8080
 
 # Frontend
 cd frontend && npm run dev  # :5173, /api → localhost:8080 프록시
+
+# Crawler
+cd crawler && python3 -m venv .venv && source .venv/bin/activate && pip install -e "."
+timeline-crawler extract --min-sitelinks 20 -o data/wikipedia_events.json  # Wikidata 추출
+timeline-crawler load -i data/wikipedia_events.json --api-url http://localhost:8080  # API 적재
+timeline-crawler load -i data/wikipedia_events.json --dry-run  # 적재 미리보기
 ```
 
 ## API 엔드포인트
 
 | Method | Path | 설명 |
 |--------|------|------|
-| GET | /api/categories | 전체 카테고리 |
-| GET | /api/categories/{id} | 카테고리 상세 |
-| POST | /api/categories | 카테고리 생성 |
-| PUT | /api/categories/{id} | 카테고리 수정 |
-| DELETE | /api/categories/{id} | 카테고리 삭제 |
+| GET | /api/categories | 전체 태그 |
+| GET | /api/categories/{id} | 태그 상세 |
+| POST | /api/categories | 태그 생성 |
+| PUT | /api/categories/{id} | 태그 수정 |
+| DELETE | /api/categories/{id} | 태그 삭제 |
 | GET | /api/timelines | 전체 타임라인 |
 | GET | /api/timelines/search | 검색 (fromYear, toYear, categoryId, precisionLevel) |
 | GET | /api/timelines/{id} | 타임라인 상세 |
@@ -93,17 +111,17 @@ cd frontend && npm run dev  # :5173, /api → localhost:8080 프록시
 | PUT | /api/timelines/{id} | 타임라인 수정 |
 | DELETE | /api/timelines/{id} | 타임라인 삭제 |
 
-## 시드 카테고리 (12개)
+## 시드 태그 (12개)
 과학, 기술, 정치, 전쟁, 문화, 자연, 경제, 종교, 사회, 탐험, 스포츠, 의학
 
 ## 알려진 갭 (우선순위순)
 
 ### 컨셉 구현 (최우선)
 1. 데이터 모델에 종료 시점 추가 (endYear/endMonth/endDay, eventType) — BE + FE
-2. NodeTransformer → 카테고리별 고정 Row + Row 내 서브레인으로 재설계 — FE 엔진
+2. NodeTransformer → 태그별 고정 Row + Row 내 서브레인으로 재설계 — FE 엔진
 3. EventNodesLayer에 range bar 렌더링 추가 — FE 엔진
 4. 시간축 상단 고정으로 이동 — FE 엔진
-5. CategoryLaneLayer 신규 생성 (좌측 카테고리 헤더) — FE 엔진
+5. CategoryLaneLayer 신규 생성 (좌측 태그 헤더) — FE 엔진
 
 ### Backend
 1. 글로벌 예외 핸들러 없음 — NoSuchElementException이 500으로 전파

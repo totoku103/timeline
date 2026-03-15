@@ -58,7 +58,7 @@ class CategoryControllerDocsTest {
         sampleCategory = new Category(
                 1L,
                 "역사",
-                "역사 카테고리",
+                "역사 태그",
                 LocalDateTime.of(2024, 1, 1, 0, 0),
                 LocalDateTime.of(2024, 1, 1, 0, 0),
                 "admin",
@@ -77,9 +77,9 @@ class CategoryControllerDocsTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
-                                fieldWithPath("[].id").type(JsonFieldType.NUMBER).description("카테고리 ID"),
-                                fieldWithPath("[].name").type(JsonFieldType.STRING).description("카테고리명"),
-                                fieldWithPath("[].description").type(JsonFieldType.STRING).optional().description("카테고리 설명"),
+                                fieldWithPath("[].id").type(JsonFieldType.NUMBER).description("태그 ID"),
+                                fieldWithPath("[].name").type(JsonFieldType.STRING).description("태그명"),
+                                fieldWithPath("[].description").type(JsonFieldType.STRING).optional().description("태그 설명"),
                                 fieldWithPath("[].createdAt").type(JsonFieldType.STRING).optional().description("생성일시"),
                                 fieldWithPath("[].updatedAt").type(JsonFieldType.STRING).optional().description("수정일시"),
                                 fieldWithPath("[].createdBy").type(JsonFieldType.STRING).optional().description("생성자"),
@@ -99,12 +99,12 @@ class CategoryControllerDocsTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         pathParameters(
-                                parameterWithName("id").description("카테고리 ID")
+                                parameterWithName("id").description("태그 ID")
                         ),
                         responseFields(
-                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("카테고리 ID"),
-                                fieldWithPath("name").type(JsonFieldType.STRING).description("카테고리명"),
-                                fieldWithPath("description").type(JsonFieldType.STRING).optional().description("카테고리 설명"),
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("태그 ID"),
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("태그명"),
+                                fieldWithPath("description").type(JsonFieldType.STRING).optional().description("태그 설명"),
                                 fieldWithPath("createdAt").type(JsonFieldType.STRING).optional().description("생성일시"),
                                 fieldWithPath("updatedAt").type(JsonFieldType.STRING).optional().description("수정일시"),
                                 fieldWithPath("createdBy").type(JsonFieldType.STRING).optional().description("생성자"),
@@ -115,7 +115,7 @@ class CategoryControllerDocsTest {
 
     @Test
     void create() throws Exception {
-        CategoryRequest request = new CategoryRequest("역사", "역사 카테고리");
+        CategoryRequest request = new CategoryRequest("역사", "역사 태그");
         given(categoryService.create(any(Category.class))).willReturn(sampleCategory);
 
         mockMvc.perform(RestDocumentationRequestBuilders.post("/api/categories")
@@ -127,13 +127,13 @@ class CategoryControllerDocsTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         requestFields(
-                                fieldWithPath("name").type(JsonFieldType.STRING).description("카테고리명 (필수)"),
-                                fieldWithPath("description").type(JsonFieldType.STRING).optional().description("카테고리 설명")
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("태그명 (필수)"),
+                                fieldWithPath("description").type(JsonFieldType.STRING).optional().description("태그 설명")
                         ),
                         responseFields(
-                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("카테고리 ID"),
-                                fieldWithPath("name").type(JsonFieldType.STRING).description("카테고리명"),
-                                fieldWithPath("description").type(JsonFieldType.STRING).optional().description("카테고리 설명"),
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("태그 ID"),
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("태그명"),
+                                fieldWithPath("description").type(JsonFieldType.STRING).optional().description("태그 설명"),
                                 fieldWithPath("createdAt").type(JsonFieldType.STRING).optional().description("생성일시"),
                                 fieldWithPath("updatedAt").type(JsonFieldType.STRING).optional().description("수정일시"),
                                 fieldWithPath("createdBy").type(JsonFieldType.STRING).optional().description("생성자"),
@@ -144,7 +144,7 @@ class CategoryControllerDocsTest {
 
     @Test
     void update() throws Exception {
-        CategoryRequest request = new CategoryRequest("역사 (수정)", "역사 카테고리 (수정)");
+        CategoryRequest request = new CategoryRequest("역사 (수정)", "역사 태그 (수정)");
         given(categoryService.update(anyLong(), any(Category.class))).willReturn(sampleCategory);
 
         mockMvc.perform(RestDocumentationRequestBuilders.put("/api/categories/{id}", 1L)
@@ -156,16 +156,16 @@ class CategoryControllerDocsTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         pathParameters(
-                                parameterWithName("id").description("수정할 카테고리 ID")
+                                parameterWithName("id").description("수정할 태그 ID")
                         ),
                         requestFields(
-                                fieldWithPath("name").type(JsonFieldType.STRING).description("카테고리명 (필수)"),
-                                fieldWithPath("description").type(JsonFieldType.STRING).optional().description("카테고리 설명")
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("태그명 (필수)"),
+                                fieldWithPath("description").type(JsonFieldType.STRING).optional().description("태그 설명")
                         ),
                         responseFields(
-                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("카테고리 ID"),
-                                fieldWithPath("name").type(JsonFieldType.STRING).description("카테고리명"),
-                                fieldWithPath("description").type(JsonFieldType.STRING).optional().description("카테고리 설명"),
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("태그 ID"),
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("태그명"),
+                                fieldWithPath("description").type(JsonFieldType.STRING).optional().description("태그 설명"),
                                 fieldWithPath("createdAt").type(JsonFieldType.STRING).optional().description("생성일시"),
                                 fieldWithPath("updatedAt").type(JsonFieldType.STRING).optional().description("수정일시"),
                                 fieldWithPath("createdBy").type(JsonFieldType.STRING).optional().description("생성자"),
@@ -184,7 +184,7 @@ class CategoryControllerDocsTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         pathParameters(
-                                parameterWithName("id").description("삭제할 카테고리 ID")
+                                parameterWithName("id").description("삭제할 태그 ID")
                         )
                 ));
     }

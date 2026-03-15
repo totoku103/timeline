@@ -131,7 +131,7 @@ class TimelineServiceImplTest {
     }
 
     @Test
-    void create_카테고리_없으면_NoSuchElementException() {
+    void create_태그_없으면_NoSuchElementException() {
         when(categoryRepository.findById(99L)).thenReturn(Optional.empty());
 
         assertThrows(NoSuchElementException.class, () ->
@@ -169,7 +169,7 @@ class TimelineServiceImplTest {
     }
 
     @Test
-    void update_카테고리_없으면_NoSuchElementException() {
+    void update_태그_없으면_NoSuchElementException() {
         when(timelineRepository.findById(1L)).thenReturn(Optional.of(timelineEntity));
         when(categoryRepository.findById(99L)).thenReturn(Optional.empty());
 

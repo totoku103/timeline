@@ -1,4 +1,4 @@
--- 카테고리 기본 데이터
+-- 태그 기본 데이터
 -- spring.sql.init.mode=always 로 설정 시 자동 실행
 
 INSERT INTO categories (name, description, created_at, updated_at)

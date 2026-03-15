@@ -81,7 +81,7 @@ export class CategoryLaneLayer {
       this.headerGraphics.rect(0, layout.y, LANE_HEADER_WIDTH, layout.height);
       this.headerGraphics.fill({ color: bgColor });
 
-      // 카테고리 색상 스트라이프 (세로 4px 바)
+      // 태그 색상 스트라이프 (세로 4px 바)
       const stripeColor = getCategoryColor(layout.categoryId);
       this.headerGraphics.rect(0, layout.y, STRIPE_WIDTH, layout.height);
       this.headerGraphics.fill({ color: stripeColor, alpha: 0.9 });
@@ -91,7 +91,7 @@ export class CategoryLaneLayer {
       this.bgGraphics.lineTo(canvasWidth, layout.y + layout.height);
       this.bgGraphics.stroke({ width: 1, color: DIVIDER_COLOR });
 
-      // 카테고리 이름 텍스트
+      // 태그 이름 텍스트
       const text = this.getLabel(labelIdx++);
       text.text = layout.categoryName;
       text.x = STRIPE_WIDTH + 8;

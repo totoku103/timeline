@@ -89,8 +89,10 @@ public class TimelineServiceImpl implements TimelineService {
     }
 
     @Override
-    public List<Timeline> search(Long fromYear, Long toYear, Long categoryId, PrecisionLevel minPrecisionLevel) {
-        List<TimelineEntity> entities = timelineRepository.search(fromYear, toYear, categoryId);
+    public List<Timeline> search(Long fromYear, Long toYear, List<Long> categoryIds, List<Long> countryIds, PrecisionLevel minPrecisionLevel) {
+        List<Long> catIds = (categoryIds != null && !categoryIds.isEmpty()) ? categoryIds : null;
+        List<Long> cntIds = (countryIds != null && !countryIds.isEmpty()) ? countryIds : null;
+        List<TimelineEntity> entities = timelineRepository.search(fromYear, toYear, catIds, cntIds);
         Stream<Timeline> stream = entities.stream().map(TimelineEntity::toDomain).distinct();
         if (minPrecisionLevel != null) {
             stream = stream.filter(t -> t.precisionLevel().getCode() >= minPrecisionLevel.getCode());

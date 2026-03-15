@@ -84,7 +84,7 @@ export default function CategoryFilter() {
             ref={inputRef}
             className="category-filter__search"
             type="text"
-            placeholder="카테고리 검색..."
+            placeholder="태그 검색..."
             value={searchText}
             onChange={e => setSearchText(e.target.value)}
           />

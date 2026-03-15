@@ -11,7 +11,7 @@ const REFETCH_THRESHOLD = 0.4;
 
 /**
  * 뷰포트 이벤트를 버퍼링하여 로딩.
- * 필터(카테고리/국가) 변경 시 버퍼를 리셋하고 데이터를 다시 가져옴.
+ * 필터(태그/국가) 변경 시 버퍼를 리셋하고 데이터를 다시 가져옴.
  */
 export function useViewportEvents() {
   const { viewport, filters, searchQuery } = useTimelineStore();
@@ -70,6 +70,8 @@ export function useViewportEvents() {
         fromYear: fetchRange.from,
         toYear: fetchRange.to,
         precisionLevel,
+        categoryIds: filters.categoryIds,
+        countryIds: filters.countryIds,
       }),
     staleTime: 60_000,
     placeholderData: keepPreviousData,

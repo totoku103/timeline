@@ -78,7 +78,7 @@ export default function TimelineCanvas({ viewportManagerRef }: TimelineCanvasPro
     };
   }, [viewport.fromYear, viewport.toYear, announce]);
 
-  // 카테고리 필터링
+  // 태그 필터링
   const visibleCategories = useMemo(() => {
     if (!categories) return [];
     if (!selectedCategoryIds || selectedCategoryIds.length === 0) return categories;

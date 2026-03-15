@@ -86,7 +86,7 @@ export class TimelineEngine {
     this.scrollContainer.addChild(this.selectionOverlay.container);
 
     // 레이어 순서 (bottom → top):
-    // 1. scrollContainer (카테고리 + 이벤트 + 툴팁, 마스크로 클리핑)
+    // 1. scrollContainer (태그 + 이벤트 + 툴팁, 마스크로 클리핑)
     // 2. scrollMask
     // 3. timeAxisBg (시간축 배경, 스크롤 콘텐츠 가림)
     // 4. timeAxisLayer (시간축 라벨/틱)

@@ -1,0 +1,927 @@
+[
+  {
+    "qid": "Q483160",
+    "title_ko": "승정원일기",
+    "title_en": "Seungjeongwon ilgi",
+    "description_ko": "《승정원일기》(한국 한자: 承政院日記, 영어: Seungjeongwon ilgi, Journal of the Royal Secretariat)는 조선 및 대한제국의 승정원에서 왕명 출납, 행정 사무 등을 매일 기록한 일기이다. 2001년 9월 세계기록유산에 등재되었다. 1623년(인조 1년) 음력 3월부터 1910년(순종 4년)까지의 기록이 현존하며, 현재는 인조와 고종 시기의 일기가 번역되어 있다.",
+    "description_en": "daily record of the Royal Secretariat of Joseon",
+    "event_year": 1623,
+    "event_month": 1,
+    "event_day": 1,
+    "precision": 9,
+    "event_type": "RANGE",
+    "end_year": 1910,
+    "end_month": 1,
+    "end_day": 1,
+    "category_name": "정치",
+    "location": "Kyujanggak Institute for Korean Studies",
+    "sitelinks": 15,
+    "wikidata_classes": [],
+    "country_codes": [
+      "KR"
+    ],
+    "extra_categories": [
+      "조선"
+    ]
+  },
+  {
+    "qid": "Q497046",
+    "title_ko": "부산진 전투",
+    "title_en": "Siege of Busan",
+    "description_ko": "부산진 전투(釜山鎭戰鬪)는 1592년에 발발한 임진왜란 당시 첫 번째 전투이다. 병력, 식량, 무기 등 모든 것이 부족했던 조선군이 패배하고 부산진성은 곧 함락되었다. 부산진성을 점령한 일본군은 동래성으로 진격하였으며, 일부는 남서쪽 다대포진으로 항하였다.",
+    "description_en": "battle fought at Busan on 24 May 1592 between Japanese and Korean forces",
+    "event_year": 1592,
+    "event_month": 5,
+    "event_day": 24,
+    "precision": 11,
+    "event_type": "RANGE",
+    "end_year": 1592,
+    "end_month": 5,
+    "end_day": 25,
+    "category_name": "전쟁",
+    "location": "Busanjinseong",
+    "sitelinks": 15,
+    "wikidata_classes": [],
+    "country_codes": [
+      "KR"
+    ],
+    "extra_categories": [
+      "조선"
+    ]
+  },
+  {
+    "qid": "Q712464",
+    "title_ko": "제너럴셔먼호 사건",
+    "title_en": "General Sherman incident",
+    "description_ko": "제너럴셔먼호 사건(-號事件, 영어: General Sherman incident)은 1866년(조선 고종 3년, 미국 앤드루 존슨 대통령 2년) 음력 7월 27일(양력 9월 2일) 평양 군민(軍民)들이 중무장한 미국 상선(商船) 제너럴셔먼호(SS General Sherman)를 격침시킨 사건이다. 양력 8월 중순에 서해안에 출물한 제너럴셔면호는 통상이 거절당했음에도 불법으로 대동강을 거슬러 올라가며 수로탐사를 하는 등 행패를 부렸다. 이에 평양 관민이 합심하여 화공전 펼친 끝에 배를 소각, 격침시키고 승무원 전원을 사살하였다.",
+    "description_en": "battle",
+    "event_year": 1866,
+    "event_month": 9,
+    "event_day": 5,
+    "precision": 11,
+    "event_type": "POINT",
+    "end_year": null,
+    "end_month": null,
+    "end_day": null,
+    "category_name": "전쟁",
+    "location": "Taedong River",
+    "sitelinks": 14,
+    "wikidata_classes": [],
+    "country_codes": [
+      "KR"
+    ],
+    "extra_categories": [
+      "조선"
+    ]
+  },
+  {
+    "qid": "Q279611",
+    "title_ko": "행주대첩",
+    "title_en": "Siege of Haengju",
+    "description_ko": "행주대첩(幸州大捷)은 임진왜란 때 행주산성에서 권율이 지휘하는 조선군과 백성들이 일본군과 싸워 크게 이긴 전투이다.",
+    "description_en": "1593 siege",
+    "event_year": 1593,
+    "event_month": 3,
+    "event_day": 14,
+    "precision": 11,
+    "event_type": "POINT",
+    "end_year": null,
+    "end_month": null,
+    "end_day": null,
+    "category_name": "전쟁",
+    "location": "Haengjusanseong",
+    "sitelinks": 12,
+    "wikidata_classes": [],
+    "country_codes": [
+      "KR"
+    ],
+    "extra_categories": [
+      "조선"
+    ]
+  },
+  {
+    "qid": "Q497034",
+    "title_ko": "상주 전투",
+    "title_en": "Battle of Sangju",
+    "description_ko": "상주 전투(尙州戰鬪)는 대한민국 경상북도 상주에서 일어난 전투이다.\n\n상주 전투 (1592년)는 임진왜란 중의 전투이다.\n상주 전투 (1950년)는 한국 전쟁 중의 전투이다.",
+    "description_en": "battle of the 1592 Japanese invasion of Korea",
+    "event_year": 1592,
+    "event_month": 6,
+    "event_day": 3,
+    "precision": 11,
+    "event_type": "POINT",
+    "end_year": null,
+    "end_month": null,
+    "end_day": null,
+    "category_name": "전쟁",
+    "location": "Sangju",
+    "sitelinks": 12,
+    "wikidata_classes": [],
+    "country_codes": [
+      "KR"
+    ],
+    "extra_categories": [
+      "조선"
+    ]
+  },
+  {
+    "qid": "Q497348",
+    "title_ko": "동래성 전투",
+    "title_en": "Siege of Dongnae",
+    "description_ko": "동래성 전투(東萊城戰鬪)는 1592년 5월 25일(음력 4월 15일) 부산진 전투에 이어 일어난 임진왜란 두 번째 전투로 동래 부사 송상현이 2시간을 버티며 일본군을 끝까지 막아냈으나 결국 전사하고 동래성은 함락되었다. 이 전투에 패배로 대구.상주,김해,밀양,성주,충주까지 함락되고 만다.",
+    "description_en": "1592 siege",
+    "event_year": 1592,
+    "event_month": 4,
+    "event_day": 15,
+    "precision": 11,
+    "event_type": "POINT",
+    "end_year": null,
+    "end_month": null,
+    "end_day": null,
+    "category_name": "전쟁",
+    "location": "Dongnaeeupseong Fortress",
+    "sitelinks": 12,
+    "wikidata_classes": [],
+    "country_codes": [
+      "KR"
+    ],
+    "extra_categories": [
+      "조선"
+    ]
+  },
+  {
+    "qid": "Q626206",
+    "title_ko": "일성록",
+    "title_en": "Ilseongnok",
+    "description_ko": "일성록(한국 한자: 日省錄, 영어: Ilseongnok)은 1752년(영조 28년)부터 1910년(융희 4년)까지의 동정과 국정의 제반사항을 기록한 일기체 연대기이다. 흔히 '왕의 일기'라고 표현한다. 일성록의 모태가 된 것은 정조가 세손 시절부터 쓴 존현각일기(尊賢閣日記)이다.\n총 2,329책이 모두 전해지며 21개월분이 빠져있다.",
+    "description_en": "daily record of events at the Joseon court from 1760 to 1910",
+    "event_year": 1760,
+    "event_month": 1,
+    "event_day": 1,
+    "precision": 9,
+    "event_type": "RANGE",
+    "end_year": 1910,
+    "end_month": 1,
+    "end_day": 1,
+    "category_name": "정치",
+    "location": null,
+    "sitelinks": 12,
+    "wikidata_classes": [],
+    "country_codes": [
+      "KR"
+    ],
+    "extra_categories": [
+      "조선"
+    ]
+  },
+  {
+    "qid": "Q4871272",
+    "title_ko": "임진강 전투",
+    "title_en": "Battle of Imjin River",
+    "description_ko": "설마리 전투 또는 임진강 전투(Battle of the Imjin River), 글로스터 고지 전투(Battle of Gloster Hill)는 한국 전쟁 중, 1951년 4월 22일부터 4월 25일 사이에 파주시 적성면 감악산 부근에서 벌어진 전투이다. 중국 인민해방군은 임진강 하류의 유엔군 진지를 공격하였는데, 이는 1951년 3월 수복된 대한민국의 수도 서울을 다시 점령하기 위한 것이었다.\n중국인민지원군은 대한민국의 수도였던 서울을 점령하기 위해 임진강 지역을 공격했다. 이 전투는 중공군 춘계공세의 일부로, 춘계공세의 목적은 1951년 3월 유엔군의 성공적인 반격 작전 이후 유엔군이 38도선 북쪽의 캔자스 선까지 진출한 것에 맞서 유엔군에 잃은 영토를 되찾는 것이었다.\n\n전투가 벌어진 지역은 주로 영국군으로 구성된 제29보병여단에 의해 방어되었다.",
+    "description_en": "battle of the 1592 Japanese invasion of Korea",
+    "event_year": 1592,
+    "event_month": 7,
+    "event_day": 7,
+    "precision": 11,
+    "event_type": "POINT",
+    "end_year": null,
+    "end_month": null,
+    "end_day": null,
+    "category_name": "전쟁",
+    "location": "Imjin River",
+    "sitelinks": 11,
+    "wikidata_classes": [],
+    "country_codes": [
+      "KR"
+    ],
+    "extra_categories": [
+      "조선"
+    ]
+  },
+  {
+    "qid": "Q2741468",
+    "title_ko": "조선 양",
+    "title_en": "Korean yang",
+    "description_ko": "양(兩) 또는 냥은 1892년부터 1900년까지 쓰이던 한국의 화폐로, 1냥은 10전(錢), 100푼(分, 분)으로 나뉘며, 5냥은 1환(圜)이다. 1900년 대한제국 원으로 대체되었다.",
+    "description_en": "currency",
+    "event_year": 1892,
+    "event_month": 1,
+    "event_day": 1,
+    "precision": 9,
+    "event_type": "RANGE",
+    "end_year": 1902,
+    "end_month": 1,
+    "end_day": 1,
+    "category_name": "정치",
+    "location": null,
+    "sitelinks": 11,
+    "wikidata_classes": [],
+    "country_codes": [
+      "KR"
+    ],
+    "extra_categories": [
+      "조선"
+    ]
+  },
+  {
+    "qid": "Q486979",
+    "title_ko": "탄금대 전투",
+    "title_en": "Battle of Ch'ungju",
+    "description_ko": "충주 탄금대 전투(忠州彈琴臺戰鬪)는 1592년 6월 7일 임진왜란 당시 신립이 이끄는 조선군이 충주 탄금대에서 전멸한 전투이다.",
+    "description_en": "1592 battle",
+    "event_year": 1592,
+    "event_month": 4,
+    "event_day": 28,
+    "precision": 11,
+    "event_type": "POINT",
+    "end_year": null,
+    "end_month": null,
+    "end_day": null,
+    "category_name": "전쟁",
+    "location": "Q28700065",
+    "sitelinks": 10,
+    "wikidata_classes": [],
+    "country_codes": [
+      "KR"
+    ],
+    "extra_categories": [
+      "조선"
+    ]
+  },
+  {
+    "qid": "Q490935",
+    "title_ko": "울산성 전투",
+    "title_en": "Siege of Ulsan",
+    "description_ko": "울산성 전투는 1598년 1월 29일부터 2월 9일, 그리고 10월부터 11월 2일까지 조선-명나라 연합군과 일본군이 울산왜성과 그 일대에서 두 차례 벌인 전투를 의미한다. 연합군은 울산왜성이 완공되기 이전 일본군을 공격하였으나 가토 기요마사는 연합군을 격퇴하였다. 1차 전투 당시 일본군 수군과 육군을 포함해 총 13,000명의 병력이 원군으로 오자 연합군은 사기가 꺾였고, 결국 연합군은 1차 전투에서 후퇴하던 중 1만 명이 일본군에 사살되었다.\n연합군은 1598년 10월부터 다시 울산성을 공격했으나 울산성의 방어 시설과 수비가 튼튼하여 연합군은 성을 직접 공격하는 것이 불가능하였다.",
+    "description_en": "1597 siege",
+    "event_year": 1597,
+    "event_month": 12,
+    "event_day": 23,
+    "precision": 11,
+    "event_type": "RANGE",
+    "end_year": 1598,
+    "end_month": 1,
+    "end_day": 4,
+    "category_name": "전쟁",
+    "location": "Ulsan Castle",
+    "sitelinks": 10,
+    "wikidata_classes": [],
+    "country_codes": [
+      "KR"
+    ],
+    "extra_categories": [
+      "조선"
+    ]
+  },
+  {
+    "qid": "Q1047445",
+    "title_ko": "다대포 전투",
+    "title_en": "Battle of Dadaejin",
+    "description_ko": "다대포 전투(多大浦戰鬪)는 1592년 임진왜란 당시 초반에 벌어진 전투로 병력, 식량, 무기 등 모든 것이 부족했던 조선군이 완패하고 다대포성은 함락되었다.",
+    "description_en": "1592 siege",
+    "event_year": 1592,
+    "event_month": 5,
+    "event_day": 24,
+    "precision": 11,
+    "event_type": "POINT",
+    "end_year": null,
+    "end_month": null,
+    "end_day": null,
+    "category_name": "전쟁",
+    "location": "Q97232587",
+    "sitelinks": 10,
+    "wikidata_classes": [],
+    "country_codes": [
+      "KR"
+    ],
+    "extra_categories": [
+      "조선"
+    ]
+  },
+  {
+    "qid": "Q488535",
+    "title_ko": "아관파천",
+    "title_en": "Gojong's internal exile to the Russian legation",
+    "description_ko": "1896년 2월 11일부터 1897년 2월 20일까지 1년간 조선 고종과 세자가 경복궁을 떠나, 어가를 러시아 제국 공사관으로 옮겨서 거처한 사건",
+    "description_en": "event (1896–1897) in which Gojong, king of Joseon, and the crown prince (the future Sunjong of Joseon) fled to the Russian legation in Seoul in fear of a coup d'état and in reaction to the murder of his wife Empress Myeongseong by the Japanese empire",
+    "event_year": 1896,
+    "event_month": 2,
+    "event_day": 11,
+    "precision": 11,
+    "event_type": "RANGE",
+    "end_year": 1897,
+    "end_month": 2,
+    "end_day": 20,
+    "category_name": "정치",
+    "location": "Jeong-dong",
+    "sitelinks": 9,
+    "wikidata_classes": [],
+    "country_codes": [
+      "KR"
+    ],
+    "extra_categories": [
+      "조선"
+    ]
+  },
+  {
+    "qid": "Q3420016",
+    "title_ko": "평양 전투 (1592년)",
+    "title_en": "Siege of Pyongyang",
+    "description_ko": "'평양 전투에는 다음과 같은 것들이 있다.\n\n평양성 전투 (371년): 백제가 고구려의 평양성을 공격한 전투로 백제가 승리한 전투이다.\n1592년 평양 전투: 임진왜란에 일본군과  사이에\n제1차 평양성 전투: 1592년 7월 21일\n제2차 평양성 전투: 1592년 8월 23일\n제3차 평양성 전투: 1592년 9월 6일~1593년 2월 8일\n제4차 평양성 전투: 1593년 2월 6일 ~ 9일\n평양 전투 (1894년): 청일 전쟁에서 일본군과 청나라군 간의 전투이다. 청나라군이 패하여 평양은 일본군이 점령하게 된다.\n평양 전투 (1950년): 6.25 전쟁 중 대한민국 육군 제1보병사단, 미국 육군 제1기병사단 등이 평양을 함락시킨 전투이다.",
+    "description_en": "1592 fought during the Japanese invasions of Korea",
+    "event_year": 1592,
+    "event_month": 7,
+    "event_day": 19,
+    "precision": 11,
+    "event_type": "RANGE",
+    "end_year": 1592,
+    "end_month": 7,
+    "end_day": 24,
+    "category_name": "전쟁",
+    "location": "Pyongyang Castle",
+    "sitelinks": 9,
+    "wikidata_classes": [],
+    "country_codes": [
+      "KR"
+    ],
+    "extra_categories": [
+      "조선"
+    ]
+  },
+  {
+    "qid": "Q14475856",
+    "title_ko": "제4차 평양성 전투",
+    "title_en": "Siege of Pyongyang",
+    "description_ko": "평양성 포위전은 명나라-조선 연합군과 고니시 유키나가 휘하 일본 제1 사단이 싸운 군사적 충돌이었다. 이 전투는 연합군의 승리로 끝났지만, 1593년 2월 8일 밤 잔여 일본군은 평양시에서 성공적으로 퇴각했다.",
+    "description_en": "fought during the Japanese invasions of Korea in 1593",
+    "event_year": 1593,
+    "event_month": 2,
+    "event_day": 6,
+    "precision": 11,
+    "event_type": "RANGE",
+    "end_year": 1593,
+    "end_month": 2,
+    "end_day": 8,
+    "category_name": "전쟁",
+    "location": "Pyongyang Castle",
+    "sitelinks": 9,
+    "wikidata_classes": [],
+    "country_codes": [
+      "KR"
+    ],
+    "extra_categories": [
+      "조선"
+    ]
+  },
+  {
+    "qid": "Q484475",
+    "title_ko": "사천 전투",
+    "title_en": "Battle of Sacheon",
+    "description_ko": "사천 전투의 다른 뜻은 다음과 같다.\n\n사천 해전\n사천성 전투",
+    "description_en": "Korean and Chinese siege against Japanese in 1598",
+    "event_year": 1598,
+    "event_month": 11,
+    "event_day": 6,
+    "precision": 11,
+    "event_type": "RANGE",
+    "end_year": 1598,
+    "end_month": 11,
+    "end_day": 11,
+    "category_name": "전쟁",
+    "location": null,
+    "sitelinks": 7,
+    "wikidata_classes": [],
+    "country_codes": [
+      "KR"
+    ],
+    "extra_categories": [
+      "조선"
+    ]
+  },
+  {
+    "qid": "Q484733",
+    "title_ko": "제2차 진주성 전투",
+    "title_en": "Siege of Jinju",
+    "description_ko": "제2차 진주성 전투(第二次晋州城戰鬪)는 1593년 7월 20일(음력 6월 22일)부터 같은 달 27일(음력 6월 29일)까지 진주성에서 벌어진 전투이다. 1593년 전쟁이 휴전기로 접어들면서 명나라와 일본 사이에 강화회담이 있었는데 그 결과 일본군은 북부 및 수도권 지역에서 철수, 남해안까지 물러나게 된다. 도요토미 히데요시는 그 과정에서 일본군 전군에 진주성을 공격할 것을 명령한다.",
+    "description_en": "1593 siege",
+    "event_year": 1593,
+    "event_month": 7,
+    "event_day": 21,
+    "precision": 11,
+    "event_type": "RANGE",
+    "end_year": 1593,
+    "end_month": 7,
+    "end_day": 27,
+    "category_name": "전쟁",
+    "location": "Jinju Fortress",
+    "sitelinks": 7,
+    "wikidata_classes": [],
+    "country_codes": [
+      "KR"
+    ],
+    "extra_categories": [
+      "조선"
+    ]
+  },
+  {
+    "qid": "Q623621",
+    "title_ko": "왜교성 전투",
+    "title_en": "Siege of Suncheon",
+    "description_ko": "왜교성 전투(倭橋城戰鬪)는 정유재란에 벌어진 조명연합군과 일본군이 격전한 전투며 이 전투에 패배는 훗날 7년의 전쟁을 끝내는 계기로 이어진다.",
+    "description_en": "On January 30 ( February 11 ), 1829 a crowd of Tehranis, led by people of Allahar Khan, attacked the Russian embassy.",
+    "event_year": 1598,
+    "event_month": 10,
+    "event_day": 19,
+    "precision": 11,
+    "event_type": "RANGE",
+    "end_year": 1598,
+    "end_month": 11,
+    "end_day": 2,
+    "category_name": "전쟁",
+    "location": "Suncheon Castle",
+    "sitelinks": 7,
+    "wikidata_classes": [],
+    "country_codes": [
+      "KR"
+    ],
+    "extra_categories": [
+      "조선"
+    ]
+  },
+  {
+    "qid": "Q625131",
+    "title_ko": "남원 전투",
+    "title_en": "Siege of Namwon",
+    "description_ko": "남원 전투(南原戰鬪) 또는 남원성 전투(南原城戰鬪)는 1597년(선조 30년) 정유재란 당시 일본군이 전라도 남원성을 공격해 조명연합군과 벌인 전투로, 조명연합군뿐만 아니라 각지의 의병장들과 군민들까지 합세해 전투를 치렀으나 결국 패배해 모두 살해당하고 지휘관 이복남은 자결하였다.  남원에 함락은 훗날 황석산성에 비극으로 이어진다. 그 뿐만 아니라 전주성까지 함락되는 비극이 이어진다.\n남원성이 일본군에게 점령당하자 이복남, 임현, 정기원, 신호 등은 성문으로 잠입하여 성을 점령한 5만 8천명의 일본군과 교전하였으나 중과부적으로 패하고 전사하였다.",
+    "description_en": "1597 siege",
+    "event_year": 1597,
+    "event_month": 9,
+    "event_day": 23,
+    "precision": 11,
+    "event_type": "RANGE",
+    "end_year": 1597,
+    "end_month": 9,
+    "end_day": 26,
+    "category_name": "전쟁",
+    "location": "Namwon-eupseong Fortress",
+    "sitelinks": 7,
+    "wikidata_classes": [],
+    "country_codes": [
+      "KR"
+    ],
+    "extra_categories": [
+      "조선"
+    ]
+  },
+  {
+    "qid": "Q4871338",
+    "title_ko": "직산 전투",
+    "title_en": "Battle of Jiksan",
+    "description_ko": "직산 전투는 정유재란 기간 중 1597년 10월 16일 명나라와 일본군 사이에 벌어진 군사적 충돌이다. 이 전투는 양측 모두의 철수로 끝났다. 이 전투에서 일본군은 한성에 가장 가까이 도달했다.",
+    "description_en": "1597 battle",
+    "event_year": 1597,
+    "event_month": 10,
+    "event_day": 16,
+    "precision": 11,
+    "event_type": "POINT",
+    "end_year": null,
+    "end_month": null,
+    "end_day": null,
+    "category_name": "전쟁",
+    "location": null,
+    "sitelinks": 7,
+    "wikidata_classes": [],
+    "country_codes": [
+      "KR"
+    ],
+    "extra_categories": [
+      "조선"
+    ]
+  },
+  {
+    "qid": "Q14631695",
+    "title_ko": "제1차 진주성 전투",
+    "title_en": "Siege of Jinju",
+    "description_ko": "제1차 진주성 전투(第1次晋州城戰鬪) 혹은 진주대첩(晋州大捷)은 조선 중기 당시 임진왜란의 한 공방전이다. 이 전투는 권율의 행주대첩과 이순신의 한산도 대첩과 더불어 3대 대첩이다. 훗날 조선군은 1년 뒤 제2차 진주성 전투에서 패배하게 된다.",
+    "description_en": "1592 Part of Japanese invasions of Korea",
+    "event_year": 1592,
+    "event_month": 11,
+    "event_day": 8,
+    "precision": 11,
+    "event_type": "RANGE",
+    "end_year": 1592,
+    "end_month": 11,
+    "end_day": 13,
+    "category_name": "전쟁",
+    "location": "Jinju Fortress",
+    "sitelinks": 7,
+    "wikidata_classes": [],
+    "country_codes": [
+      "KR"
+    ],
+    "extra_categories": [
+      "조선"
+    ]
+  },
+  {
+    "qid": "Q484029",
+    "title_ko": "벽제관 전투",
+    "title_en": "Battle of Byeokjegwan",
+    "description_ko": "벽제관 전투(碧蹄館戰鬪)는 1593년 2월 27일(음력 1월 27일) 임진왜란 중 벽제관(현재의 고양시 덕양구 벽제동 일대)에서 일어난 조명연합군과 일본군의 전투이다. 이 전투의 패배로 인해 권율에 행주산성이 표적이 된다.",
+    "description_en": "1593 battle of the Japanese invasions of Korea",
+    "event_year": 1593,
+    "event_month": 2,
+    "event_day": 27,
+    "precision": 11,
+    "event_type": "POINT",
+    "end_year": null,
+    "end_month": null,
+    "end_day": null,
+    "category_name": "전쟁",
+    "location": null,
+    "sitelinks": 6,
+    "wikidata_classes": [],
+    "country_codes": [
+      "KR"
+    ],
+    "extra_categories": [
+      "조선"
+    ]
+  },
+  {
+    "qid": "Q5371662",
+    "title_ko": "광무개혁",
+    "title_en": "Gwangmu Reform",
+    "description_ko": "광무개혁(光武改革)은 1897년부터 1904년까지 고종이 시행한 개혁을 말한다.",
+    "description_en": "series of modernizing reforms (1897–1904) in the Korean Empire",
+    "event_year": 1897,
+    "event_month": 1,
+    "event_day": 1,
+    "precision": 9,
+    "event_type": "RANGE",
+    "end_year": 1904,
+    "end_month": 1,
+    "end_day": 1,
+    "category_name": "정치",
+    "location": null,
+    "sitelinks": 6,
+    "wikidata_classes": [],
+    "country_codes": [
+      "KR"
+    ],
+    "extra_categories": [
+      "조선"
+    ]
+  },
+  {
+    "qid": "Q12599044",
+    "title_ko": "북관대첩",
+    "title_en": "Battle of Bukgwan",
+    "description_ko": "북관대첩(北關大捷) 또는 백탑교 전투(白塔郊戰鬪)는 1592년~1593년 함경도에서 의병장 정문부가 경성과 길주 등지에서 일본의 가토 기요마사의 군대와 반란을 일으킨 국경인과 여진족들을 모두 무찌르고 함경도를 탈환한 전투이다.",
+    "description_en": "battle in Hamgyeongdo (1592-1593)",
+    "event_year": 1592,
+    "event_month": 9,
+    "event_day": 20,
+    "precision": 11,
+    "event_type": "RANGE",
+    "end_year": 1593,
+    "end_month": 2,
+    "end_day": 28,
+    "category_name": "전쟁",
+    "location": null,
+    "sitelinks": 6,
+    "wikidata_classes": [],
+    "country_codes": [
+      "KR"
+    ],
+    "extra_categories": [
+      "조선"
+    ]
+  },
+  {
+    "qid": "Q493211",
+    "title_ko": "삼포왜란",
+    "title_en": "Disturbance of the Three Ports",
+    "description_ko": "삼포왜란(三浦倭亂, 1510년 4월 4일 ~ 4월 19일) 또는 경오왜변(庚午倭變)은 1510년(중종 5년) 4월 4일에 제포(내이포), 부산포, 염포의 삼포에 거주하고 있던 왜인들이 쓰시마(對馬)의 다이칸(代官) 소 모리치카(宗盛親)의 지원을 받아 일으킨 변란을 말한다.",
+    "description_en": "riots in 1510 by Japanese citizens residing in the Joseon port cities Dongnae, Changwon and Ulsan",
+    "event_year": 1510,
+    "event_month": 4,
+    "event_day": 29,
+    "precision": 11,
+    "event_type": "POINT",
+    "end_year": null,
+    "end_month": null,
+    "end_day": null,
+    "category_name": "사회",
+    "location": "Three Ports",
+    "sitelinks": 5,
+    "wikidata_classes": [],
+    "country_codes": [
+      "KR"
+    ],
+    "extra_categories": [
+      "조선"
+    ]
+  },
+  {
+    "qid": "Q5644543",
+    "title_ko": null,
+    "title_en": "Hamgyong Campaign",
+    "description_ko": null,
+    "description_en": "1592 military campaign",
+    "event_year": 1592,
+    "event_month": 10,
+    "event_day": 1,
+    "precision": 10,
+    "event_type": "POINT",
+    "end_year": null,
+    "end_month": null,
+    "end_day": null,
+    "category_name": "전쟁",
+    "location": "Hamgyong",
+    "sitelinks": 5,
+    "wikidata_classes": [],
+    "country_codes": [
+      "KR"
+    ],
+    "extra_categories": [
+      "조선"
+    ]
+  },
+  {
+    "qid": "Q12612946",
+    "title_ko": "이치 전투",
+    "title_en": "Battle of Ichi",
+    "description_ko": "이치 전투(梨峙戰鬪)는 1592년 8월 14일(음력 7월 8일) 전라도 진산군과 고산현 경계의 이치(배고개)에서 임시 도절제사 권율(權慄)과 의병장 황박,동복현감 황진(黃進)이 이끄는 1천여명의 조선군이 왜장 고바야카와 다카카게(小早川隆景)가 이끄는 제6군 2천여명과 맞서 싸워 승리를 거둔 전투로 일본의 전라도 진격작전을 저지했다.",
+    "description_en": "1592 battle",
+    "event_year": 1592,
+    "event_month": 8,
+    "event_day": 14,
+    "precision": 11,
+    "event_type": "POINT",
+    "end_year": null,
+    "end_month": null,
+    "end_day": null,
+    "category_name": "전쟁",
+    "location": "Q12597696",
+    "sitelinks": 5,
+    "wikidata_classes": [],
+    "country_codes": [
+      "KR"
+    ],
+    "extra_categories": [
+      "조선"
+    ]
+  },
+  {
+    "qid": "Q5370139",
+    "title_ko": "개국",
+    "title_en": "Gaeguk",
+    "description_ko": "개국(開國)에는 다음 뜻이 있다.\n\n개국(開國): 나라를 세우는 일\n개국(開國)은 신라의 연호이다.\n개국(開國)은 조선의 연호이다.\n개국은 KBS에서 방영한 드라마이다.\n개국원종공신록권(開國原從功臣錄券)은 조선 시대에 제작된 대한민국의 문화재이다.",
+    "description_en": "First era name of Korea (Joseon) (1894-1895) based on 1392",
+    "event_year": 1894,
+    "event_month": 1,
+    "event_day": 1,
+    "precision": 9,
+    "event_type": "RANGE",
+    "end_year": 1895,
+    "end_month": 1,
+    "end_day": 1,
+    "category_name": "정치",
+    "location": null,
+    "sitelinks": 4,
+    "wikidata_classes": [],
+    "country_codes": [
+      "KR"
+    ],
+    "extra_categories": [
+      "조선"
+    ]
+  },
+  {
+    "qid": "Q8018309",
+    "title_ko": "광무",
+    "title_en": "Gwangmu",
+    "description_ko": "광무(光武)는 다음 뜻으로 쓰인다.\n\n고종 (대한제국)\n광무 (연호): 대한제국의 연호\n후한 광무제\n광무 (기업)",
+    "description_en": "Korean era name (17 August 1897 – 2 August 1907)",
+    "event_year": 1897,
+    "event_month": 8,
+    "event_day": 17,
+    "precision": 11,
+    "event_type": "RANGE",
+    "end_year": 1907,
+    "end_month": 8,
+    "end_day": 2,
+    "category_name": "정치",
+    "location": null,
+    "sitelinks": 4,
+    "wikidata_classes": [],
+    "country_codes": [
+      "KR"
+    ],
+    "extra_categories": [
+      "조선"
+    ]
+  },
+  {
+    "qid": "Q7510523",
+    "title_ko": "영원산성 전투",
+    "title_en": "Siege of Yeongwon",
+    "description_ko": "영원산성 전투(領願山城戰鬪)는 임진왜란 초기 원주 목사 김제갑이 강원도로 쳐들어오는 왜군에 대항해 영원산성에서 벌인 항전으로 군민 모두가 항전하여 시간을 벌었기 때문에 강원도 지역 중 유일하게 원주 백성들만이 무사히 대피할 수 있었다.",
+    "description_en": "1592 siege",
+    "event_year": 1592,
+    "event_month": 8,
+    "event_day": 23,
+    "precision": 11,
+    "event_type": "RANGE",
+    "end_year": 1592,
+    "end_month": 8,
+    "end_day": 25,
+    "category_name": "전쟁",
+    "location": "Yeongwon Castle",
+    "sitelinks": 4,
+    "wikidata_classes": [],
+    "country_codes": [
+      "KR"
+    ],
+    "extra_categories": [
+      "조선"
+    ]
+  },
+  {
+    "qid": "Q16190986",
+    "title_ko": "용인 전투",
+    "title_en": "Battle of Yongin",
+    "description_ko": "용인 전투(龍仁戰鬪)는 임진왜란 당시 1592년 7월 13일(음력 6월 5일) 경기도 용인에서 이광과 윤선각 등이 이끄는 전라도 이광 4만, 전라도방어사 곽영 2만 + 충청도 윤선각 1만 5천의 약 7~8만 남도근왕군(南道勤王軍)이 겨우 1600명의 일본군에게 크게 패한 전투이다. 이 전투는 한국사 5대패전 (칠천량해전,쌍령전투,현리전투,주필산 전투)중 하나이다. 훗날 권율은 황진과 함께 와신상담을 성공하고 행주대첩에서 성공을 거두었다.",
+    "description_en": "1592 battle",
+    "event_year": 1592,
+    "event_month": 7,
+    "event_day": 13,
+    "precision": 11,
+    "event_type": "POINT",
+    "end_year": null,
+    "end_month": null,
+    "end_day": null,
+    "category_name": "전쟁",
+    "location": "Yongin",
+    "sitelinks": 4,
+    "wikidata_classes": [],
+    "country_codes": [
+      "KR"
+    ],
+    "extra_categories": [
+      "조선"
+    ]
+  },
+  {
+    "qid": "Q21060235",
+    "title_ko": "제2차 평양성 전투",
+    "title_en": "Battle of Pyongyang",
+    "description_ko": "제2차 평양성 전투(第二次平壤城戰鬪)는 임진왜란 중 발생한 전투이다. 평양성이 함락된 후 의주에 피란하던 선조는 여러 차례 명나라에 사신을 파견해 원군을 요청하였고 명나라 황제 만력제는 요동 부총병이자 당시 명나라에서 이름난 장수였던 조승훈을 우군 부총병으로 임명하고 3000명의 군사를 주어 조선의 명나라 1차 원군으로 파견되게 한다.\n조승훈의 3000명 명군은 1592년 7월 초순 압록강을 건너 조선의 도원수 김명원 휘하의 3000명 군사와 합류해 평양 북방 순안군에 집결하였다. 조선 조정에서는 명군을 지원하였고 조승훈은 평양에 도착하였다.\n당시 평양성에는 1만 8700명의 고니시 유키나가와 1만 1000명의 구로다 나가마사가 있었는데 구로다 나가마사의 병력은 황해도로 옮겨갔는데 이를 본 척후장 순안 군수 황원이 적의 주력 부대가 빠져 나가는 것으로 잘못 보고하여 8월 23일(음력 7월 17일) 아침 조명 연합군은 평양성으로 진격했다.\n평양성의 문이 열려 있고 적들이 보이지 않자 명군의 선봉장 사유는 공을 세우고 싶은 마음에 병력을 모두 평양성 안으로 진격시켰고 이것이 치명적인 패배의 원인이 되어 길 양편에 매복하고 있던 일본군의 조총 사격으로 크게 패해 사유가 일본군의 집중 사격을 받아 전사하고 부장 천총과 장국충 등도 전사하였다.\n결국 부상까지 입은 조승훈은 2700 남은 병력만 이끌고 8월 24일(음력 7월 18일) 요동으로 돌아가고 말았고 조명 연합군 최초의 전투이자 최초의 패배로 끝났다.",
+    "description_en": "1592 battle in the Japanese invasion of Korea",
+    "event_year": 1592,
+    "event_month": 8,
+    "event_day": 23,
+    "precision": 11,
+    "event_type": "POINT",
+    "end_year": null,
+    "end_month": null,
+    "end_day": null,
+    "category_name": "전쟁",
+    "location": "Pyongyang Castle",
+    "sitelinks": 4,
+    "wikidata_classes": [],
+    "country_codes": [
+      "KR"
+    ],
+    "extra_categories": [
+      "조선"
+    ]
+  },
+  {
+    "qid": "Q12615728",
+    "title_ko": "정선 필 인왕제색도",
+    "title_en": "Inwang jesaekdo",
+    "description_ko": "《정선 필 인왕제색도》(仁王霽色圖)는 겸재 정선이 비 내린 뒤의 인왕산을 그린 산수화이다. 대한민국의 국보 제216호로 지정되어있다.",
+    "description_en": "painting by Jeong Seon",
+    "event_year": 1751,
+    "event_month": 1,
+    "event_day": 1,
+    "precision": 9,
+    "event_type": "POINT",
+    "end_year": null,
+    "end_month": null,
+    "end_day": null,
+    "category_name": "정치",
+    "location": "Ho-Am Art Museum",
+    "sitelinks": 3,
+    "wikidata_classes": [],
+    "country_codes": [
+      "KR"
+    ],
+    "extra_categories": [
+      "조선"
+    ]
+  },
+  {
+    "qid": "Q4870736",
+    "title_ko": "청주 전투",
+    "title_en": "Battle of Cheongju",
+    "description_ko": "전투 전투 는 다음의 전투를 의미한다.\n\n청주 전투 (1592년)\n청주 전투 (1950년)",
+    "description_en": "1592 battle",
+    "event_year": 1592,
+    "event_month": 9,
+    "event_day": 6,
+    "precision": 11,
+    "event_type": "POINT",
+    "end_year": null,
+    "end_month": null,
+    "end_day": null,
+    "category_name": "전쟁",
+    "location": "Cheongju",
+    "sitelinks": 3,
+    "wikidata_classes": [],
+    "country_codes": [
+      "KR"
+    ],
+    "extra_categories": [
+      "조선"
+    ]
+  },
+  {
+    "qid": "Q4871075",
+    "title_ko": null,
+    "title_en": "Battle of Ganghwa",
+    "description_ko": null,
+    "description_en": "The Battle of Ganghwa was fought during the 1871 United States expedition to Korea, a conflict between Joseon and the United States. In May of that year, five Asiatic Squadron warships set sail from Japan to ascertain what happened to the crew of the SS General Sherman as well as to establish a trade treaty with the Hermit Kingdom similar to the one Commodore Perry had pressured Japan into adopting in the early 1850s. When American forces arrived in Korea, the originally peaceful mission turned into a battle when guns from a Korean fort suddenly opened fire on the Americans.",
+    "event_year": 1871,
+    "event_month": 6,
+    "event_day": 10,
+    "precision": 11,
+    "event_type": "RANGE",
+    "end_year": 1871,
+    "end_month": 6,
+    "end_day": 11,
+    "category_name": "전쟁",
+    "location": "Ganghwa Island",
+    "sitelinks": 3,
+    "wikidata_classes": [],
+    "country_codes": [
+      "KR"
+    ],
+    "extra_categories": [
+      "조선"
+    ]
+  },
+  {
+    "qid": "Q12601096",
+    "title_ko": "서울 문묘 은행나무",
+    "title_en": "Seoul Munmyo Ginkgo Tree",
+    "description_ko": "서울 문묘 은행나무(서울 文廟 銀杏나무)는 서울 문묘에 있는 은행나무이다. 1962년 12월 7일 대한민국의 천연기념물 제59호로 지정되었다.",
+    "description_en": "gingko tree (natural monument, South Korea)",
+    "event_year": 1398,
+    "event_month": 1,
+    "event_day": 1,
+    "precision": 9,
+    "event_type": "POINT",
+    "end_year": null,
+    "end_month": null,
+    "end_day": null,
+    "category_name": "정치",
+    "location": null,
+    "sitelinks": 3,
+    "wikidata_classes": [],
+    "country_codes": [
+      "KR"
+    ],
+    "extra_categories": [
+      "조선"
+    ]
+  },
+  {
+    "qid": "Q16177270",
+    "title_ko": "연안 전투",
+    "title_en": "Battle of Yonan",
+    "description_ko": "연안 전투(延安戰鬪)는 1592년 8월 28일부터 9월 2일까지 연안에서 황해도 초토사 이정암과 구로다 나가마사의 3군이 싸워 왜군을 물리친 전투를 말한다.\n본래 이조참의였던 이정암은 임진왜란 발발 후 선조가 몽진을 떠나자 따라가려 했으나 낙오되어 체직되었다. 이정암은 개성 유수 이정형과 개성을 수비하다가 개성이 함락되자 탈출해 백천에 도착한다. 백천에서 김덕성과 박춘영의 추대로 의병장이 되어 의병을 모집했고, 이정암은 조정으로부터 황해도 초토사라는 직위를 받아 옛날 자신이 부사로 있었던 연안으로 들어간다.\n이정암이 연안 부사로 있을 적에 이정암은 백성들에게 많은 선정을 베풀어 존경을 받고 있었고, 이정암은 연안읍성을 지키기로 결정하며 \"내가 드디어 죽을 곳을 찾았다.\"고 말한다.\n연안은 1591년 연안 부사였던 신각이 미리 전쟁 준비를 해 성을 수리하고 군량, 무기를 비축하는 등의 전쟁 준비가 되어 있었고, 이는 후에 이정암이 연안을 지키는 데 큰 도움이 된다.\n그러던 중 1592년 8월 28일, 왜군 3군 대장인 구로다 나가마사의 선봉대 약 1천여 명이 연안에 접근했고, 왜군의 기세를 보아 이정암에게 성을 버리자는 제안도 했으나, 이정암은 거부한다.\n왜군은 성을 포위하고 사신을 보내 작은 성으로 대군을 이길 수 없으니 항복하라는 서신을 보냈으나, 이정암은 사신에게 \"너희는 병(兵)으로 싸우나 우리는 의(義)로써 싸운다\"라는 글을 써 보낸다.\n그 후, 적병 하나가 말에 올라타고 성 쪽으로 엉덩이를 까고 볼기짝을 두드리며 도발을 했는데, 이출이 활을 꺼내고 발사해서 화살이 적병의 엉덩이에 명중해 말에서 떨어지니, 폭소가 터졌고, 이 날 오후엔 왜군의 장수 같은 자가 백마를 타고 성 주위에 접근하자 수문장 장응기가 활을 쏘아 적장의 가슴을 명중시켰고, 재빨리 성문을 열고 나가 적장의 목을 베어 와 의병의 사기가 올라갔다.\n이날 밤, 왜군이 사다리차를 타고 접근해 성 안에 불화살로 공격해 화재가 났으나, 때마침 역풍이 불어 바람이 바뀌어 화재는 진압되고, 오히려 불이 왜군 진영에 번져 왜군이 당황했다.\n8월 29일, 왜군은 본격적으로 조총을 쏘며 돌격했고, 이정암은 성벽에 오르는 왜군에게만 활을 쏘게 해 장기전에 대비하고, 끓는 물을 붙는 등 연안을 방어했다.\n9월 1일, 왜군 대장 구로다 나가마사가 직접 5000의 군사를 이끌고 지휘했다.",
+    "description_en": "1592 battle",
+    "event_year": 1592,
+    "event_month": 1,
+    "event_day": 1,
+    "precision": 9,
+    "event_type": "POINT",
+    "end_year": null,
+    "end_month": null,
+    "end_day": null,
+    "category_name": "전쟁",
+    "location": "Yonan County",
+    "sitelinks": 3,
+    "wikidata_classes": [],
+    "country_codes": [
+      "KR"
+    ],
+    "extra_categories": [
+      "조선"
+    ]
+  }
+]

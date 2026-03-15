@@ -12,6 +12,7 @@ export class SpatialIndex {
 
   /**
    * Query all events within the year range [fromYear, toYear].
+   * Includes range events whose startYear < fromYear but endYear >= fromYear.
    */
   query(fromYear: number, toYear: number): TimelineEvent[] {
     if (this.events.length === 0) return [];
@@ -19,11 +20,21 @@ export class SpatialIndex {
     const startIdx = this.lowerBound(fromYear);
     const endIdx = this.upperBound(toYear);
 
-    if (startIdx >= this.events.length || endIdx < 0 || startIdx > endIdx) {
-      return [];
+    // eventYear가 범위 안에 있는 이벤트
+    const result: TimelineEvent[] =
+      startIdx >= this.events.length || endIdx < 0 || startIdx > endIdx
+        ? []
+        : this.events.slice(startIdx, endIdx + 1);
+
+    // startIdx 이전의 range 이벤트 중 endYear >= fromYear인 것들 추가
+    for (let i = startIdx - 1; i >= 0; i--) {
+      const event = this.events[i];
+      if (event.eventType === 'RANGE' && event.endYear != null && event.endYear >= fromYear) {
+        result.push(event);
+      }
     }
 
-    return this.events.slice(startIdx, endIdx + 1);
+    return result;
   }
 
   clear(): void {

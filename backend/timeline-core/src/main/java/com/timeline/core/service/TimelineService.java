@@ -18,5 +18,5 @@ public interface TimelineService {
 
     void delete(Long id);
 
-    List<Timeline> search(Long fromYear, Long toYear, Long categoryId, PrecisionLevel minPrecisionLevel);
+    List<Timeline> search(Long fromYear, Long toYear, List<Long> categoryIds, List<Long> countryIds, PrecisionLevel minPrecisionLevel);
 }

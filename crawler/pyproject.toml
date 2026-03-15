@@ -1,0 +1,23 @@
+[project]
+name = "timeline-crawler"
+version = "0.1.0"
+description = "Historical event crawler for Timeline project"
+requires-python = ">=3.12"
+dependencies = [
+    "httpx>=0.28",
+    "SPARQLWrapper>=2.0",
+    "wikitextparser>=0.56",
+    "beautifulsoup4>=4.13",
+    "pydantic>=2.10",
+    "click>=8.1",
+]
+
+[project.scripts]
+timeline-crawler = "crawler.cli:main"
+
+[build-system]
+requires = ["setuptools>=75.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]

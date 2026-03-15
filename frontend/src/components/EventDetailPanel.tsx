@@ -58,6 +58,26 @@ export default function EventDetailPanel() {
     setSelectedEventId(null);
   };
 
+  const handleCorrectionRequest = () => {
+    if (!event) return;
+    const yearInfo = event.eventType === 'RANGE' && event.endYear
+      ? `${formatYear(event.eventYear)} ~ ${formatYear(event.endYear)}`
+      : formatYear(event.eventYear);
+    const subject = encodeURIComponent(`[이벤트 수정 요청] ${event.title}`);
+    const body = encodeURIComponent(
+      `이벤트 수정을 요청합니다.\n\n` +
+      `────────────────\n` +
+      `ID: ${event.id}\n` +
+      `제목: ${event.title}\n` +
+      `연도: ${yearInfo}\n` +
+      `태그: ${event.categoryNames.join(', ') || '-'}\n` +
+      (event.countryNames?.length ? `국가: ${event.countryNames.join(', ')}\n` : '') +
+      `────────────────\n\n` +
+      `수정 내용:\n\n`
+    );
+    window.open(`mailto:support@therene.co.kr?subject=${subject}&body=${body}`);
+  };
+
   const visible = showDetailPanel && !!selectedEventId;
 
   return (
@@ -118,6 +138,13 @@ export default function EventDetailPanel() {
               <span className="event-detail-panel__source-text">{event.source}</span>
             </div>
           )}
+
+          <button
+            className="event-detail-panel__correction-btn"
+            onClick={handleCorrectionRequest}
+          >
+            수정 요청
+          </button>
         </div>
       )}
     </div>

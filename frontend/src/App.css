@@ -683,6 +683,29 @@
 }
 
 /* =====================
+   Correction Request Button
+   ===================== */
+.event-detail-panel__correction-btn {
+  width: 100%;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  margin-top: 4px;
+}
+
+.event-detail-panel__correction-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(196, 146, 122, 0.08);
+}
+
+/* =====================
    Loading Bar (데이터 로딩 프로그레스)
    ===================== */
 .loading-bar {

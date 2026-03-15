@@ -1,6 +1,7 @@
 import { Container, Graphics, Text, TextStyle } from 'pixi.js';
 import type { CategoryRowConfig } from '../data/NodeTransformer';
 import { getCategoryColor } from '../scale/precisionMapping';
+import { formatTagName } from '../../utils/countryFlags';
 
 export const AXIS_HEIGHT = 60;
 export const ROW_PADDING = 8;
@@ -93,7 +94,7 @@ export class CategoryLaneLayer {
 
       // 태그 이름 텍스트
       const text = this.getLabel(labelIdx++);
-      text.text = layout.categoryName;
+      text.text = formatTagName(layout.categoryName);
       text.x = STRIPE_WIDTH + 8;
       text.y = layout.y + layout.height / 2;
       text.anchor.set(0, 0.5);

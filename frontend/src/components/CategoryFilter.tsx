@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useTimelineStore } from '../store/useTimelineStore';
 import { useCategories } from '../hooks/useViewportEvents';
 import { CATEGORY_COLORS } from '../engine/scale/precisionMapping';
+import { formatTagName } from '../utils/countryFlags';
 
 function hexColorToCSS(hex: number): string {
   return `#${hex.toString(16).padStart(6, '0')}`;
@@ -63,7 +64,7 @@ export default function CategoryFilter() {
             style={{ '--chip-color': color } as React.CSSProperties}
           >
             <span className="category-filter__dot" style={{ background: color }} />
-            {cat.name}
+            {formatTagName(cat.name)}
             <button
               className="category-filter__remove"
               onClick={() => handleRemove(cat.id)}
@@ -99,7 +100,7 @@ export default function CategoryFilter() {
                   onClick={() => handleToggle(cat.id)}
                 >
                   <span className="category-filter__dot" style={{ background: color }} />
-                  <span className="category-filter__option-name">{cat.name}</span>
+                  <span className="category-filter__option-name">{formatTagName(cat.name)}</span>
                   {isSelected && <span className="category-filter__check">✓</span>}
                 </button>
               );

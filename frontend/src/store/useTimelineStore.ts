@@ -25,6 +25,10 @@ interface TimelineState {
   viewMode: 'pixi' | 'three';
   setViewMode: (mode: 'pixi' | 'three') => void;
 
+  // Reference line
+  referenceLineYear: number | null;
+  setReferenceLineYear: (year: number | null) => void;
+
   // Search
   searchQuery: string;
   setSearchQuery: (query: string) => void;
@@ -61,6 +65,10 @@ export const useTimelineStore = create<TimelineState>((set) => ({
   setShowDetailPanel: (show) => set({ showDetailPanel: show }),
   viewMode: 'pixi',
   setViewMode: (mode) => set({ viewMode: mode }),
+
+  // Reference line
+  referenceLineYear: null,
+  setReferenceLineYear: (year) => set({ referenceLineYear: year }),
 
   // Search
   searchQuery: '',

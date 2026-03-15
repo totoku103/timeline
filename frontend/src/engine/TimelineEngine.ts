@@ -47,6 +47,7 @@ export class TimelineEngine {
   onEventClick: ((event: TimelineEvent) => void) | null = null;
   onEventHover: ((event: TimelineEvent | null) => void) | null = null;
   onViewportChange: ((viewport: Viewport) => void) | null = null;
+  onReferenceLineChange: ((year: number | null) => void) | null = null;
 
   constructor() {
     this.app = new Application();
@@ -268,6 +269,7 @@ export class TimelineEngine {
       const year = this.referenceLineLayer.screenToYear(pos.x, vp);
       this.referenceLineLayer.setYear(year);
       this.referenceLineLayer.update(vp, Math.max(vp.height, this.categoryLaneLayer.getTotalHeight()));
+      this.onReferenceLineChange?.(year);
       (this.app.canvas as HTMLElement).style.cursor = 'col-resize';
       return;
     }
@@ -428,6 +430,7 @@ export class TimelineEngine {
     const year = this.referenceLineLayer.screenToYear(x, vp);
     this.referenceLineLayer.setYear(year);
     this.referenceLineLayer.update(vp, Math.max(vp.height, this.categoryLaneLayer.getTotalHeight()));
+    this.onReferenceLineChange?.(year);
   };
 
   private findEventById(id: number): TimelineEvent | undefined {

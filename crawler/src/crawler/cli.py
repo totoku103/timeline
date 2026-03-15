@@ -47,6 +47,24 @@ def extract_korea(output: str, min_sitelinks: int, tags: str | None):
     spider.extract_korea(output_path=output, extra_tags=extra_tags)
 
 
+@main.command("extract-country")
+@click.argument("country_code", type=click.Choice(
+    ["US", "CN", "JP", "GB", "FR", "DE", "RU", "IT", "IN", "EG", "GR", "TR", "ES"],
+    case_sensitive=True,
+))
+@click.option("--output", "-o", default=None, help="Output JSON file path (default: data/{code}_events.json)")
+@click.option("--min-sitelinks", default=3, help="Minimum sitelinks count")
+@click.option("--tags", "-t", default=None, help="추가 태그 (쉼표 구분)")
+def extract_country(country_code: str, output: str | None, min_sitelinks: int, tags: str | None):
+    """국가별 역사 이벤트를 Wikidata에서 추출 (US, CN, JP, GB, FR, DE, RU, IT, IN, EG, GR, TR, ES)"""
+    from crawler.spiders.wikipedia.spider import WikipediaSpider
+    if output is None:
+        output = f"data/{country_code.lower()}_events.json"
+    extra_tags = [t.strip() for t in tags.split(",") if t.strip()] if tags else None
+    spider = WikipediaSpider(min_sitelinks=min_sitelinks)
+    spider.extract_country(country_code=country_code, output_path=output, extra_tags=extra_tags)
+
+
 @main.command()
 @click.option("--input", "-i", "input_file", default="data/wikipedia_events.json", help="Input JSON file path")
 @click.option("--api-url", default="http://localhost:8080", help="Backend API base URL")

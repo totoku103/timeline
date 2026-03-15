@@ -5,7 +5,7 @@ import { useTimelineStore } from '../store/useTimelineStore';
 export function useTimelineEngine(containerRef: React.RefObject<HTMLDivElement | null>) {
   const engineRef = useRef<TimelineEngine | null>(null);
   const [ready, setReady] = useState(false);
-  const { viewport: storeViewport, setViewport, setSelectedEventId, setShowDetailPanel } = useTimelineStore();
+  const { viewport: storeViewport, setViewport, setSelectedEventId, setShowDetailPanel, setReferenceLineYear } = useTimelineStore();
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -26,6 +26,7 @@ export function useTimelineEngine(containerRef: React.RefObject<HTMLDivElement |
         setSelectedEventId(event.id);
         setShowDetailPanel(true);
       };
+      engine.onReferenceLineChange = (year) => setReferenceLineYear(year);
       setReady(true);
     });
 

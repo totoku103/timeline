@@ -213,3 +213,88 @@ WIKIDATA_COUNTRY_TO_CODE: dict[str, str] = {
     "Q18": "GLOBAL",    # South America
     "Q49": "GLOBAL",    # North America
 }
+
+# 국가별 Wikidata 설정 (extract-country 명령용)
+# country_qids: P17 (country) 값으로 사용할 QID 목록
+# subject_qids: P921 (main subject) 값으로 사용할 QID 목록
+# place_qids: P276 (location) 값으로 사용할 QID 목록
+COUNTRY_CONFIGS: dict[str, dict] = {
+    "US": {
+        "name_ko": "미국",
+        "country_qids": ["Q30"],
+        "subject_qids": ["Q30"],
+        "place_qids": ["Q30", "Q60", "Q65", "Q1297"],  # US, NYC, LA, Chicago
+    },
+    "CN": {
+        "name_ko": "중국",
+        "country_qids": ["Q148", "Q7462", "Q8733", "Q9903", "Q12460", "Q35724", "Q8740"],
+        "subject_qids": ["Q148", "Q7462", "Q8733", "Q9903"],
+        "place_qids": ["Q148", "Q956", "Q8686"],  # China, Beijing, Shanghai
+    },
+    "JP": {
+        "name_ko": "일본",
+        "country_qids": ["Q17", "Q153015"],
+        "subject_qids": ["Q17", "Q153015"],
+        "place_qids": ["Q17", "Q1490", "Q35765"],  # Japan, Tokyo, Osaka
+    },
+    "GB": {
+        "name_ko": "영국",
+        "country_qids": ["Q145", "Q174193", "Q179876"],
+        "subject_qids": ["Q145", "Q174193"],
+        "place_qids": ["Q145", "Q84"],  # UK, London
+    },
+    "FR": {
+        "name_ko": "프랑스",
+        "country_qids": ["Q142", "Q70972", "Q71084"],
+        "subject_qids": ["Q142"],
+        "place_qids": ["Q142", "Q90"],  # France, Paris
+    },
+    "DE": {
+        "name_ko": "독일",
+        "country_qids": ["Q183", "Q7318", "Q43287", "Q16957", "Q713750"],
+        "subject_qids": ["Q183", "Q7318"],
+        "place_qids": ["Q183", "Q64"],  # Germany, Berlin
+    },
+    "RU": {
+        "name_ko": "러시아",
+        "country_qids": ["Q159", "Q15180", "Q34266"],
+        "subject_qids": ["Q159", "Q15180"],
+        "place_qids": ["Q159", "Q649"],  # Russia, Moscow
+    },
+    "IT": {
+        "name_ko": "이탈리아",
+        "country_qids": ["Q38", "Q2277", "Q1747689"],
+        "subject_qids": ["Q38", "Q2277"],
+        "place_qids": ["Q38", "Q220"],  # Italy, Rome
+    },
+    "IN": {
+        "name_ko": "인도",
+        "country_qids": ["Q668", "Q6766"],
+        "subject_qids": ["Q668"],
+        "place_qids": ["Q668", "Q1353"],  # India, Delhi
+    },
+    "EG": {
+        "name_ko": "이집트",
+        "country_qids": ["Q79", "Q11768"],
+        "subject_qids": ["Q79", "Q11768"],
+        "place_qids": ["Q79", "Q85"],  # Egypt, Cairo
+    },
+    "GR": {
+        "name_ko": "그리스",
+        "country_qids": ["Q41", "Q11772", "Q4436"],
+        "subject_qids": ["Q41", "Q11772"],
+        "place_qids": ["Q41", "Q1524"],  # Greece, Athens
+    },
+    "TR": {
+        "name_ko": "터키",
+        "country_qids": ["Q43", "Q12560", "Q12544"],
+        "subject_qids": ["Q43", "Q12560", "Q12544"],
+        "place_qids": ["Q43", "Q406"],  # Turkey, Istanbul
+    },
+    "ES": {
+        "name_ko": "스페인",
+        "country_qids": ["Q29", "Q150"],
+        "subject_qids": ["Q29", "Q150"],
+        "place_qids": ["Q29", "Q2807"],  # Spain, Madrid
+    },
+}

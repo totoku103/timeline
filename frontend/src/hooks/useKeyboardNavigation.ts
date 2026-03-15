@@ -1,5 +1,7 @@
 import { useEffect, useCallback, useRef } from 'react';
 import type { ViewportManager } from '../engine/scale/ViewportManager';
+import { yearToScreen } from '../engine/scale/symlog';
+import { useTimelineStore } from '../store/useTimelineStore';
 
 /**
  * 키보드 탐색 훅
@@ -57,10 +59,14 @@ export function useKeyboardNavigation({
       vm.pan(-width * PAN_STEP_FRACTION * multiplier);
     }
     if (keys.has('ArrowUp') || keys.has('+') || keys.has('=')) {
-      vm.zoom(ZOOM_STEP * multiplier, width / 2);
+      const refYear = useTimelineStore.getState().referenceLineYear;
+      const anchorX = refYear !== null ? yearToScreen(refYear, vp) : width / 2;
+      vm.zoom(ZOOM_STEP * multiplier, anchorX);
     }
     if (keys.has('ArrowDown') || keys.has('-')) {
-      vm.zoom(-ZOOM_STEP * multiplier, width / 2);
+      const refYear = useTimelineStore.getState().referenceLineYear;
+      const anchorX = refYear !== null ? yearToScreen(refYear, vp) : width / 2;
+      vm.zoom(-ZOOM_STEP * multiplier, anchorX);
     }
 
     rafRef.current = requestAnimationFrame(step);

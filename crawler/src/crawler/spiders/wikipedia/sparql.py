@@ -8,6 +8,7 @@ from crawler.spiders.wikipedia.categories import (
     SPARQL_EVENT_CLASSES,
     WIKIDATA_COUNTRY_TO_CODE,
     WIKIDATA_CLASS_TO_CATEGORY,
+    COUNTRY_CONFIGS,
 )
 
 logger = logging.getLogger(__name__)
@@ -618,6 +619,105 @@ class WikidataSparqlClient:
 
         logger.info(f"  -> {len(events)} unique Korean history events after deduplication")
         return events
+
+    def _build_country_category_query(self, country_code: str, event_classes: list[str]) -> str:
+        """국가+카테고리별 분할 SPARQL 쿼리 생성"""
+        config = COUNTRY_CONFIGS[country_code]
+        country_values = " ".join(f"wd:{q}" for q in config["country_qids"])
+        class_unions = " UNION ".join(
+            f"{{ ?item wdt:P31 wd:{qid} }}" for qid in event_classes
+        )
+
+        return f"""
+        SELECT ?item ?itemLabel ?itemDescription
+               ?itemLabel_ko ?itemDescription_ko
+               ?date ?datePrecision
+               ?startDate ?startDatePrecision
+               ?endDate ?endDatePrecision
+               ?sitelinks ?location ?locationLabel ?country
+        WHERE {{
+            {class_unions}
+
+            VALUES ?targetCountry {{ {country_values} }}
+            ?item wdt:P17 ?targetCountry .
+
+            OPTIONAL {{
+                ?item p:P585 ?dateStatement .
+                ?dateStatement psv:P585 ?dateValue .
+                ?dateValue wikibase:timeValue ?date .
+                ?dateValue wikibase:timePrecision ?datePrecision .
+            }}
+            OPTIONAL {{
+                ?item p:P580 ?startStatement .
+                ?startStatement psv:P580 ?startValue .
+                ?startValue wikibase:timeValue ?startDate .
+                ?startValue wikibase:timePrecision ?startDatePrecision .
+            }}
+            OPTIONAL {{
+                ?item p:P582 ?endStatement .
+                ?endStatement psv:P582 ?endValue .
+                ?endValue wikibase:timeValue ?endDate .
+                ?endValue wikibase:timePrecision ?endDatePrecision .
+            }}
+
+            FILTER(BOUND(?date) || BOUND(?startDate))
+
+            OPTIONAL {{ ?item rdfs:label ?itemLabel_ko FILTER(LANG(?itemLabel_ko) = "ko") }}
+            OPTIONAL {{ ?item schema:description ?itemDescription_ko FILTER(LANG(?itemDescription_ko) = "ko") }}
+
+            OPTIONAL {{ ?item wdt:P276 ?location . }}
+            OPTIONAL {{ ?item wdt:P17 ?country . }}
+
+            ?item wikibase:sitelinks ?sitelinks .
+            FILTER(?sitelinks >= {self.min_sitelinks})
+
+            SERVICE wikibase:label {{ bd:serviceParam wikibase:language "en" }}
+        }}
+        ORDER BY DESC(?sitelinks)
+        LIMIT 500
+        """
+
+    def query_country(self, country_code: str, extra_tags: list[str] | None = None) -> list[WikidataEvent]:
+        """범용 국가별 이벤트: 카테고리별 분할 쿼리로 실행"""
+        if country_code not in COUNTRY_CONFIGS:
+            raise ValueError(f"Unknown country code: {country_code}. Available: {list(COUNTRY_CONFIGS.keys())}")
+
+        config = COUNTRY_CONFIGS[country_code]
+        country_tag = config["name_ko"]
+        default_tags = extra_tags or [country_tag]
+        if country_tag not in default_tags:
+            default_tags = [country_tag] + default_tags
+
+        seen_qids: set[str] = set()
+        all_events: list[WikidataEvent] = []
+
+        for category_name, event_classes in SPARQL_EVENT_CLASSES.items():
+            query = self._build_country_category_query(country_code, event_classes)
+            logger.info(f"Querying {config['name_ko']}({country_code}) - {category_name} ({len(event_classes)} classes)")
+
+            self.sparql.setQuery(query)
+
+            try:
+                results = self.sparql.query().convert()
+                bindings = results.get("results", {}).get("bindings", [])
+                logger.info(f"  -> {len(bindings)} results for {category_name}")
+            except Exception as e:
+                logger.error(f"SPARQL query failed for {country_code}/{category_name}: {e}")
+                time.sleep(QUERY_DELAY)
+                continue
+
+            for b in bindings:
+                event = self._parse_result(b, category_name)
+                if event and event.qid not in seen_qids:
+                    seen_qids.add(event.qid)
+                    event.country_codes = [country_code]
+                    event.extra_categories = list(default_tags)
+                    all_events.append(event)
+
+            time.sleep(QUERY_DELAY)
+
+        logger.info(f"Total unique {config['name_ko']} events: {len(all_events)}")
+        return all_events
 
     def query_all(self) -> list[WikidataEvent]:
         """모든 태그에 대해 SPARQL 쿼리 실행"""

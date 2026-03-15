@@ -1,27 +1,25 @@
 import { useTimelineStore } from '../store/useTimelineStore';
 
 export default function CanvasZoomButtons() {
-  const { viewport, setViewport } = useTimelineStore();
+  const { viewport, setViewport, referenceLineYear } = useTimelineStore();
   const { fromYear, toYear, centerYear } = viewport;
   const range = toYear - fromYear;
 
+  const anchor = referenceLineYear ?? centerYear;
+
   const handleZoomIn = () => {
     const newRange = range / 2;
-    const half = newRange / 2;
     setViewport({
-      fromYear: centerYear - half,
-      toYear: centerYear + half,
-      centerYear,
+      fromYear: anchor - newRange * ((anchor - fromYear) / range),
+      toYear: anchor + newRange * ((toYear - anchor) / range),
     });
   };
 
   const handleZoomOut = () => {
     const newRange = range * 2;
-    const half = newRange / 2;
     setViewport({
-      fromYear: centerYear - half,
-      toYear: centerYear + half,
-      centerYear,
+      fromYear: anchor - newRange * ((anchor - fromYear) / range),
+      toYear: anchor + newRange * ((toYear - anchor) / range),
     });
   };
 

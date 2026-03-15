@@ -1,6 +1,5 @@
 import { useEffect, useCallback, useRef } from 'react';
 import type { ViewportManager } from '../engine/scale/ViewportManager';
-import { yearToScreen } from '../engine/scale/symlog';
 import { useTimelineStore } from '../store/useTimelineStore';
 
 /**
@@ -60,13 +59,19 @@ export function useKeyboardNavigation({
     }
     if (keys.has('ArrowUp') || keys.has('+') || keys.has('=')) {
       const refYear = useTimelineStore.getState().referenceLineYear;
-      const anchorX = refYear !== null ? yearToScreen(refYear, vp) : width / 2;
-      vm.zoom(ZOOM_STEP * multiplier, anchorX);
+      if (refYear !== null) {
+        vm.zoomAtYear(ZOOM_STEP * multiplier, refYear);
+      } else {
+        vm.zoom(ZOOM_STEP * multiplier, width / 2);
+      }
     }
     if (keys.has('ArrowDown') || keys.has('-')) {
       const refYear = useTimelineStore.getState().referenceLineYear;
-      const anchorX = refYear !== null ? yearToScreen(refYear, vp) : width / 2;
-      vm.zoom(-ZOOM_STEP * multiplier, anchorX);
+      if (refYear !== null) {
+        vm.zoomAtYear(-ZOOM_STEP * multiplier, refYear);
+      } else {
+        vm.zoom(-ZOOM_STEP * multiplier, width / 2);
+      }
     }
 
     rafRef.current = requestAnimationFrame(step);

@@ -132,6 +132,12 @@ export class TimelineEngine {
 
     this.initialized = true;
 
+    // 현재 날짜에 기준선 배치
+    const now = new Date();
+    const currentYear = now.getFullYear() + (now.getMonth() / 12) + (now.getDate() / 365);
+    this.referenceLineLayer.setYear(currentYear);
+    this.onReferenceLineChange?.(currentYear);
+
     // Initial render
     this.updateLayers();
   }
@@ -148,6 +154,10 @@ export class TimelineEngine {
     this.minimapLayer.setCategories(categories);
     this.updateVisibleData();
     this.updateLayers();
+  }
+
+  getReferenceLineYear(): number | null {
+    return this.referenceLineLayer.year;
   }
 
   setViewport(viewport: Viewport): void {

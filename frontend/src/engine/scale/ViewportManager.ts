@@ -63,6 +63,37 @@ export class ViewportManager {
     this.notifyChange();
   }
 
+  zoomAtYear(delta: number, year: number): void {
+    const centerLog = symlog(year);
+    const fromLog = symlog(this.viewport.fromYear);
+    const toLog = symlog(this.viewport.toYear);
+    const halfRange = (toLog - fromLog) / 2;
+
+    const factor = Math.pow(1.1, -delta);
+    const newHalf = halfRange * factor;
+
+    let newFrom = symlogInverse(centerLog - newHalf);
+    let newTo = symlogInverse(centerLog + newHalf);
+
+    const range = newTo - newFrom;
+    if (range < MIN_RANGE) {
+      const center = symlogInverse(centerLog);
+      newFrom = center - MIN_RANGE / 2;
+      newTo = center + MIN_RANGE / 2;
+    } else if (range > MAX_RANGE) {
+      newFrom = MIN_YEAR;
+      newTo = MAX_YEAR;
+    }
+
+    newFrom = Math.max(MIN_YEAR, newFrom);
+    newTo = Math.min(MAX_YEAR, newTo);
+
+    this.viewport.fromYear = newFrom;
+    this.viewport.toYear = newTo;
+    this.recalculate();
+    this.notifyChange();
+  }
+
   pan(deltaX: number): void {
     const { fromYear, toYear, width } = this.viewport;
 

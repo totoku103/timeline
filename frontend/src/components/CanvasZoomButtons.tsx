@@ -1,26 +1,33 @@
 import { useTimelineStore } from '../store/useTimelineStore';
+import type { ViewportManager } from '../engine/scale/ViewportManager';
 
-export default function CanvasZoomButtons() {
-  const { viewport, setViewport, referenceLineYear } = useTimelineStore();
-  const { fromYear, toYear, centerYear } = viewport;
-  const range = toYear - fromYear;
+interface CanvasZoomButtonsProps {
+  viewportManagerRef: React.RefObject<ViewportManager | null>;
+}
 
-  const anchor = referenceLineYear ?? centerYear;
+const ZOOM_STEP = 3;
+
+export default function CanvasZoomButtons({ viewportManagerRef }: CanvasZoomButtonsProps) {
+  const referenceLineYear = useTimelineStore((s) => s.referenceLineYear);
 
   const handleZoomIn = () => {
-    const newRange = range / 2;
-    setViewport({
-      fromYear: anchor - newRange * ((anchor - fromYear) / range),
-      toYear: anchor + newRange * ((toYear - anchor) / range),
-    });
+    const vm = viewportManagerRef.current;
+    if (!vm) return;
+    if (referenceLineYear !== null) {
+      vm.zoomAtYear(ZOOM_STEP, referenceLineYear);
+    } else {
+      vm.zoom(ZOOM_STEP, vm.getViewport().width / 2);
+    }
   };
 
   const handleZoomOut = () => {
-    const newRange = range * 2;
-    setViewport({
-      fromYear: anchor - newRange * ((anchor - fromYear) / range),
-      toYear: anchor + newRange * ((toYear - anchor) / range),
-    });
+    const vm = viewportManagerRef.current;
+    if (!vm) return;
+    if (referenceLineYear !== null) {
+      vm.zoomAtYear(-ZOOM_STEP, referenceLineYear);
+    } else {
+      vm.zoom(-ZOOM_STEP, vm.getViewport().width / 2);
+    }
   };
 
   return (
@@ -41,6 +48,21 @@ export default function CanvasZoomButtons() {
       >
         −
       </button>
+      {referenceLineYear !== null && (
+        <button
+          className="canvas-zoom__btn"
+          onClick={() => {
+            const vm = viewportManagerRef.current;
+            if (vm && referenceLineYear !== null) {
+              vm.jumpToYear(referenceLineYear);
+            }
+          }}
+          aria-label="기준선으로 이동"
+          title="기준선으로 이동"
+        >
+          ◎
+        </button>
+      )}
     </div>
   );
 }

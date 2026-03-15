@@ -58,7 +58,7 @@ function TimelineApp() {
         {rendered === 'pixi' && (
           <TimelineCanvas viewportManagerRef={viewportManagerRef} />
         )}
-        {rendered === 'pixi' && <CanvasZoomButtons />}
+        {rendered === 'pixi' && <CanvasZoomButtons viewportManagerRef={viewportManagerRef} />}
         {rendered === 'three' && (
           <Suspense
             fallback={

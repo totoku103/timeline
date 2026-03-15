@@ -27,6 +27,7 @@ export function useTimelineEngine(containerRef: React.RefObject<HTMLDivElement |
         setShowDetailPanel(true);
       };
       engine.onReferenceLineChange = (year) => setReferenceLineYear(year);
+      setReferenceLineYear(engine.getReferenceLineYear());
       setReady(true);
     });
 

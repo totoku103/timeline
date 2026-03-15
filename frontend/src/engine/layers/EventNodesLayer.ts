@@ -9,7 +9,7 @@ const LABEL_MAX_WIDTH = 120;
 const labelStyle = new TextStyle({
   fontFamily: 'sans-serif',
   fontSize: 10,
-  fill: '#cccccc',
+  fill: '#c4bdb5',
   wordWrap: true,
   wordWrapWidth: LABEL_MAX_WIDTH,
 });

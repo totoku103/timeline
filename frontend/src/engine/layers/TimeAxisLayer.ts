@@ -3,10 +3,10 @@ import type { Viewport } from '../../types/viewport';
 import { yearToScreen } from '../scale/symlog';
 import { getZoomLevelForRange } from '../scale/precisionMapping';
 
-const AXIS_COLOR = 0x444466;
-const TICK_COLOR = 0x666688;
-const MINOR_TICK_COLOR = 0x333355;
-const LABEL_COLOR = '#ccccdd';
+const AXIS_COLOR = 0x3d3630;
+const TICK_COLOR = 0x5c544c;
+const MINOR_TICK_COLOR = 0x2a2520;
+const LABEL_COLOR = '#b5afa7';
 const AXIS_HEIGHT = 60;
 const MAJOR_TICK_HEIGHT = 16;
 const MINOR_TICK_HEIGHT = 8;

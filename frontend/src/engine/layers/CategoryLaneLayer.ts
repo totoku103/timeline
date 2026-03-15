@@ -19,13 +19,13 @@ export interface CategoryRowLayout {
 const headerStyle = new TextStyle({
   fontFamily: 'sans-serif',
   fontSize: 12,
-  fill: '#aaaacc',
+  fill: '#b5afa7',
   fontWeight: 'bold',
 });
 
-const EVEN_BG_COLOR = 0x0e0e24;
-const ODD_BG_COLOR = 0x0a0a1a;
-const DIVIDER_COLOR = 0x222244;
+const EVEN_BG_COLOR = 0x1a1714;
+const ODD_BG_COLOR = 0x141210;
+const DIVIDER_COLOR = 0x2a2520;
 const STRIPE_WIDTH = 4;
 
 export class CategoryLaneLayer {

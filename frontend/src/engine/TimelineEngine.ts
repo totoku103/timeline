@@ -11,7 +11,7 @@ import { EventNodesLayer } from './layers/EventNodesLayer';
 import { SelectionOverlay } from './layers/SelectionOverlay';
 import { CategoryLaneLayer } from './layers/CategoryLaneLayer';
 
-const BG_COLOR = 0x0a0a1a;
+const BG_COLOR = 0x141210;
 const HIT_RADIUS = 20;
 const RANGE_BAR_HEIGHT = 20;
 

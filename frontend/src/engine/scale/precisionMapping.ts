@@ -20,21 +20,21 @@ export const ZOOM_LEVELS: ZoomLevelConfig[] = [
  * 12 distinct category colors (hex numbers for PixiJS).
  */
 export const CATEGORY_COLORS: Record<number, number> = {
-  1: 0xe74c3c,  // red
-  2: 0x3498db,  // blue
-  3: 0x2ecc71,  // green
-  4: 0xf39c12,  // orange
-  5: 0x9b59b6,  // purple
-  6: 0x1abc9c,  // teal
-  7: 0xe67e22,  // dark orange
-  8: 0xe91e63,  // pink
-  9: 0x00bcd4,  // cyan
-  10: 0x8bc34a, // light green
-  11: 0xff9800, // amber
-  12: 0x607d8b, // blue grey
+  1: 0xc4927a,  // copper (brand)
+  2: 0x648cb4,  // muted blue
+  3: 0x7aa678,  // sage green
+  4: 0xd9b09e,  // light copper
+  5: 0x9b7ea6,  // muted purple
+  6: 0x5a9e8f,  // muted teal
+  7: 0xb8853a,  // warm amber
+  8: 0xb06878,  // dusty rose
+  9: 0x5a9eaa,  // muted cyan
+  10: 0x8fa664, // olive green
+  11: 0xc49a5a, // warm gold
+  12: 0x7a8a8c, // warm grey
 };
 
-const DEFAULT_COLOR = 0x95a5a6;
+const DEFAULT_COLOR = 0x8c857c;
 
 /**
  * Get the zoom level config that best matches the given year range.

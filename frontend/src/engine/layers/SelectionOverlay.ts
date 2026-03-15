@@ -2,8 +2,8 @@ import { Container, Graphics, Text, TextStyle } from 'pixi.js';
 import type { RenderNode } from '../../types/render';
 import type { TimelineEvent } from '../../types/timeline';
 
-const TOOLTIP_BG = 0x1a1a2e;
-const TOOLTIP_BORDER = 0x444466;
+const TOOLTIP_BG = 0x1c1916;
+const TOOLTIP_BORDER = 0x3d3630;
 const TOOLTIP_PADDING = 12;
 const TOOLTIP_MAX_WIDTH = 280;
 const TOOLTIP_CORNER_RADIUS = 8;
@@ -20,7 +20,7 @@ const titleStyle = new TextStyle({
 const metaStyle = new TextStyle({
   fontFamily: 'sans-serif',
   fontSize: 11,
-  fill: '#8888aa',
+  fill: '#8c857c',
   wordWrap: true,
   wordWrapWidth: TOOLTIP_MAX_WIDTH - TOOLTIP_PADDING * 2,
 });
@@ -28,7 +28,7 @@ const metaStyle = new TextStyle({
 const descStyle = new TextStyle({
   fontFamily: 'sans-serif',
   fontSize: 11,
-  fill: '#aaaacc',
+  fill: '#b5afa7',
   wordWrap: true,
   wordWrapWidth: TOOLTIP_MAX_WIDTH - TOOLTIP_PADDING * 2,
 });

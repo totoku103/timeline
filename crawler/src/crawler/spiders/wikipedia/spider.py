@@ -69,6 +69,29 @@ class WikipediaSpider:
         logger.info(f"Saved {len(events)} Joseon events to {output_path}")
         logger.info("=== Joseon Extract Phase Complete ===")
 
+    def extract_korea(self, output_path: str = "data/korea_events.json", extra_tags: list[str] | None = None):
+        """Phase 1 (한국): 한국 전체 역사 이벤트 Wikidata 추출 + MediaWiki 보강 -> JSON 저장"""
+        logger.info("=== Korea Extract Phase Start ===")
+
+        sparql_client = WikidataSparqlClient(min_sitelinks=self.min_sitelinks)
+        events = sparql_client.query_korea(extra_tags=extra_tags)
+        logger.info(f"SPARQL: {len(events)} Korean history events extracted")
+
+        mediawiki_client = MediaWikiClient()
+        events = mediawiki_client.enrich_events(events)
+        mediawiki_client.close()
+
+        output = Path(output_path)
+        output.parent.mkdir(parents=True, exist_ok=True)
+
+        data = [event.model_dump() for event in events]
+        output.write_text(
+            json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8"
+        )
+
+        logger.info(f"Saved {len(events)} events to {output_path}")
+        logger.info("=== Korea Extract Phase Complete ===")
+
     def load(
         self,
         input_path: str = "data/wikipedia_events.json",

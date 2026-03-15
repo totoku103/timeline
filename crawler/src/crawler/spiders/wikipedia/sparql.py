@@ -455,6 +455,170 @@ class WikidataSparqlClient:
         logger.info(f"  -> {len(events)} unique Joseon events after deduplication")
         return events
 
+    def _build_korea_query(self) -> str:
+        """한국 전체 역사 SPARQL 쿼리 (고대 ~ 현재)
+
+        한반도 관련 모든 국가 엔티티를 포함:
+        신라, 고구려, 백제, 고려, 조선, 대한제국, 대한민국, 북한
+        """
+        return f"""
+        SELECT DISTINCT ?item ?itemLabel ?itemDescription
+               ?itemLabel_ko ?itemDescription_ko
+               ?date ?datePrecision
+               ?startDate ?startDatePrecision
+               ?endDate ?endDatePrecision
+               ?sitelinks ?location ?locationLabel ?country ?class
+        WHERE {{
+            # 전략 1: 한국 관련 국가 (P17)
+            {{
+                VALUES ?koreanCountry {{
+                    wd:Q28179   # Silla
+                    wd:Q28222   # Goguryeo
+                    wd:Q28224   # Baekje
+                    wd:Q28233   # Goryeo
+                    wd:Q18097   # Joseon
+                    wd:Q61791   # Korean Empire
+                    wd:Q884     # South Korea
+                    wd:Q423     # North Korea
+                }}
+                ?item wdt:P17 ?koreanCountry .
+            }}
+            UNION
+            # 전략 2: 한국이 주제인 항목 (P921)
+            {{
+                VALUES ?koreanSubject {{
+                    wd:Q884     # South Korea
+                    wd:Q18097   # Joseon
+                    wd:Q28233   # Goryeo
+                    wd:Q28179   # Silla
+                    wd:Q28222   # Goguryeo
+                    wd:Q28224   # Baekje
+                    wd:Q61791   # Korean Empire
+                }}
+                ?item wdt:P921 ?koreanSubject .
+            }}
+            UNION
+            # 전략 3: 한국 관련 국가 + 주요 이벤트 타입
+            {{
+                VALUES ?koreanCountry2 {{
+                    wd:Q28179 wd:Q28222 wd:Q28224 wd:Q28233
+                    wd:Q18097 wd:Q61791 wd:Q884 wd:Q423
+                }}
+                ?item wdt:P17 ?koreanCountry2 .
+                ?item wdt:P31 ?eventType .
+                VALUES ?eventType {{
+                    wd:Q178561   wd:Q8686     wd:Q180684   wd:Q831663
+                    wd:Q188055   wd:Q13418847 wd:Q3024240  wd:Q35798
+                    wd:Q7188     wd:Q622521   wd:Q124757   wd:Q1347065
+                    wd:Q49773    wd:Q273120   wd:Q12131    wd:Q12136
+                    wd:Q12184    wd:Q11090    wd:Q1656682  wd:Q39614
+                    wd:Q16510064 wd:Q5389     wd:Q49776
+                }}
+            }}
+            UNION
+            # 전략 4: 장소가 한국인 항목 (P276)
+            {{
+                VALUES ?koreanPlace {{
+                    wd:Q884 wd:Q8684     # South Korea, Seoul
+                    wd:Q41176 wd:Q16552   # Busan, Pyongyang
+                }}
+                ?item wdt:P276 ?koreanPlace .
+            }}
+
+            # P31 (instance of) — 태그 추론용
+            OPTIONAL {{ ?item wdt:P31 ?class . }}
+
+            # 날짜 정보
+            OPTIONAL {{
+                ?item p:P585 ?dateStatement .
+                ?dateStatement psv:P585 ?dateValue .
+                ?dateValue wikibase:timeValue ?date .
+                ?dateValue wikibase:timePrecision ?datePrecision .
+            }}
+            OPTIONAL {{
+                ?item p:P580 ?startStatement .
+                ?startStatement psv:P580 ?startValue .
+                ?startValue wikibase:timeValue ?startDate .
+                ?startValue wikibase:timePrecision ?startDatePrecision .
+            }}
+            OPTIONAL {{
+                ?item p:P582 ?endStatement .
+                ?endStatement psv:P582 ?endValue .
+                ?endValue wikibase:timeValue ?endDate .
+                ?endValue wikibase:timePrecision ?endDatePrecision .
+            }}
+
+            # 최소한 날짜 하나 필요
+            FILTER(BOUND(?date) || BOUND(?startDate))
+
+            # 한국어 라벨
+            OPTIONAL {{ ?item rdfs:label ?itemLabel_ko FILTER(LANG(?itemLabel_ko) = "ko") }}
+            OPTIONAL {{ ?item schema:description ?itemDescription_ko FILTER(LANG(?itemDescription_ko) = "ko") }}
+
+            # 위치/국가
+            OPTIONAL {{ ?item wdt:P276 ?location . }}
+            OPTIONAL {{ ?item wdt:P17 ?country . }}
+
+            # sitelinks 수
+            ?item wikibase:sitelinks ?sitelinks .
+            FILTER(?sitelinks >= {self.min_sitelinks})
+
+            SERVICE wikibase:label {{ bd:serviceParam wikibase:language "en" }}
+        }}
+        ORDER BY DESC(?sitelinks)
+        LIMIT 5000
+        """
+
+    def query_korea(self, extra_tags: list[str] | None = None) -> list[WikidataEvent]:
+        """한국 전체 역사 이벤트 SPARQL 쿼리 실행"""
+        query = self._build_korea_query()
+        logger.info(
+            f"Querying Wikidata for Korean history events (min_sitelinks={self.min_sitelinks})"
+        )
+
+        self.sparql.setQuery(query)
+
+        try:
+            results = self.sparql.query().convert()
+            bindings = results.get("results", {}).get("bindings", [])
+            logger.info(f"  -> {len(bindings)} raw results for Korea")
+        except Exception as e:
+            logger.error(f"SPARQL query failed for Korea: {e}")
+            return []
+
+        # QID별 P31 클래스 목록 수집
+        classes_by_qid: dict[str, list[str]] = {}
+        for b in bindings:
+            item_uri = b.get("item", {}).get("value", "")
+            qid = item_uri.split("/")[-1] if item_uri else None
+            if not qid:
+                continue
+            class_uri = b.get("class", {}).get("value", "")
+            class_qid = class_uri.split("/")[-1] if class_uri else None
+            if class_qid:
+                if qid not in classes_by_qid:
+                    classes_by_qid[qid] = []
+                if class_qid not in classes_by_qid[qid]:
+                    classes_by_qid[qid].append(class_qid)
+
+        # QID별 중복 제거 후 WikidataEvent 생성
+        seen_qids: set[str] = set()
+        events: list[WikidataEvent] = []
+
+        for b in bindings:
+            item_uri = b.get("item", {}).get("value", "")
+            qid = item_uri.split("/")[-1] if item_uri else None
+            if not qid or qid in seen_qids:
+                continue
+            seen_qids.add(qid)
+
+            event = self._parse_joseon_result(b, classes_by_qid, extra_tags=extra_tags)
+            if event:
+                events.append(event)
+
+        logger.info(f"  -> {len(events)} unique Korean history events after deduplication")
+        return events
+
     def query_all(self) -> list[WikidataEvent]:
         """모든 태그에 대해 SPARQL 쿼리 실행"""
         all_events: list[WikidataEvent] = []

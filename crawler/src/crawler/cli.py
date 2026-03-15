@@ -35,6 +35,18 @@ def extract_joseon(output: str, min_sitelinks: int, tags: str):
     spider.extract_joseon(output_path=output, extra_tags=extra_tags)
 
 
+@main.command("extract-korea")
+@click.option("--output", "-o", default="data/korea_events.json", help="Output JSON file path")
+@click.option("--min-sitelinks", default=3, help="Minimum sitelinks count")
+@click.option("--tags", "-t", default=None, help="추가 태그 (쉼표 구분)")
+def extract_korea(output: str, min_sitelinks: int, tags: str | None):
+    """한국 전체 역사(고대~현재) 이벤트를 Wikidata에서 추출"""
+    from crawler.spiders.wikipedia.spider import WikipediaSpider
+    extra_tags = [t.strip() for t in tags.split(",") if t.strip()] if tags else None
+    spider = WikipediaSpider(min_sitelinks=min_sitelinks)
+    spider.extract_korea(output_path=output, extra_tags=extra_tags)
+
+
 @main.command()
 @click.option("--input", "-i", "input_file", default="data/wikipedia_events.json", help="Input JSON file path")
 @click.option("--api-url", default="http://localhost:8080", help="Backend API base URL")
